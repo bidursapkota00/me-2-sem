@@ -346,8 +346,8 @@ collection.add(
 collection.add(
     ids=["vec1", "vec2"],
     embeddings=[
-        [0.1] * 1536,                       # 1536-dimensional vector
-        [0.2] * 1536                        # Another vector
+        [0.1] * 384,                       # 384-dimensional vector
+        [0.2] * 384                        # Another vector
     ],
     documents=["First document", "Second document"],
     metadatas=[{"type": "manual"}, {"type": "manual"}]
