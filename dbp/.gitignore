@@ -2,3 +2,4 @@ venv/
 test*
 format*
 chroma_data/
+*.html
