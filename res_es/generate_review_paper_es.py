@@ -114,29 +114,6 @@ def add_body(doc, text, first_line_indent=True):
     run.font.name = 'Times New Roman'
     return p
 
-def add_body_with_highlight(doc, normal_text, highlight_text, after_text=""):
-    """Add paragraph with bold text for research gaps."""
-    p = doc.add_paragraph()
-    p.paragraph_format.space_after = Pt(2)
-    p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-    p.paragraph_format.first_line_indent = Cm(0.5)
-
-    if normal_text:
-        run1 = p.add_run(normal_text)
-        run1.font.size = Pt(10)
-        run1.font.name = 'Times New Roman'
-
-    run2 = p.add_run(highlight_text)
-    run2.font.size = Pt(10)
-    run2.font.name = 'Times New Roman'
-    run2.bold = True
-
-    if after_text:
-        run3 = p.add_run(after_text)
-        run3.font.size = Pt(10)
-        run3.font.name = 'Times New Roman'
-    return p
-
 def add_reference(doc, number, text):
     p = doc.add_paragraph()
     p.paragraph_format.space_after = Pt(2)
@@ -147,21 +124,20 @@ def add_reference(doc, number, text):
     run.font.name = 'Times New Roman'
     return p
 
-def add_table_paper_summary(doc):
-    """Add a summary table of the 6 reviewed papers."""
+def add_table(doc, caption, headers, data, col_widths=None):
+    """Add a formatted table with caption."""
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p.paragraph_format.space_before = Pt(6)
     p.paragraph_format.space_after = Pt(2)
-    run = p.add_run("TABLE I: Summary of Reviewed Research Papers")
+    run = p.add_run(caption)
     run.bold = True
     run.font.size = Pt(8)
     run.font.name = 'Times New Roman'
 
-    table = doc.add_table(rows=7, cols=4)
+    table = doc.add_table(rows=1 + len(data), cols=len(headers))
     table.style = 'Table Grid'
 
-    headers = ["Ref.", "Paper Title", "Key Contribution", "Year"]
     for i, header in enumerate(headers):
         cell = table.rows[0].cells[i]
         cell.text = header
@@ -170,21 +146,6 @@ def add_table_paper_summary(doc):
                 run.bold = True
                 run.font.size = Pt(7)
                 run.font.name = 'Times New Roman'
-
-    data = [
-        ["[1]", "Analytical Modeling of Batteryless IoT Sensors Powered by Ambient Energy Harvesting",
-         "Mathematical framework for energy dynamics modeling of batteryless IoT nodes with power management", "2025"],
-        ["[2]", "Designing Cost-Effective Battery-Less Energy Harvesting for Intermittent Wireless Communication",
-         "Duty-based DPM scheme extending operation time by 9.1%–90.0%", "2025"],
-        ["[3]", "EStacker: Explaining Battery-Less IoT System Performance with Energy Stacks",
-         "Fair evaluation platform with 6.3× speedup via ST-SP optimization", "2026"],
-        ["[4]", "HANNA: Harvesting-Aware Neural Network Architecture Search for Batteryless Intermittent Devices",
-         "Energy-harvesting-aware NAS for adaptive DNN inference on batteryless devices", "2024"],
-        ["[5]", "Autonomous Agricultural Monitoring with Aerial Drones and RF Energy-Harvesting Sensor Tags",
-         "UAV-powered battery-free precision agriculture sensor system", "2025"],
-        ["[6]", "Batteryless Systems for IoT: A Survey of Circuit and System Design (MWSCAS 2025)",
-         "Comprehensive circuit-level survey of intermittent computing architectures", "2025"],
-    ]
 
     for row_idx, row_data in enumerate(data, 1):
         for col_idx, value in enumerate(row_data):
@@ -195,15 +156,14 @@ def add_table_paper_summary(doc):
                     run.font.size = Pt(7)
                     run.font.name = 'Times New Roman'
 
-    # Set column widths
-    for row in table.rows:
-        row.cells[0].width = Cm(1.0)
-        row.cells[1].width = Cm(5.5)
-        row.cells[2].width = Cm(6.5)
-        row.cells[3].width = Cm(1.2)
+    if col_widths:
+        for row in table.rows:
+            for i, w in enumerate(col_widths):
+                row.cells[i].width = Cm(w)
 
     p2 = doc.add_paragraph()
     p2.paragraph_format.space_after = Pt(6)
+
 
 # ============================================================
 # DOCUMENT CONTENT
@@ -220,17 +180,24 @@ add_affiliation(doc, "Department of Computer Engineering, Nepal College of Infor
 add_section_heading(doc, "Abstract")
 
 abstract_text = (
-    "Battery-free embedded systems that get power from ambient energy is getting "
-    "really popular for sustainable IoT. Between 2025 and 2026, lots of cool stuff happened, "
-    "moving from just ideas to actual working things. This paper looks at six important "
-    "research papers about making battery-free systems better. They talk about math models for "
-    "energy, cheap ways to do wireless communication, platforms to test performance, AI that "
-    "knows about energy harvesting, drones powering sensors for farming, and surveys of circuit "
-    "designs. We look at each paper and find some big problems that still need fixing, like not "
-    "having standard tests, trouble using multiple energy sources at once, AI not working well "
-    "when power stops, and no standard rules for managing power. We think future research needs "
-    "to focus on making things work together better, designing AI and hardware together, and "
-    "making sure these systems are reliable so we can actually use them without maintenance."
+    "Battery-free embedded systems powered by ambient energy harvesting have emerged as a "
+    "transformative paradigm for sustainable Internet of Things (IoT) deployments. The period "
+    "spanning 2024 to 2026 has witnessed a significant transition from proof-of-concept "
+    "demonstrations to increasingly mature, deployment-ready solutions. This review paper "
+    "critically examines six recent journal and conference papers that address key challenges "
+    "in advancing battery-free system technology. The reviewed works encompass analytical "
+    "modeling of energy dynamics in batteryless IoT sensors, cost-effective design methodologies "
+    "for intermittent wireless communication, standardized evaluation platforms for fair "
+    "performance benchmarking, energy-harvesting-aware neural architecture search for "
+    "intermittent deep learning inference, UAV-powered RF energy-harvesting sensor systems "
+    "for precision agriculture, and comprehensive surveys of circuit and system design "
+    "architectures. Through a systematic comparison of the objectives, methodologies, results, "
+    "strengths, and limitations of each study, this review identifies several critical research "
+    "gaps, including the absence of unified benchmarking standards, insufficient multi-source "
+    "energy harvesting integration, limited adaptation of edge AI for intermittent operation, "
+    "and inadequate standardization of power management protocols. The paper concludes with "
+    "recommendations for future research directions aimed at achieving reliable, scalable, "
+    "and maintenance-free battery-free IoT ecosystems."
 )
 add_body(doc, abstract_text, first_line_indent=False)
 
@@ -244,7 +211,7 @@ run_kw.italic = True
 run_kw.font.size = Pt(9)
 run_kw.font.name = 'Times New Roman'
 run_val = p.add_run("Battery-Free Embedded Systems, Energy Harvesting, Intermittent Computing, "
-                     "IoT, TinyML, Power Management, Wireless Sensor Networks, Research Gaps")
+                     "IoT, TinyML, Power Management, Wireless Sensor Networks, Precision Agriculture")
 run_val.italic = True
 run_val.font.size = Pt(9)
 run_val.font.name = 'Times New Roman'
@@ -254,317 +221,716 @@ run_val.font.name = 'Times New Roman'
 # ============================================================
 add_section_heading(doc, "I. Introduction")
 
+# --- A. Background ---
+add_subsection_heading(doc, "A. Background")
+
 add_body(doc, (
-    "Having lots of IoT devices in farming, factories, and health stuff is cool but "
-    "there is a big problem: batteries. Batteries are annoying because they cost money to replace, "
-    "are bad for the environment, and don't last long in tough places. Also changing them in huge "
-    "sensor networks is just too much work. Because of this, many people are researching "
-    "battery-free systems that can grab energy from the sun, radio waves, heat, or moving around."
+    "The rapid proliferation of Internet of Things (IoT) devices across diverse application "
+    "domains—including precision agriculture, industrial monitoring, environmental sensing, "
+    "and healthcare—has created an unprecedented demand for autonomous, long-lived sensing "
+    "platforms. However, a fundamental bottleneck constraining large-scale IoT deployment is "
+    "the reliance on electrochemical batteries. Conventional batteries impose significant "
+    "operational costs due to periodic replacement requirements, contribute to environmental "
+    "degradation through hazardous waste generation, and impose practical limitations in "
+    "remote or inaccessible deployment scenarios where manual maintenance is infeasible [6]."
 ))
 
 add_body(doc, (
-    "The years 2025 to 2026 was a big turning point. Researchers moved from just proving it's "
-    "possible to actually making it reliable and ready for the real world. Some big steps include "
-    "fancy math models to guess how sensors act in different weather [1], cheap ways to build "
-    "them to save energy for wireless talk [2], and standard testing platforms to fairly compare "
-    "different battery-less systems [3]. Also, people started mixing energy harvesting with edge "
-    "AI, which created Intermittent TinyML. This means designing neural networks that can work "
-    "even when the power keeps turning on and off [4]."
+    "Battery-free embedded systems offer a compelling alternative by harvesting ambient energy "
+    "from sources such as solar radiation, radio-frequency (RF) signals, thermal gradients, "
+    "and mechanical vibrations. These systems typically employ energy storage elements such as "
+    "supercapacitors or small rechargeable cells that buffer harvested energy for intermittent "
+    "computation and communication. The resulting operational paradigm—known as intermittent "
+    "computing—presents unique challenges, as the system must maintain computational correctness "
+    "and data integrity across unpredictable power interruptions [3], [6]."
 ))
 
 add_body(doc, (
-    "There are also new cool uses, like drones powering sensors with RF signals for farming [5]. "
-    "Plus, big surveys have listed all the new circuit designs making this possible [6]. All this "
-    "shows that battery-free systems are not just science projects anymore, but real tech we can use."
+    "The period from 2024 to 2026 has witnessed a pivotal transition in battery-free system "
+    "research. Early investigations primarily focused on demonstrating the feasibility of "
+    "energy-autonomous operation, whereas recent contributions have shifted toward addressing "
+    "practical deployment challenges including predictable performance modeling, cost-effective "
+    "hardware design, standardized evaluation methodologies, and the integration of machine "
+    "learning capabilities on intermittently powered platforms. Concurrently, novel application "
+    "scenarios—such as UAV-powered agricultural sensor networks—have emerged, demonstrating "
+    "the expanding scope and commercial relevance of battery-free technology [1], [5]."
+))
+
+# --- B. Problem Statement ---
+add_subsection_heading(doc, "B. Problem Statement")
+
+add_body(doc, (
+    "Despite substantial progress in individual aspects of battery-free embedded system design, "
+    "the field remains fragmented across multiple research communities, including energy "
+    "harvesting, intermittent computing, low-power circuit design, and edge artificial "
+    "intelligence. This fragmentation has resulted in several critical deficiencies. First, "
+    "there is no widely accepted benchmark suite or standardized evaluation methodology for "
+    "comparing the performance of different battery-free platforms under equivalent conditions. "
+    "Second, the integration of multiple heterogeneous energy harvesting sources within a "
+    "unified power management framework remains largely unexplored. Third, the adaptation of "
+    "modern machine learning techniques—particularly deep neural network inference—for "
+    "intermittent execution environments is still in its nascent stages. Fourth, the absence "
+    "of standardized power management protocols across diverse hardware platforms hinders "
+    "interoperability and scalability [2], [4]."
 ))
 
 add_body(doc, (
-    "This review looks deep into six really important papers from 2024 to 2026. We look at how "
-    "they did it, what's new, and their test results. We also point out some big holes in the "
-    "research that still need filling, and give ideas for what to do next. The rest of the paper "
-    "goes like this: Section II talks about the papers, Section III compares them, Section IV "
-    "shows the gaps, Section V talks about the future, and Section VI wraps it all up."
+    "These challenges collectively impede the transition of battery-free systems from "
+    "laboratory prototypes to commercially viable, mass-deployed IoT infrastructure. A "
+    "comprehensive review that systematically analyzes recent contributions, identifies "
+    "research gaps, and delineates future directions is therefore essential for guiding "
+    "the continued development of this rapidly evolving field."
 ))
+
+# --- C. Research Objectives ---
+add_subsection_heading(doc, "C. Research Objectives")
+
+add_body(doc, (
+    "The primary objective of this review paper is to provide a critical and systematic "
+    "examination of recent advancements in battery-free embedded systems through the analysis "
+    "of six representative journal and conference papers published between 2024 and 2026. "
+    "The specific objectives are as follows:"
+), first_line_indent=False)
+
+add_body(doc, (
+    "(1) To critically review and summarize the objectives, methodologies, key contributions, "
+    "and results of each selected paper."
+), first_line_indent=False)
+
+add_body(doc, (
+    "(2) To perform a comparative analysis of the reviewed works with respect to their "
+    "research focus areas, technical approaches, performance metrics, and reported outcomes."
+), first_line_indent=False)
+
+add_body(doc, (
+    "(3) To identify and discuss the research methodologies, algorithms, frameworks, "
+    "architectures, and evaluation techniques adopted across the reviewed studies."
+), first_line_indent=False)
+
+add_body(doc, (
+    "(4) To identify critical research gaps and open challenges that remain unaddressed "
+    "in the current literature."
+), first_line_indent=False)
+
+add_body(doc, (
+    "(5) To propose future research directions that can advance the state of the art "
+    "toward reliable, scalable, and maintenance-free battery-free IoT systems."
+), first_line_indent=False)
 
 # ============================================================
-# II. LITERATURE REVIEW
+# II. RELATED WORKS
 # ============================================================
-add_section_heading(doc, "II. Literature Review")
+add_section_heading(doc, "II. Related Works")
+
+add_body(doc, (
+    "This section presents a critical review of six recent research papers that collectively "
+    "represent the current state of the art in battery-free embedded systems. Each paper is "
+    "examined with respect to its research objectives, methodology, key findings, strengths, "
+    "and limitations."
+), first_line_indent=False)
 
 # --- Paper 1 ---
-add_subsection_heading(doc, "A. Analytical Modeling of Batteryless IoT Sensors Powered by Ambient Energy Harvesting")
+add_subsection_heading(doc, "A. Analytical Modeling of Batteryless IoT Sensors Powered by Ambient Energy Harvesting [1]")
 
 add_body(doc, (
-    "Fernández Landivar and their team (arXiv:2507.20952, July 2025) made a big math "
-    "framework to figure out how energy moves in batteryless IoT nodes [1]. The model looks "
-    "at how it gets energy and how it uses it, including power management stuff that other "
-    "papers usually forget. They modeled the Energy Harvesting Unit (EHU), which has the "
-    "harvester, power manager, and supercapacitor, along with the Circuit Load (CL). This helps "
-    "guess exactly how the device acts, like how the voltage changes in different environments."
+    "Fernández Landivar et al. (arXiv, July 2025) proposed a comprehensive analytical "
+    "framework for modeling the energy dynamics of batteryless IoT sensor nodes [1]. The "
+    "objective of this work was to develop a generalized mathematical model that captures "
+    "the complete energy flow within a batteryless system, from ambient energy harvesting "
+    "through power conditioning to computational load execution. The model explicitly "
+    "incorporates the behavior of the Energy Harvesting Unit (EHU), comprising the energy "
+    "transducer, power management integrated circuit (PMIC), and supercapacitor storage, "
+    "as well as the Circuit Load (CL) representing the sensor's computational and "
+    "communication subsystems."
 ))
 
 add_body(doc, (
-    "A really good thing about this work is you can use it for lots of things. The math "
-    "isn't just for one specific hardware. They tested their model with a real batteryless IoT "
-    "node under different lighting and showed that their guesses matched the real voltage very well. "
-    "This model helps design smart power units to get the most energy even when the environment "
-    "changes, giving engineers a handy tool to check performance before actually building it."
+    "The methodology employed a first-principles analytical approach, deriving closed-form "
+    "expressions for the voltage dynamics of the supercapacitor as a function of harvested "
+    "power, PMIC efficiency characteristics, and load current profiles. The model was "
+    "validated experimentally using a prototype batteryless IoT node operating under varying "
+    "indoor illumination conditions. The results demonstrated strong agreement between "
+    "predicted and measured supercapacitor voltage trajectories, confirming the model's "
+    "accuracy across diverse environmental conditions."
+))
+
+add_body(doc, (
+    "A key strength of this work lies in its generalizability: the mathematical framework "
+    "is not tied to any specific hardware platform and can be parameterized for different "
+    "harvesting modalities and load characteristics. This enables designers to perform "
+    "pre-fabrication performance estimation and optimize power management unit configurations. "
+    "However, a notable limitation is that the model assumes relatively stable ambient energy "
+    "conditions and does not explicitly address highly stochastic or rapidly fluctuating "
+    "energy sources, which are common in outdoor deployment scenarios."
 ))
 
 # --- Paper 2 ---
-add_subsection_heading(doc, "B. Designing Cost-Effective Battery-Less Energy Harvesting for Intermittent Wireless Communication")
+add_subsection_heading(doc, "B. Designing Cost-Effective Battery-Less Energy Harvesting for Intermittent Wireless Communication [2]")
 
 add_body(doc, (
-    "In IEEE Access (Jan 2025), this paper talks about a cheap way to design battery-less "
-    "IoT devices that need to reliably send wireless data even when power comes and goes [2]. "
-    "They made models for energy and timing to figure out the best size for energy harvesters "
-    "and storage, like capacitors. This helps designers find the best setup to meet wireless "
-    "needs without using normal batteries."
+    "Published in IEEE Access (January 2025), this paper addressed the challenge of designing "
+    "cost-effective battery-less IoT devices capable of sustaining reliable wireless "
+    "communication under intermittent power availability [2]. The research objective was to "
+    "develop systematic design models that enable engineers to determine optimal energy "
+    "harvester and storage element specifications for meeting specific wireless communication "
+    "Quality of Service (QoS) requirements, including data throughput and transmission frequency."
 ))
 
 add_body(doc, (
-    "The coolest part is a duty-based Dynamic Power Management (DPM) thing that works way "
-    "better than older threshold methods. Tests showed this DPM scheme makes devices run 9.1% "
-    "to 90.0% longer depending on the weather. The power setup is made to improve Quality of "
-    "Service (QoS), like how fast and often data is sent. This work connects paper theories with "
-    "real world needs, giving engineers a step-by-step guide to build these wireless systems "
-    "so they work exactly how you expect."
+    "The authors proposed energy and timing models that formalize the relationship between "
+    "harvester capacity, storage element sizing (capacitors), and the resulting communication "
+    "duty cycle. A central contribution is the introduction of a duty-based Dynamic Power "
+    "Management (DPM) scheme that dynamically adjusts the device's active and sleep periods "
+    "based on available energy, significantly outperforming conventional threshold-based "
+    "approaches. Experimental evaluation demonstrated that the proposed DPM scheme extends "
+    "operational time by 9.1% to 90.0% compared to baseline methods, depending on ambient "
+    "energy availability conditions."
+))
+
+add_body(doc, (
+    "The strength of this work lies in its practical applicability: the design methodology "
+    "provides actionable guidelines for hardware engineers to translate wireless QoS "
+    "requirements into concrete harvester and storage specifications. The duty-based DPM "
+    "approach offers a clear performance advantage. However, the methodology is primarily "
+    "validated for single-source energy harvesting scenarios and does not explicitly consider "
+    "multi-source configurations or the impact of highly variable channel conditions on "
+    "communication reliability."
 ))
 
 # --- Paper 3 ---
-add_subsection_heading(doc, "C. EStacker: Explaining Battery-Less IoT System Performance with Energy Stacks")
+add_subsection_heading(doc, "C. EStacker: Explaining Battery-Less IoT System Performance with Energy Stacks [3]")
 
 add_body(doc, (
-    "Liedtke and guys show EStacker in ACM Transactions on Embedded Computing Systems "
-    "(2026), which is a special platform to test battery-less IoT systems [3]. EStacker tries "
-    "to fix the hard problem of testing things fairly and repeatably by making 'energy stacks', "
-    "which are detailed lists of how much energy the app uses on different hardware and tasks. "
-    "This deep dive lets developers see exactly where the energy goes, helping them fix specific "
-    "hardware and software parts."
+    "Liedtke et al. presented EStacker in ACM Transactions on Embedded Computing Systems "
+    "(2026), a specialized evaluation platform designed to address the challenge of fair "
+    "and reproducible performance assessment of battery-less IoT systems [3]. The research "
+    "objective was to create a systematic benchmarking framework that enables developers to "
+    "understand precisely how energy is consumed across different hardware components and "
+    "software tasks through the concept of \"energy stacks\"—detailed energy consumption "
+    "profiles decomposed by functional unit and execution phase."
 ))
 
 add_body(doc, (
-    "A big deal here is the ST-SP optimization trick, which cuts testing time by 6.3 times on "
-    "average while keeping the timing mostly accurate (error is just 7.7%). This speed is super "
-    "important because trying out different sizes for harvesters and storage normally takes "
-    "forever. EStacker makes sure every app and setup is tested with the exact same energy, "
-    "setting up a good base for standard tests in the battery-less community."
+    "The platform employs a simulation-based approach that models the interaction between "
+    "energy harvesting, storage dynamics, and application workload execution. A significant "
+    "methodological contribution is the ST-SP (Spatial-Temporal State Pruning) optimization "
+    "technique, which reduces evaluation time by a factor of 6.3× on average while "
+    "maintaining timing accuracy with a mean error of only 7.7%. This acceleration is "
+    "critical for enabling practical design space exploration across different harvester "
+    "and storage configurations."
+))
+
+add_body(doc, (
+    "EStacker's principal strength is its ability to provide deterministic, energy-equivalent "
+    "evaluation conditions, ensuring that different applications and hardware configurations "
+    "are compared under identical energy budgets. This addresses a fundamental reproducibility "
+    "challenge in battery-free systems research. The limitation is that the platform currently "
+    "relies on simulation rather than hardware-in-the-loop evaluation, which may not fully "
+    "capture real-world phenomena such as parasitic losses, component aging, and environmental "
+    "electromagnetic interference."
 ))
 
 # --- Paper 4 ---
-add_subsection_heading(doc, "D. HANNA: Harvesting-Aware Neural Network Architecture Search")
+add_subsection_heading(doc, "D. HANNA: Harvesting-Aware Neural Network Architecture Search for Batteryless Intermittent Devices [4]")
 
 add_body(doc, (
-    "Sahu, Deep, and Duwe brought HANNA to IPCCC 2024. It is a Neural Architecture Search "
-    "(NAS) method that actually cares about energy harvesting, made just for batteryless devices "
-    "that turn on and off [4]. Normal NAS usually just looks at speed and accuracy, but HANNA "
-    "also looks at the energy environment while searching. This makes deep neural networks "
-    "(DNN) that fit perfectly in these stopping-and-starting environments."
+    "Sahu, Deep, and Duwe introduced HANNA at IEEE IPCCC 2024, a novel Neural Architecture "
+    "Search (NAS) framework specifically designed for batteryless intermittent devices [4]. "
+    "The research objective was to develop an automated method for discovering deep neural "
+    "network (DNN) architectures that are optimally suited for execution under intermittent "
+    "power conditions, where conventional NAS approaches—which optimize solely for latency "
+    "and accuracy—produce suboptimal results."
 ))
 
 add_body(doc, (
-    "The big idea is that the best neural networks for batteryless devices are totally "
-    "different from ones with constant power. They have to deal with power dying, saving "
-    "progress, and unpredictable energy. HANNA's search method quickly looks through this "
-    "messy space and finds networks that can finish a job with just one cycle of harvested energy. "
-    "This work is one of the first real steps into Intermittent TinyML, where machine learning "
-    "is tweaked to handle the weird limits of energy-harvesting systems."
+    "HANNA's methodology integrates energy harvesting characteristics directly into the "
+    "architecture search process. Unlike traditional NAS, which assumes continuous power "
+    "availability, HANNA evaluates candidate architectures based on their ability to complete "
+    "inference tasks within a single energy harvesting cycle. The search algorithm navigates "
+    "a multi-objective design space that balances inference accuracy, computational cost, "
+    "memory footprint, and energy harvesting compatibility. The framework accounts for the "
+    "overhead of checkpoint-based execution models, where the system must periodically save "
+    "intermediate computation state to non-volatile memory to survive power interruptions."
+))
+
+add_body(doc, (
+    "A key strength of HANNA is that it represents one of the earliest systematic approaches "
+    "to Intermittent TinyML—the intersection of tiny machine learning and intermittent "
+    "computing. The discovered architectures demonstrate fundamentally different structural "
+    "properties compared to those optimized for continuously powered platforms, validating "
+    "the necessity of harvesting-aware design. However, the framework has been evaluated "
+    "on a limited set of inference tasks and energy harvesting profiles, and its scalability "
+    "to more complex models (e.g., transformer architectures) and diverse harvesting "
+    "modalities remains to be demonstrated."
 ))
 
 # --- Paper 5 ---
-add_subsection_heading(doc, "E. Autonomous Agricultural Monitoring with Aerial Drones and RF Energy-Harvesting Sensor Tags")
+add_subsection_heading(doc, "E. Autonomous Agricultural Monitoring with Aerial Drones and RF Energy-Harvesting Sensor Tags [5]")
 
 add_body(doc, (
-    "Kudyba and Sun (arXiv:2502.16028, Feb 2025) look at a cheap and green way to do "
-    "farming by throwing away battery sensors and using battery-less RF energy-harvesting "
-    "tags that get power from drones flying around [5]. The setup uses drones carrying special "
-    "wireless gear that shoots out RF signals. The tags catch this energy to measure things like "
-    "temp and humidity, and then send the data back to the drone. This means you can collect "
-    "data without needing any power lines on the ground."
+    "Kudyba and Sun (arXiv, February 2025) investigated the application of battery-free "
+    "RF energy-harvesting sensor tags for autonomous precision agriculture monitoring, "
+    "powered wirelessly by unmanned aerial vehicles (UAVs) [5]. The objective was to "
+    "demonstrate a practical, cost-effective, and environmentally sustainable alternative "
+    "to conventional battery-powered agricultural sensor networks by eliminating the need "
+    "for ground-based power infrastructure and battery replacement in field-deployed sensors."
 ))
 
 add_body(doc, (
-    "The guys did tests at AERPAW, a drone research place. Tests on the ground worked great, "
-    "but flying tests showed some issues with wireless interference messing up data collection. "
-    "They think combining the receiver parts to cut weight and interference could make it stronger. "
-    "This work shows a really cool use for battery-free systems in farming, pointing out both "
-    "the awesome potential and the hard engineering problems of using RF sensors everywhere."
+    "The system architecture comprises UAVs equipped with RF transmitters that provide "
+    "both wireless power and communication capabilities to passive sensor tags distributed "
+    "across agricultural fields. The sensor tags harvest RF energy from the UAV's downlink "
+    "signal, use the harvested energy to perform environmental measurements (temperature, "
+    "humidity, soil moisture), and backscatter the collected data to the UAV. The methodology "
+    "included both ground-based controlled experiments and aerial flight tests conducted "
+    "at the AERPAW (Aerial Experimentation and Research Platform for Advanced Wireless) "
+    "testbed facility."
+))
+
+add_body(doc, (
+    "Ground-based experiments demonstrated reliable sensor activation and data collection "
+    "at practical distances, validating the fundamental feasibility of the approach. However, "
+    "aerial flight tests revealed significant challenges related to RF interference, antenna "
+    "orientation variability, and reduced communication reliability in dynamic flight "
+    "conditions. The authors propose antenna consolidation and improved RF front-end design "
+    "as potential mitigation strategies. The strength of this work lies in its demonstration "
+    "of a complete, end-to-end battery-free sensing system for a high-impact application "
+    "domain. The primary limitation is the current sensitivity to environmental RF conditions "
+    "and the limited operational range of passive backscatter communication."
 ))
 
 # --- Paper 6 ---
-add_subsection_heading(doc, "F. Batteryless Systems for IoT: A Survey of Circuit and System Design")
+add_subsection_heading(doc, "F. Batteryless Systems for IoT: A Survey of Circuit and System Design [6]")
 
 add_body(doc, (
-    "At MWSCAS 2025, this big survey paper listed all the new circuit and system designs "
-    "pushing battery-less IoT forward [6]. The survey talks about everything, from energy "
-    "catchers, power management chips (PMICs), storage things like supercapacitors, memory "
-    "that doesn't lose data when power dies, and how intermittent computing actually runs."
+    "Presented at IEEE MWSCAS 2025, this comprehensive survey paper provides a systematic "
+    "review of circuit-level and system-level design architectures for batteryless IoT "
+    "devices [6]. The survey encompasses the complete hardware stack, including energy "
+    "harvesting transducers, power management integrated circuits (PMICs), energy storage "
+    "technologies (supercapacitors, thin-film batteries), non-volatile memory systems for "
+    "state preservation, and intermittent computing execution models."
 ))
 
 add_body(doc, (
-    "The paper groups intermittent computing into two types: task-based (where jobs are "
-    "small enough to finish in one energy burst) and checkpoint-based (where the program keeps "
-    "saving its spot). The survey points out important trade-offs, like harvester efficiency vs "
-    "cost, storage size vs leaking power, and getting work done vs the energy it takes. It "
-    "basically gives a map for newbies entering battery-free system design."
+    "The survey categorizes intermittent computing approaches into two principal paradigms: "
+    "task-based execution, where computational tasks are partitioned into atomic units that "
+    "can complete within a single energy burst; and checkpoint-based execution, where the "
+    "system periodically saves its computational state to non-volatile memory to enable "
+    "resumption after power interruptions. The paper systematically analyzes the trade-offs "
+    "inherent in each approach, including harvester efficiency versus manufacturing cost, "
+    "storage capacity versus leakage current, and computational throughput versus the energy "
+    "overhead of checkpointing operations."
 ))
 
-# ============================================================
-# III. COMPARATIVE ANALYSIS
-# ============================================================
-add_section_heading(doc, "III. Comparative Analysis")
+add_body(doc, (
+    "The principal strength of this survey is its breadth and systematic organization, which "
+    "provides an accessible entry point for researchers entering the battery-free systems "
+    "domain. The survey effectively contextualizes individual circuit innovations within the "
+    "broader system architecture, facilitating cross-disciplinary understanding. However, the "
+    "survey primarily focuses on hardware-level considerations and provides limited coverage "
+    "of software frameworks, middleware, and application-level challenges associated with "
+    "intermittent operation."
+))
 
-add_table_paper_summary(doc)
+# --- Comparison Table ---
+add_table(doc,
+    "TABLE I: Comparative Summary of Reviewed Research Papers",
+    ["Ref.", "Objective", "Methodology", "Key Result", "Strength", "Limitation"],
+    [
+        ["[1]", "Model energy dynamics of batteryless IoT sensors",
+         "First-principles analytical modeling with experimental validation",
+         "Accurate voltage prediction under varying illumination",
+         "Generalizable across hardware platforms",
+         "Assumes stable ambient energy conditions"],
+        ["[2]", "Design cost-effective battery-less wireless communication",
+         "Energy and timing models with duty-based DPM scheme",
+         "9.1%–90.0% operational time extension",
+         "Actionable design guidelines for engineers",
+         "Single-source harvesting only"],
+        ["[3]", "Fair and reproducible benchmarking of battery-less systems",
+         "Simulation-based energy stacks with ST-SP optimization",
+         "6.3× evaluation speedup with 7.7% timing error",
+         "Deterministic energy-equivalent evaluation",
+         "Simulation-only; lacks hardware-in-the-loop"],
+        ["[4]", "Energy-harvesting-aware neural architecture search",
+         "Multi-objective NAS with intermittent execution modeling",
+         "Architectures completing inference in one harvest cycle",
+         "Pioneer in Intermittent TinyML",
+         "Limited task and harvesting profile diversity"],
+        ["[5]", "UAV-powered battery-free agricultural monitoring",
+         "RF energy harvesting with backscatter communication",
+         "Successful ground tests; aerial tests revealed RF challenges",
+         "Complete end-to-end system demonstration",
+         "Sensitive to RF interference and limited range"],
+        ["[6]", "Survey of batteryless IoT circuit and system design",
+         "Systematic literature survey and taxonomy",
+         "Comprehensive taxonomy of intermittent computing approaches",
+         "Broad coverage and accessible organization",
+         "Limited software and application-level coverage"],
+    ],
+    col_widths=[0.8, 2.5, 2.8, 2.8, 2.5, 2.5]
+)
+
+
+# ============================================================
+# III. METHODOLOGY ADOPTED BY THE REVIEWED WORKS
+# ============================================================
+add_section_heading(doc, "III. Methodology Adopted by the Reviewed Works")
+
+add_body(doc, (
+    "The research methodologies adopted across the six reviewed papers can be classified "
+    "into four principal categories: analytical modeling, experimental prototyping, "
+    "simulation-based evaluation, and systematic literature survey. This section provides "
+    "a summary and classification of these methodological approaches, along with a discussion "
+    "of the algorithms, frameworks, architectures, and evaluation techniques employed."
+), first_line_indent=False)
+
+add_subsection_heading(doc, "A. Analytical and Mathematical Modeling")
+
+add_body(doc, (
+    "Papers [1] and [2] employ analytical modeling as their primary methodology. Fernández "
+    "Landivar et al. [1] derive first-principles differential equations governing "
+    "supercapacitor voltage dynamics as a function of harvested power, PMIC transfer "
+    "characteristics, and load current demand. The model parameters are obtained through "
+    "component-level characterization and the framework provides closed-form solutions for "
+    "predicting system behavior under specified environmental inputs. Similarly, the IEEE "
+    "Access paper [2] develops energy balance and timing models that relate harvester capacity, "
+    "storage element sizing, and communication duty cycle parameters. Both approaches enable "
+    "pre-fabrication design space exploration and sensitivity analysis."
+))
+
+add_subsection_heading(doc, "B. Experimental Prototyping and Field Testing")
+
+add_body(doc, (
+    "Papers [1], [2], and [5] incorporate experimental validation through hardware prototyping "
+    "and field deployment. Fernández Landivar et al. [1] validate their analytical model "
+    "against measurements from a custom batteryless IoT node under controlled indoor "
+    "illumination. The IEEE Access paper [2] validates its DPM scheme through prototype "
+    "implementation with measured energy harvesting profiles. Kudyba and Sun [5] conduct "
+    "both ground-based controlled experiments and aerial flight tests at the AERPAW testbed, "
+    "providing the most comprehensive real-world evaluation among the reviewed works. These "
+    "experimental approaches are essential for validating theoretical predictions against "
+    "real-world system behavior, including parasitic effects and environmental variability."
+))
+
+add_subsection_heading(doc, "C. Simulation-Based Evaluation and Automated Search")
+
+add_body(doc, (
+    "Papers [3] and [4] rely primarily on simulation-based evaluation frameworks. EStacker [3] "
+    "employs cycle-accurate simulation of energy harvesting, storage, and load execution to "
+    "construct detailed energy consumption profiles. The ST-SP optimization algorithm prunes "
+    "the simulation state space to accelerate evaluation without significantly compromising "
+    "accuracy. HANNA [4] utilizes a simulation-driven NAS framework where candidate DNN "
+    "architectures are evaluated against modeled energy harvesting profiles and intermittent "
+    "execution semantics. The search algorithm employs multi-objective optimization to balance "
+    "inference accuracy, computational cost, and energy harvesting compatibility, navigating "
+    "a fundamentally different design space than conventional NAS approaches."
+))
+
+add_subsection_heading(doc, "D. Systematic Literature Survey")
+
+add_body(doc, (
+    "Paper [6] adopts a systematic survey methodology, reviewing and categorizing existing "
+    "circuit and system design approaches for batteryless IoT devices. The survey employs a "
+    "taxonomic classification scheme that organizes contributions by functional layer (energy "
+    "harvesting, power management, storage, computation, communication) and by execution "
+    "paradigm (task-based vs. checkpoint-based intermittent computing). This methodology "
+    "enables the identification of design trade-offs and research trends across the broader "
+    "battery-free systems community."
+))
+
+# --- Methodology Comparison Table ---
+add_table(doc,
+    "TABLE II: Classification of Research Methodologies",
+    ["Methodology", "Papers", "Key Techniques", "Evaluation Approach"],
+    [
+        ["Analytical Modeling", "[1], [2]",
+         "Differential equations, energy balance models, closed-form solutions",
+         "Comparison with experimental measurements"],
+        ["Experimental Prototyping", "[1], [2], [5]",
+         "Hardware prototyping, field deployment, controlled experiments",
+         "Real-world measurement and statistical analysis"],
+        ["Simulation-Based", "[3], [4]",
+         "Cycle-accurate simulation, state-space pruning, multi-objective NAS",
+         "Simulation accuracy metrics, speedup benchmarks"],
+        ["Literature Survey", "[6]",
+         "Taxonomic classification, systematic review",
+         "Coverage analysis, gap identification"],
+    ],
+    col_widths=[2.5, 1.5, 5.0, 3.5]
+)
+
+# ============================================================
+# IV. RESULTS AND DISCUSSION
+# ============================================================
+add_section_heading(doc, "IV. Results and Discussion")
+
+add_body(doc, (
+    "This section presents a comparative analysis of the reviewed studies, discusses key "
+    "findings and performance metrics, examines emerging research trends, and identifies "
+    "critical research gaps that remain unaddressed in the current literature."
+), first_line_indent=False)
+
+add_subsection_heading(doc, "A. Comparative Analysis of Reviewed Studies")
 
 add_body(doc, (
     "The six reviewed papers collectively represent three major research thrusts in "
-    "contemporary battery-free embedded system development: (1) theoretical modeling and "
-    "design methodology (Papers [1] and [2]), (2) evaluation, benchmarking, and architecture "
-    "innovation (Papers [3] and [4]), and (3) application-driven system integration and "
-    "comprehensive technology surveys (Papers [5] and [6]). A notable convergence across "
-    "all works is the shift from demonstrating the mere feasibility of batteryless operation "
-    "to addressing practical deployment challenges including reliability, predictability, "
-    "and scalability."
+    "contemporary battery-free embedded system development. Papers [1] and [2] contribute "
+    "to the theoretical and design methodology domain, providing analytical foundations "
+    "and actionable engineering guidelines. Papers [3] and [4] advance evaluation "
+    "infrastructure and architectural innovation, addressing the need for standardized "
+    "benchmarking and harvesting-aware system design. Papers [5] and [6] focus on "
+    "application-driven system integration and comprehensive technology surveys, "
+    "demonstrating practical deployment scenarios and contextualizing the broader "
+    "research landscape."
 ))
 
 add_body(doc, (
-    "The modeling contributions of Fernández Landivar et al. [1] and the design methodology "
-    "of the IEEE Access paper [2] are complementary: while [1] provides the analytical "
-    "foundation for understanding energy dynamics, [2] translates these insights into "
-    "actionable design rules for wireless communication systems. Similarly, EStacker [3] "
-    "provides the evaluation infrastructure needed to validate designs produced by approaches "
-    "like HANNA [4], creating a natural toolchain for battery-free system development. "
-    "The application-focused work of Kudyba and Sun [5] demonstrates real-world deployment "
-    "challenges that motivate the theoretical and systems-level innovations in the other papers, "
-    "while the MWSCAS survey [6] provides the comprehensive technology landscape that "
-    "contextualizes all contributions."
+    "A notable convergence across all reviewed works is the shift from demonstrating the "
+    "mere feasibility of batteryless operation to addressing practical deployment challenges, "
+    "including reliability, predictability, and scalability. The modeling contributions of "
+    "Fernández Landivar et al. [1] and the design methodology of [2] are complementary: "
+    "while [1] provides the analytical foundation for understanding energy dynamics, [2] "
+    "translates these insights into actionable design rules for wireless communication "
+    "systems. Similarly, EStacker [3] provides the evaluation infrastructure needed to "
+    "validate designs produced by approaches like HANNA [4], creating a natural toolchain "
+    "for battery-free system development."
 ))
 
-# ============================================================
-# IV. RESEARCH GAPS (HIGHLIGHTED)
-# ============================================================
-add_section_heading(doc, "IV. Identified Research Gaps")
+add_subsection_heading(doc, "B. Key Findings and Performance Metrics")
 
 add_body(doc, (
-    "Even though lots of good stuff happened in these papers, there are still some "
-    "big holes we need to look at right now. Here are the main ones:"
+    "The quantitative results reported across the reviewed papers reveal substantial "
+    "performance improvements in battery-free system capabilities. Table III summarizes "
+    "the key quantitative performance metrics reported across all reviewed studies."
+))
+
+# --- TABLE III: Quantitative Performance Metrics ---
+add_table(doc,
+    "TABLE III: Quantitative Performance Metrics of Reviewed Studies",
+    ["Ref.", "Metric", "Value", "Improvement", "Baseline"],
+    [
+        ["[1]", "Voltage prediction accuracy", "3 scenarios validated", "High correlation", "Measured profiles"],
+        ["[2]", "Operational time extension", "9.1%–90.0%", "+9.1% to +90.0%", "Threshold-based DPM"],
+        ["[3]", "Evaluation speedup (ST-SP)", "6.3x", "41.7 days → 7.7 days", "Full simulation"],
+        ["[3]", "Throughput timing error", "7.7%", "—", "Cycle-accurate sim."],
+        ["[3]", "App. performance gain", "3.3x", "+230%", "Unoptimized config."],
+        ["[4]", "Inference accuracy gain", "10%–44%", "+10% to +44%", "SOTA NAS methods"],
+        ["[4]", "NAS search cost", "1-shot", "Significant reduction", "Traditional NAS"],
+        ["[5]", "Tag comm. range (BLE)", "10 m", "—", "—"],
+        ["[5]", "RF harvest frequency", "918 MHz", "—", "—"],
+        ["[5]", "Active TX frequency", "2.4 GHz", "—", "—"],
+        ["[5]", "Aerial data packets received", "1 (ID only)", "0 temp. packets", "Ground: reliable"],
+    ],
+    col_widths=[0.7, 2.8, 2.5, 2.5, 2.5]
+)
+
+add_body(doc, (
+    "The DPM scheme proposed in [2] demonstrates an operational time extension ranging from "
+    "9.1% to 90.0%, with the magnitude of improvement being inversely correlated with ambient "
+    "energy availability—indicating that the approach is most beneficial in energy-scarce "
+    "environments where battery-free operation is most challenging. The ST-SP optimization "
+    "in EStacker [3] achieves a 6.3x reduction in evaluation time while maintaining "
+    "7.7% average throughput error. Notably, EStacker's energy stack profiling identified a "
+    "performance bottleneck in a case study application, leading to a 3.3x performance "
+    "improvement after optimization—reducing the full design space sweep from 41.7 days to "
+    "7.7 days [3]."
+))
+
+add_body(doc, (
+    "HANNA [4] demonstrates that harvesting-aware neural architecture search improves "
+    "average inference accuracy by 10% to 44% compared to state-of-the-art NAS approaches "
+    "that do not account for energy harvesting constraints, while significantly reducing "
+    "the neural network search cost through a one-shot differentiable NAS formulation. "
+    "The discovered architectures exhibit fundamentally different structural properties—"
+    "smaller individual layers with more frequent checkpointing boundaries—enabling "
+    "completion of partial inference within shorter energy availability windows."
+))
+
+add_body(doc, (
+    "The agricultural monitoring system in [5] successfully demonstrates end-to-end "
+    "battery-free sensing using passive RF energy harvesting at 918 MHz with active BLE "
+    "transmission at 2.4 GHz over a range of up to 10 meters. Ground-based experiments "
+    "confirmed reliable sensor operation, but aerial flight tests at the AERPAW testbed "
+    "encountered significant wireless interference from drone motor EMI that impeded "
+    "data collection, with only a single ID packet successfully received during manual "
+    "flight and no temperature data collected during airborne operation."
+))
+
+# --- TABLE IV: Technical Specifications Comparison ---
+add_table(doc,
+    "TABLE IV: Technical Specifications of Reviewed Systems",
+    ["Ref.", "Harvest Freq.", "TX Freq.", "Storage Type", "Range", "Eval. Scale", "Year"],
+    [
+        ["[1]", "Solar (indoor)", "—", "Supercapacitor", "—", "3 scenarios", "2025"],
+        ["[2]", "Ambient", "Sub-GHz/ISM", "Capacitor", "—", "Multiple configs.", "2025"],
+        ["[3]", "Simulated", "—", "Simulated", "—", "2 case studies", "2026"],
+        ["[4]", "RF", "—", "Capacitor + NVM", "—", "Multiple datasets", "2024"],
+        ["[5]", "918 MHz", "2.4 GHz BLE", "On-tag buffer", "10 m", "3 flight trials", "2025"],
+        ["[6]", "Multiple", "Multiple", "Supercap./thin-film", "—", "49 references", "2025"],
+    ],
+    col_widths=[0.7, 2.0, 2.0, 2.2, 1.2, 2.2, 1.0]
+)
+
+add_subsection_heading(doc, "C. Research Trends")
+
+add_body(doc, (
+    "Several important research trends emerge from the analysis of the reviewed works. "
+    "First, there is a clear movement toward formalization and standardization. The "
+    "development of analytical models [1], systematic design methodologies [2], and "
+    "standardized evaluation platforms [3] reflects the field's maturation from ad hoc "
+    "experimentation to rigorous engineering practice. Second, the emergence of Intermittent "
+    "TinyML [4] represents a convergence of two previously distinct research communities—"
+    "embedded machine learning and intermittent computing—creating new challenges and "
+    "opportunities at their intersection."
+))
+
+add_body(doc, (
+    "Third, application-specific system integration [5] is driving the identification of "
+    "real-world deployment challenges that motivate fundamental research. The AERPAW "
+    "experiments revealed that drone motor EMI represents a critical engineering barrier "
+    "not predicted by laboratory testing, highlighting the importance of field validation. "
+    "Fourth, the comprehensive survey in [6] indicates that the circuit and system design "
+    "landscape has reached sufficient maturity to warrant systematic categorization, "
+    "suggesting that the foundational hardware building blocks for battery-free systems are "
+    "increasingly well-understood, with the primary challenges shifting toward system-level "
+    "integration and software support."
+))
+
+add_subsection_heading(doc, "D. Identified Research Gaps")
+
+add_body(doc, (
+    "Despite the substantial contributions of the reviewed works, several critical research "
+    "gaps persist that must be addressed to enable widespread deployment of battery-free "
+    "embedded systems. Table V maps the identified research gaps to the specific papers "
+    "that expose each gap and the evidence supporting their identification."
 ), first_line_indent=False)
 
-# Gap 1
-add_subsection_heading(doc, "A. Lack of Unified Benchmarking and Evaluation Standards")
-add_body_with_highlight(doc,
-    "While EStacker [3] is a good start for testing, ",
-    "we still don't have a normal test or dataset everyone agrees on to compare different "
-    "battery-free boards, energy sources, and apps.",
-    " Right now, everyone tests with their own secret setups and weird weather, so you can't "
-    "really compare paper A to paper B. We badly need the community to make standard setups, "
-    "energy records, and normal scores (like energy per task or speed) so everyone is on the same page."
-)
-
-# Gap 2
-add_subsection_heading(doc, "B. Insufficient Multi-Source Energy Harvesting Integration")
-add_body_with_highlight(doc,
-    "Most papers just look at one energy thing (like sun in [1], or RF in [5]), but ",
-    "nobody is really making good ways to mix and manage a bunch of energy things at the same "
-    "time (like sun, RF, heat, moving) in one single power manager.",
-    " The real world has crazy weather and changing energy. Mixing harvesters that can smoothly "
-    "swap or combine sources to stay alive is a super important thing we are missing if we want "
-    "devices to truly run forever."
-)
-
-# Gap 3
-add_subsection_heading(doc, "C. Limited Edge AI and TinyML Adaptation for Intermittent Operation")
-add_body_with_highlight(doc,
-    "HANNA [4] is a great first step for intermittent TinyML, but ",
-    "using deep learning and AI on devices that keep losing power is still super new and not "
-    "developed enough.",
-    " Big problems are how to save AI progress without wasting energy, making models that don't "
-    "break when power dies halfway, and training them to know about energy. New things like "
-    "compute-in-memory look cool but they don't work with intermittent systems yet."
-)
-
-# Gap 4
-add_subsection_heading(doc, "D. Inadequate Standardization of Power Management Protocols")
-add_body_with_highlight(doc,
-    "The DPM thing in [2] and math in [1] are neat, but they are kind of on their own, and ",
-    "there is no standard rules or software layer to manage power across all different kinds "
-    "of battery-free IoT devices.",
-    " Without standards, every single device needs its own special power code, which makes it "
-    "hard to mix devices and makes building them expensive. A open power software, kind of like "
-    "internet protocols, that handles harvesting and saving power would make things grow super fast."
-)
-
-# Gap 5
-add_subsection_heading(doc, "E. Reliability and Long-Term Durability in Harsh Environments")
-add_body_with_highlight(doc,
-    "People always say battery-free systems are great for tough factories or farms, but ",
-    "nobody actually researches how long they last, how they break down, or if they are safe "
-    "when stuck in crazy heat, water, shaking, or bad radio noise for a long time.",
-    " The RF noise problem in [5]'s flying tests shows exactly this. We really need tests that "
-    "run for months or years, and official safety rules for battery-free things if industries "
-    "are ever going to trust them."
-)
-
-# Gap 6
-add_subsection_heading(doc, "F. Scalability of Battery-Free Wireless Sensor Networks")
-add_body_with_highlight(doc,
-    "Most papers just look at making one device better, but ",
-    "the big problems of putting hundreds of battery-free nodes together in huge networks, "
-    "like managing energy everywhere, stopping noise, and sending data when things turn off "
-    "randomly, are mostly ignored.",
-    " As we move from single tests to huge real deployments, we need network rules that know "
-    "devices will randomly die and wake up. Normal network rules assume things have power all "
-    "the time and they break when power drops."
-)
-
-# ============================================================
-# V. DISCUSSION AND FUTURE DIRECTIONS
-# ============================================================
-add_section_heading(doc, "V. Discussion and Future Directions")
 
 add_body(doc, (
-    "Looking at battery-free stuff in 2025-2026, the field is finally growing up. Mixing math "
-    "models [1], design rules [2], standard tests [3], AI designs [4], cool drone uses [5], "
-    "and big circuit surveys [6] shows we have the basic Lego blocks to make huge battery-free "
-    "IoT things. But, putting it all together is still a huge pain."
+    "Gap 1: Absence of Unified Benchmarking Standards. While EStacker [3] represents an "
+    "important step toward standardized evaluation, the battery-free systems community still "
+    "lacks universally accepted benchmark suites, reference energy traces, and standardized "
+    "performance metrics. Each study employs proprietary hardware configurations, custom "
+    "energy sources, and application-specific workloads, making meaningful cross-study "
+    "comparison extremely difficult. The establishment of community-accepted benchmarks—"
+    "analogous to MLPerf for machine learning or SPEC for general-purpose computing—is "
+    "urgently needed."
 ))
 
 add_body(doc, (
-    "Some good ideas for the future are: (1) Make a big open-source testing world with standard "
-    "energy traces and boards; (2) Look into harvesting many energy types that switch smartly "
-    "based on the weather; (3) Build AI and hardware together to be accurate and save energy "
-    "even when power dies; (4) Make normal power management software so you can just plug and "
-    "play different harvesters; (5) Do long field tests to see how things break in the real "
-    "world; and (6) Make network rules that expect things to lose power, so huge networks don't crash."
+    "Gap 2: Insufficient Multi-Source Energy Harvesting Integration. The reviewed papers "
+    "predominantly address single-source harvesting scenarios (solar in [1], RF in [5]). "
+    "However, real-world deployments frequently encounter multiple ambient energy sources "
+    "with complementary temporal availability patterns. The design of intelligent multi-source "
+    "power management systems that can dynamically arbitrate between heterogeneous energy "
+    "inputs—combining photovoltaic, thermoelectric, piezoelectric, and RF harvesting within "
+    "a unified framework—remains a largely open research problem."
 ))
 
 add_body(doc, (
-    "Also, big companies really want maintenance-free IoT now because of green rules and "
-    "because changing batteries in a million devices is crazy. Because solar, chips, and power "
-    "managers got so good in 2025-2026, it looks like battery-free systems are finally ready "
-    "to leave the lab and become real things you can buy."
+    "Gap 3: Limited Edge AI Adaptation for Intermittent Operation. Although HANNA [4] "
+    "pioneers the concept of harvesting-aware neural architecture search and achieves "
+    "10%–44% accuracy improvement, the broader challenge of adapting edge AI and TinyML "
+    "frameworks for intermittent execution remains substantially underexplored. Critical "
+    "open problems include energy-efficient checkpointing of neural network intermediate "
+    "states, graceful degradation of inference accuracy under energy scarcity, and the "
+    "development of training methodologies that incorporate energy availability as a constraint."
 ))
+
+add_body(doc, (
+    "Gap 4: Inadequate Standardization of Power Management Protocols. The DPM scheme in [2] "
+    "and the analytical models in [1] represent isolated, platform-specific solutions. There "
+    "is no standardized abstraction layer or protocol suite for power management across "
+    "heterogeneous battery-free IoT devices. The development of open, interoperable power "
+    "management standards—analogous to communication protocol stacks—would significantly "
+    "accelerate ecosystem growth and reduce development costs."
+))
+
+add_body(doc, (
+    "Gap 5: Reliability and Long-Term Durability Assessment. While battery-free systems are "
+    "frequently proposed for deployment in harsh industrial and agricultural environments, "
+    "systematic studies of long-term reliability, component degradation, and failure modes "
+    "under sustained exposure to extreme temperatures, humidity, mechanical stress, and "
+    "electromagnetic interference are notably absent. The RF interference from drone motor "
+    "EMI observed in [5]'s aerial tests—where motor proximity effectively blocked the "
+    "bridge-to-gateway communication link—exemplifies this gap."
+))
+
+add_body(doc, (
+    "Gap 6: Scalability of Battery-Free Sensor Networks. The reviewed works primarily focus "
+    "on individual device-level optimization. The system-level challenges of deploying "
+    "large-scale networks of hundreds or thousands of battery-free nodes—including distributed "
+    "energy management, interference mitigation, and data routing under intermittent node "
+    "availability—remain largely unaddressed. Conventional networking protocols assume "
+    "continuous node availability and require fundamental redesign for intermittent operation."
+))
+
 
 # ============================================================
-# VI. CONCLUSION
+# V. CONCLUSION AND CONTRIBUTION
 # ============================================================
-add_section_heading(doc, "VI. Conclusion")
+add_section_heading(doc, "V. Conclusion and Contribution")
+
+add_subsection_heading(doc, "A. Summary of Major Findings")
 
 add_body(doc, (
-    "This review looked at six really important papers that show the best of battery-free "
-    "embedded systems in 2025-2026. From Fernández Landivar's math [1], to cheap wireless "
-    "designs [2], EStacker's testing platform [3], HANNA's AI search [4], drone farming [5], "
-    "and the MWSCAS circuit survey [6], these works show a massive jump from just science "
-    "projects to stuff that is actually ready to use."
+    "This review has critically examined six recent and representative research papers that "
+    "collectively illustrate the current state of advancement in battery-free embedded systems "
+    "during the 2024–2026 period. The reviewed works demonstrate that the field has progressed "
+    "significantly beyond proof-of-concept demonstrations toward deployment-oriented solutions. "
+    "Analytical modeling frameworks [1] now enable pre-fabrication performance prediction, "
+    "while systematic design methodologies [2] translate theoretical insights into actionable "
+    "engineering guidelines with demonstrated operational improvements of up to 90%. "
+    "Standardized evaluation platforms [3] address the critical need for reproducible "
+    "benchmarking, and harvesting-aware neural architecture search [4] opens the emerging "
+    "frontier of Intermittent TinyML. Application-specific deployments [5] validate the "
+    "real-world potential while honestly exposing the remaining engineering challenges, and "
+    "comprehensive surveys [6] provide the taxonomic foundation for systematic progress."
+))
+
+add_subsection_heading(doc, "B. Contributions of This Review")
+
+add_body(doc, (
+    "The principal contributions of this review paper are threefold. First, it provides a "
+    "structured comparative analysis of six representative works across the key dimensions "
+    "of objectives, methodologies, results, strengths, and limitations, enabling readers to "
+    "quickly identify relevant prior art and understand the relationships between different "
+    "research contributions. Second, it classifies and discusses the research methodologies "
+    "adopted across the reviewed studies, identifying four principal methodological categories "
+    "(analytical modeling, experimental prototyping, simulation-based evaluation, and "
+    "systematic survey) and their respective strengths and applicability. Third, it identifies "
+    "six critical research gaps—spanning benchmarking standards, multi-source harvesting, "
+    "edge AI adaptation, power management standardization, long-term reliability, and "
+    "network scalability—that must be addressed to enable the transition from laboratory "
+    "prototypes to mass-deployed commercial systems."
+))
+
+add_subsection_heading(doc, "C. Future Research Directions")
+
+add_body(doc, (
+    "Based on the analysis presented in this review, the following future research directions "
+    "are recommended: (1) Development of community-accepted open-source benchmark suites with "
+    "standardized energy traces, hardware reference designs, and performance metrics for fair "
+    "cross-platform comparison. (2) Investigation of multi-source energy harvesting architectures "
+    "with intelligent source arbitration and adaptive power management algorithms. "
+    "(3) Co-design of neural network architectures and intermittent computing hardware to "
+    "achieve robust and energy-efficient edge AI inference under unreliable power conditions. "
+    "(4) Standardization of power management protocols and abstraction layers to enable "
+    "interoperability across heterogeneous battery-free platforms. (5) Longitudinal field "
+    "studies assessing component degradation, failure modes, and system reliability under "
+    "sustained real-world deployment conditions. (6) Design of intermittent-aware networking "
+    "protocols that accommodate stochastic node availability for scalable battery-free sensor "
+    "network deployments."
 ))
 
 add_body(doc, (
-    "But, we still have big problems, especially with no testing standards, trouble using "
-    "multiple energy things, AI not working well with power loss, no normal power rules, no "
-    "long-term testing, and networks that don't scale. Fixing these holes is super important "
-    "if we want to make IoT systems that really run forever without maintenance. We hope this "
-    "paper helps people working on battery-free stuff, especially computer folks trying to "
-    "add to this fast-moving area."
+    "The convergence of advances in energy harvesting efficiency, ultra-low-power circuit "
+    "design, and edge computing capabilities suggests that battery-free embedded systems are "
+    "approaching a critical threshold of commercial viability. Addressing the research gaps "
+    "identified in this review will be instrumental in realizing the vision of truly "
+    "maintenance-free, sustainable IoT infrastructure capable of operating autonomously "
+    "across diverse and challenging deployment environments."
 ))
 
 # ============================================================
