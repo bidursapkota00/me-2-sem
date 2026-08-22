@@ -226,8 +226,8 @@ add_subsection_heading(doc, "A. Background")
 
 add_body(doc, (
     "The rapid proliferation of Internet of Things (IoT) devices across diverse application "
-    "domains—including precision agriculture, industrial monitoring, environmental sensing, "
-    "and healthcare—has created an unprecedented demand for autonomous, long-lived sensing "
+    "domains. These include precision agriculture, industrial monitoring, environmental sensing, "
+    "and healthcare. This has created an unprecedented demand for autonomous, long-lived sensing "
     "platforms. However, a fundamental bottleneck constraining large-scale IoT deployment is "
     "the reliance on electrochemical batteries. Conventional batteries impose significant "
     "operational costs due to periodic replacement requirements, contribute to environmental "
@@ -240,8 +240,8 @@ add_body(doc, (
     "from sources such as solar radiation, radio-frequency (RF) signals, thermal gradients, "
     "and mechanical vibrations. These systems typically employ energy storage elements such as "
     "supercapacitors or small rechargeable cells that buffer harvested energy for intermittent "
-    "computation and communication. The resulting operational paradigm—known as intermittent "
-    "computing—presents unique challenges, as the system must maintain computational correctness "
+    "computation and communication. The resulting operational paradigmN/Aknown as intermittent "
+    "computingN/Apresents unique challenges, as the system must maintain computational correctness "
     "and data integrity across unpredictable power interruptions [3], [6]."
 ))
 
@@ -252,7 +252,7 @@ add_body(doc, (
     "practical deployment challenges including predictable performance modeling, cost-effective "
     "hardware design, standardized evaluation methodologies, and the integration of machine "
     "learning capabilities on intermittently powered platforms. Concurrently, novel application "
-    "scenarios—such as UAV-powered agricultural sensor networks—have emerged, demonstrating "
+    "scenarios, such as UAV-powered agricultural sensor networks, have emerged, demonstrating "
     "the expanding scope and commercial relevance of battery-free technology [1], [5]."
 ))
 
@@ -268,7 +268,7 @@ add_body(doc, (
     "comparing the performance of different battery-free platforms under equivalent conditions. "
     "Second, the integration of multiple heterogeneous energy harvesting sources within a "
     "unified power management framework remains largely unexplored. Third, the adaptation of "
-    "modern machine learning techniques—particularly deep neural network inference—for "
+    "modern machine learning techniques, particularly deep neural network inference, for "
     "intermittent execution environments is still in its nascent stages. Fourth, the absence "
     "of standardized power management protocols across diverse hardware platforms hinders "
     "interoperability and scalability [2], [4]."
@@ -406,7 +406,7 @@ add_body(doc, (
     "and reproducible performance assessment of battery-less IoT systems [3]. The research "
     "objective was to create a systematic benchmarking framework that enables developers to "
     "understand precisely how energy is consumed across different hardware components and "
-    "software tasks through the concept of \"energy stacks\"—detailed energy consumption "
+    "software tasks through the concept of \"energy stacks\"N/Adetailed energy consumption "
     "profiles decomposed by functional unit and execution phase."
 ))
 
@@ -438,8 +438,8 @@ add_body(doc, (
     "Search (NAS) framework specifically designed for batteryless intermittent devices [4]. "
     "The research objective was to develop an automated method for discovering deep neural "
     "network (DNN) architectures that are optimally suited for execution under intermittent "
-    "power conditions, where conventional NAS approaches—which optimize solely for latency "
-    "and accuracy—produce suboptimal results."
+    "power conditions, where conventional NAS approachesN/Awhich optimize solely for latency "
+    "and accuracyN/Aproduce suboptimal results."
 ))
 
 add_body(doc, (
@@ -455,7 +455,7 @@ add_body(doc, (
 
 add_body(doc, (
     "A key strength of HANNA is that it represents one of the earliest systematic approaches "
-    "to Intermittent TinyML—the intersection of tiny machine learning and intermittent "
+    "to Intermittent TinyMLN/Athe intersection of tiny machine learning and intermittent "
     "computing. The discovered architectures demonstrate fundamentally different structural "
     "properties compared to those optimized for continuously powered platforms, validating "
     "the necessity of harvesting-aware design. However, the framework has been evaluated "
@@ -713,13 +713,13 @@ add_table(doc,
         ["[1]", "Voltage prediction accuracy", "3 scenarios validated", "High correlation", "Measured profiles"],
         ["[2]", "Operational time extension", "9.1%–90.0%", "+9.1% to +90.0%", "Threshold-based DPM"],
         ["[3]", "Evaluation speedup (ST-SP)", "6.3x", "41.7 days → 7.7 days", "Full simulation"],
-        ["[3]", "Throughput timing error", "7.7%", "—", "Cycle-accurate sim."],
+        ["[3]", "Throughput timing error", "7.7%", "N/A", "Cycle-accurate sim."],
         ["[3]", "App. performance gain", "3.3x", "+230%", "Unoptimized config."],
         ["[4]", "Inference accuracy gain", "10%–44%", "+10% to +44%", "SOTA NAS methods"],
         ["[4]", "NAS search cost", "1-shot", "Significant reduction", "Traditional NAS"],
-        ["[5]", "Tag comm. range (BLE)", "10 m", "—", "—"],
-        ["[5]", "RF harvest frequency", "918 MHz", "—", "—"],
-        ["[5]", "Active TX frequency", "2.4 GHz", "—", "—"],
+        ["[5]", "Tag comm. range (BLE)", "10 m", "N/A", "N/A"],
+        ["[5]", "RF harvest frequency", "918 MHz", "N/A", "N/A"],
+        ["[5]", "Active TX frequency", "2.4 GHz", "N/A", "N/A"],
         ["[5]", "Aerial data packets received", "1 (ID only)", "0 temp. packets", "Ground: reliable"],
     ],
     col_widths=[0.7, 2.8, 2.5, 2.5, 2.5]
@@ -728,12 +728,12 @@ add_table(doc,
 add_body(doc, (
     "The DPM scheme proposed in [2] demonstrates an operational time extension ranging from "
     "9.1% to 90.0%, with the magnitude of improvement being inversely correlated with ambient "
-    "energy availability—indicating that the approach is most beneficial in energy-scarce "
+    "energy availability. This indicates that the approach is most beneficial in energy-scarce "
     "environments where battery-free operation is most challenging. The ST-SP optimization "
     "in EStacker [3] achieves a 6.3x reduction in evaluation time while maintaining "
     "7.7% average throughput error. Notably, EStacker's energy stack profiling identified a "
     "performance bottleneck in a case study application, leading to a 3.3x performance "
-    "improvement after optimization—reducing the full design space sweep from 41.7 days to "
+    "improvement after optimizationN/Areducing the full design space sweep from 41.7 days to "
     "7.7 days [3]."
 ))
 
@@ -742,8 +742,8 @@ add_body(doc, (
     "average inference accuracy by 10% to 44% compared to state-of-the-art NAS approaches "
     "that do not account for energy harvesting constraints, while significantly reducing "
     "the neural network search cost through a one-shot differentiable NAS formulation. "
-    "The discovered architectures exhibit fundamentally different structural properties—"
-    "smaller individual layers with more frequent checkpointing boundaries—enabling "
+    "The discovered architectures exhibit fundamentally different structural propertiesN/A"
+    "smaller individual layers with more frequent checkpointing boundaries. This enables "
     "completion of partial inference within shorter energy availability windows."
 ))
 
@@ -762,12 +762,12 @@ add_table(doc,
     "TABLE IV: Technical Specifications of Reviewed Systems",
     ["Ref.", "Harvest Freq.", "TX Freq.", "Storage Type", "Range", "Eval. Scale", "Year"],
     [
-        ["[1]", "Solar (indoor)", "—", "Supercapacitor", "—", "3 scenarios", "2025"],
-        ["[2]", "Ambient", "Sub-GHz/ISM", "Capacitor", "—", "Multiple configs.", "2025"],
-        ["[3]", "Simulated", "—", "Simulated", "—", "2 case studies", "2026"],
-        ["[4]", "RF", "—", "Capacitor + NVM", "—", "Multiple datasets", "2024"],
+        ["[1]", "Solar (indoor)", "N/A", "Supercapacitor", "N/A", "3 scenarios", "2025"],
+        ["[2]", "Ambient", "Sub-GHz/ISM", "Capacitor", "N/A", "Multiple configs.", "2025"],
+        ["[3]", "Simulated", "N/A", "Simulated", "N/A", "2 case studies", "2026"],
+        ["[4]", "RF", "N/A", "Capacitor + NVM", "N/A", "Multiple datasets", "2024"],
         ["[5]", "918 MHz", "2.4 GHz BLE", "On-tag buffer", "10 m", "3 flight trials", "2025"],
-        ["[6]", "Multiple", "Multiple", "Supercap./thin-film", "—", "49 references", "2025"],
+        ["[6]", "Multiple", "Multiple", "Supercap./thin-film", "N/A", "49 references", "2025"],
     ],
     col_widths=[0.7, 2.0, 2.0, 2.2, 1.2, 2.2, 1.0]
 )
@@ -780,8 +780,8 @@ add_body(doc, (
     "development of analytical models [1], systematic design methodologies [2], and "
     "standardized evaluation platforms [3] reflects the field's maturation from ad hoc "
     "experimentation to rigorous engineering practice. Second, the emergence of Intermittent "
-    "TinyML [4] represents a convergence of two previously distinct research communities—"
-    "embedded machine learning and intermittent computing—creating new challenges and "
+    "TinyML [4] represents a convergence of two previously distinct research communitiesN/A"
+    "embedded machine learning and intermittent computing, which is creating new challenges and "
     "opportunities at their intersection."
 ))
 
@@ -813,8 +813,8 @@ add_body(doc, (
     "lacks universally accepted benchmark suites, reference energy traces, and standardized "
     "performance metrics. Each study employs proprietary hardware configurations, custom "
     "energy sources, and application-specific workloads, making meaningful cross-study "
-    "comparison extremely difficult. The establishment of community-accepted benchmarks—"
-    "analogous to MLPerf for machine learning or SPEC for general-purpose computing—is "
+    "comparison extremely difficult. The establishment of community-accepted benchmarksN/A"
+    "analogous to MLPerf for machine learning or SPEC for general-purpose computing, is "
     "urgently needed."
 ))
 
@@ -824,8 +824,8 @@ add_body(doc, (
     "However, real-world deployments frequently encounter multiple ambient energy sources "
     "with complementary temporal availability patterns. The design of intelligent multi-source "
     "power management systems that can dynamically arbitrate between heterogeneous energy "
-    "inputs—combining photovoltaic, thermoelectric, piezoelectric, and RF harvesting within "
-    "a unified framework—remains a largely open research problem."
+    "inputs. This involves combining photovoltaic, thermoelectric, piezoelectric, and RF harvesting within "
+    "a unified framework, which remains a largely open research problem."
 ))
 
 add_body(doc, (
@@ -843,7 +843,7 @@ add_body(doc, (
     "and the analytical models in [1] represent isolated, platform-specific solutions. There "
     "is no standardized abstraction layer or protocol suite for power management across "
     "heterogeneous battery-free IoT devices. The development of open, interoperable power "
-    "management standards—analogous to communication protocol stacks—would significantly "
+    "management standards, analogous to communication protocol stacks, would significantly "
     "accelerate ecosystem growth and reduce development costs."
 ))
 
@@ -853,16 +853,16 @@ add_body(doc, (
     "systematic studies of long-term reliability, component degradation, and failure modes "
     "under sustained exposure to extreme temperatures, humidity, mechanical stress, and "
     "electromagnetic interference are notably absent. The RF interference from drone motor "
-    "EMI observed in [5]'s aerial tests—where motor proximity effectively blocked the "
-    "bridge-to-gateway communication link—exemplifies this gap."
+    "EMI observed in [5]'s aerial tests, where motor proximity effectively blocked the "
+    "bridge-to-gateway communication link, exemplifies this gap."
 ))
 
 add_body(doc, (
     "Gap 6: Scalability of Battery-Free Sensor Networks. The reviewed works primarily focus "
     "on individual device-level optimization. The system-level challenges of deploying "
-    "large-scale networks of hundreds or thousands of battery-free nodes—including distributed "
+    "large-scale networks of hundreds or thousands of battery-free nodes. These include distributed "
     "energy management, interference mitigation, and data routing under intermittent node "
-    "availability—remain largely unaddressed. Conventional networking protocols assume "
+    "availabilityN/Aremain largely unaddressed. Conventional networking protocols assume "
     "continuous node availability and require fundamental redesign for intermittent operation."
 ))
 
@@ -900,9 +900,9 @@ add_body(doc, (
     "adopted across the reviewed studies, identifying four principal methodological categories "
     "(analytical modeling, experimental prototyping, simulation-based evaluation, and "
     "systematic survey) and their respective strengths and applicability. Third, it identifies "
-    "six critical research gaps—spanning benchmarking standards, multi-source harvesting, "
+    "six critical research gaps. These gaps span benchmarking standards, multi-source harvesting, "
     "edge AI adaptation, power management standardization, long-term reliability, and "
-    "network scalability—that must be addressed to enable the transition from laboratory "
+    "network scalability, which must be addressed to enable the transition from laboratory "
     "prototypes to mass-deployed commercial systems."
 ))
 
