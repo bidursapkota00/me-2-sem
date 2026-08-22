@@ -271,46 +271,36 @@ add_body(doc, (
 ))
 
 add_body(doc, (
-    "These challenges collectively impede the transition of battery-free systems from "
-    "laboratory prototypes to commercially viable, mass-deployed IoT infrastructure. A "
-    "comprehensive review that systematically analyzes recent contributions, identifies "
-    "research gaps, and delineates future directions is therefore essential for guiding "
-    "the continued development of this rapidly evolving field."
+    "These problem make it hard to use battery-free system in real world. "
+    "So we need to read new paper and find what is missing. This help us know "
+    "what to do next."
 ))
 
 # --- C. Research Objectives ---
 add_subsection_heading(doc, "C. Research Objectives")
 
 add_body(doc, (
-    "The primary objective of this review paper is to provide a critical and systematic "
-    "examination of recent advancements in battery-free embedded systems through the analysis "
-    "of six representative journal and conference papers published between 2024 and 2026. "
-    "The specific objectives are as follows:"
+    "This paper want to look at 6 new research from 2024 to 2026. We want to do this:"
 ), first_line_indent=False)
 
 add_body(doc, (
-    "(1) To critically review and summarize the objectives, methodologies, key contributions, "
-    "and results of each selected paper."
+    "(1) Read and summarize what each paper do and find."
 ), first_line_indent=False)
 
 add_body(doc, (
-    "(2) To perform a comparative analysis of the reviewed works with respect to their "
-    "research focus areas, technical approaches, performance metrics, and reported outcomes."
+    "(2) Compare how they do research and their result."
 ), first_line_indent=False)
 
 add_body(doc, (
-    "(3) To identify and discuss the research methodologies, algorithms, frameworks, "
-    "architectures, and evaluation techniques adopted across the reviewed studies."
+    "(3) Find out what math and tool they use."
 ), first_line_indent=False)
 
 add_body(doc, (
-    "(4) To identify critical research gaps and open challenges that remain unaddressed "
-    "in the current literature."
+    "(4) See what big problem is still not fixed."
 ), first_line_indent=False)
 
 add_body(doc, (
-    "(5) To propose future research directions that can advance the state of the art "
-    "toward reliable, scalable, and maintenance-free battery-free IoT systems."
+    "(5) Suggest what people should research next."
 ), first_line_indent=False)
 
 # ============================================================
@@ -574,11 +564,8 @@ add_table(doc,
 add_section_heading(doc, "III. Methodology Adopted by the Reviewed Works")
 
 add_body(doc, (
-    "The research methodologies adopted across the six reviewed papers can be classified "
-    "into four principal categories: analytical modeling, experimental prototyping, "
-    "simulation-based evaluation, and systematic literature survey. This section provides "
-    "a summary and classification of these methodological approaches, along with a discussion "
-    "of the algorithms, frameworks, architectures, and evaluation techniques employed."
+    "The 6 paper use 4 main way to do research: math model, real prototype, "
+    "computer simulation, and survey. Here we look at how they do it."
 ), first_line_indent=False)
 
 add_subsection_heading(doc, "A. Analytical and Mathematical Modeling")
