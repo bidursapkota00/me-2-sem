@@ -137,6 +137,8 @@ def add_table(doc, caption, headers, data, col_widths=None):
 
     table = doc.add_table(rows=1 + len(data), cols=len(headers))
     table.style = 'Table Grid'
+    table.autofit = False
+    table.allow_autofit = False
 
     for i, header in enumerate(headers):
         cell = table.rows[0].cells[i]
@@ -157,6 +159,8 @@ def add_table(doc, caption, headers, data, col_widths=None):
                     run.font.name = 'Times New Roman'
 
     if col_widths:
+        for i, w in enumerate(col_widths):
+            table.columns[i].width = Cm(w)
         for row in table.rows:
             for i, w in enumerate(col_widths):
                 row.cells[i].width = Cm(w)
@@ -560,7 +564,7 @@ add_table(doc,
          "Broad coverage and accessible organization",
          "Limited software and application-level coverage"],
     ],
-    col_widths=[0.8, 2.5, 2.8, 2.8, 2.5, 2.5]
+    col_widths=[0.7, 1.4, 1.6, 1.8, 1.5, 1.5]
 )
 
 
@@ -630,7 +634,7 @@ add_table(doc,
          "Taxonomic classification, systematic review",
          "Coverage analysis, gap identification"],
     ],
-    col_widths=[2.5, 1.5, 5.0, 3.5]
+    col_widths=[1.8, 1.2, 3.2, 2.2]
 )
 
 # ============================================================
@@ -684,7 +688,7 @@ add_table(doc,
         ["[5]", "Active TX frequency", "2.4 GHz", "N/A", "N/A"],
         ["[5]", "Aerial data packets received", "1 (ID only)", "0 temp. packets", "Ground: reliable"],
     ],
-    col_widths=[0.7, 2.8, 2.5, 2.5, 2.5]
+    col_widths=[0.7, 2.3, 1.8, 1.8, 1.9]
 )
 
 add_body(doc, (
@@ -718,7 +722,7 @@ add_table(doc,
         ["[5]", "918 MHz", "2.4 GHz BLE", "On-tag buffer", "10 m", "3 flight trials", "2025"],
         ["[6]", "Multiple", "Multiple", "Supercap./thin-film", "N/A", "49 references", "2025"],
     ],
-    col_widths=[0.7, 2.0, 2.0, 2.2, 1.2, 2.2, 1.0]
+    col_widths=[0.7, 1.1, 1.4, 1.6, 1.1, 1.6, 1.0]
 )
 
 add_subsection_heading(doc, "C. Research Trends")
