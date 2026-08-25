@@ -1,3 +1,5 @@
+### 2082
+
 **1. a)** Design an appropriate Entity-Relationship (ER) model for Pokhara University which wants to design a database for its Examination Section to manage students, courses, exams, and results. Then, convert the ER model into a relational schema with necessary DDL, SQL Queries and Keys. **(8)**
 
 **b)** Explain advanced SQL subqueries and aggregations. Provide an SQL snippet that uses a Window Function (like RANK() or OVER()) to solve a real-world data analytical problem. **(7)**
@@ -33,6 +35,8 @@ c) Sharding
 
 ---
 
+### 2081
+
 **1. a)** What are the key differences between structured, semi-structured, and unstructured data? Explain in detail why graph databases are better suited for social network applications over relational databases? **(8)**
 
 **b)** Differentiate between a Cartesian Product and a Join in relational databases. Additionally, explain how a foreign key can be used to enforce referential integrity constraints, including appropriate SQL syntax. **(7)**
@@ -63,6 +67,8 @@ b) Vector Database
 c) Edge Database
 
 ---
+
+### 2080
 
 **1. a)** Design ER model for conference management system that manages authors, papers, reviewers, sessions, and scheduling. Also write SQL DDL to convert this ER model to equivalent relational schemas. **(8)**
 

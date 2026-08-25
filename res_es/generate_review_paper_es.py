@@ -174,7 +174,7 @@ def add_table(doc, caption, headers, data, col_widths=None):
 # ============================================================
 
 # --- TITLE ---
-add_title(doc, "Recent Improvements in Battery-Free\nEmbedded Systems:\nA Comprehensive Review")
+add_title(doc, "Recent Improvements in Battery-Free\nEmbedded Systems:\nA Review")
 
 # --- AUTHORS ---
 add_authors(doc, "Bidur Sapkota")
@@ -284,23 +284,23 @@ add_body(doc, (
 ), first_line_indent=False)
 
 add_body(doc, (
-    "(1) Read and summarize what each paper do and find."
+    "(1) To read and summarize what each paper do and find."
 ), first_line_indent=False)
 
 add_body(doc, (
-    "(2) Compare how they do research and their result."
+    "(2) To compare how they do research and their result."
 ), first_line_indent=False)
 
 add_body(doc, (
-    "(3) Find out what math and tool they use."
+    "(3) To find out what math and tool they use."
 ), first_line_indent=False)
 
 add_body(doc, (
-    "(4) See what big problem is still not fixed."
+    "(4) To see what big problem is still not fixed."
 ), first_line_indent=False)
 
 add_body(doc, (
-    "(5) Suggest what people should research next."
+    "(5) To suggest what people should research next."
 ), first_line_indent=False)
 
 # ============================================================
@@ -309,45 +309,29 @@ add_body(doc, (
 add_section_heading(doc, "II. Related Works")
 
 add_body(doc, (
-    "This section presents a critical review of six recent research papers that collectively "
-    "represent the current state of the art in battery-free embedded systems. Each paper is "
-    "examined with respect to its research objectives, methodology, key findings, strengths, "
-    "and limitations."
+    "In this part we look at 6 new paper about battery-free system. We talk about "
+    "what they try to do, how they do it, and what they find good or bad."
 ), first_line_indent=False)
 
 # --- Paper 1 ---
 add_subsection_heading(doc, "A. Analytical Modeling of Batteryless IoT Sensors Powered by Ambient Energy Harvesting [1]")
 
 add_body(doc, (
-    "Fernández Landivar et al. (arXiv, July 2025) proposed a comprehensive analytical "
-    "framework for modeling the energy dynamics of batteryless IoT sensor nodes [1]. The "
-    "objective of this work was to develop a generalized mathematical model that captures "
-    "the complete energy flow within a batteryless system, from ambient energy harvesting "
-    "through power conditioning to computational load execution. The model explicitly "
-    "incorporates the behavior of the Energy Harvesting Unit (EHU), comprising the energy "
-    "transducer, power management integrated circuit (PMIC), and supercapacitor storage, "
-    "as well as the Circuit Load (CL) representing the sensor's computational and "
-    "communication subsystems."
+    "First paper is by Fernández Landivar in 2025 [1]. They make math model for "
+    "battery-free sensor. They want to show how energy move from harvest to storage "
+    "to compute. Their model use math for supercapacitor and power management chip."
 ))
 
 add_body(doc, (
-    "The methodology employed a first-principles analytical approach, deriving closed-form "
-    "expressions for the voltage dynamics of the supercapacitor as a function of harvested "
-    "power, PMIC efficiency characteristics, and load current profiles. The model was "
-    "validated experimentally using a prototype batteryless IoT node operating under varying "
-    "indoor illumination conditions. The results demonstrated strong agreement between "
-    "predicted and measured supercapacitor voltage trajectories, confirming the model's "
-    "accuracy across diverse environmental conditions."
+    "They use physics to write equation for voltage. Then they test model with real "
+    "sensor in a room with light. The math match the real test very good. So we know "
+    "their math is correct for different light."
 ))
 
 add_body(doc, (
-    "A key strength of this work lies in its generalizability: the mathematical framework "
-    "is not tied to any specific hardware platform and can be parameterized for different "
-    "harvesting modalities and load characteristics. This enables designers to perform "
-    "pre-fabrication performance estimation and optimize power management unit configurations. "
-    "However, a notable limitation is that the model assumes relatively stable ambient energy "
-    "conditions and does not explicitly address highly stochastic or rapidly fluctuating "
-    "energy sources, which are common in outdoor deployment scenarios."
+    "Good thing about this paper is model work for many hardware. People can use it "
+    "to guess performance before building. But bad thing is model assume energy is "
+    "stable. It don't work well if energy change very fast, like outside."
 ))
 
 # --- Paper 2 ---
@@ -417,72 +401,47 @@ add_body(doc, (
 ))
 
 # --- Paper 4 ---
-add_subsection_heading(doc, "D. HANNA: Harvesting-Aware Neural Network Architecture Search for Batteryless Intermittent Devices [4]")
+add_subsection_heading(doc, "D. HANNA: AI Search for No Battery [4]")
 
 add_body(doc, (
-    "Sahu, Deep, and Duwe introduced HANNA at IEEE IPCCC 2024, a novel Neural Architecture "
-    "Search (NAS) framework specifically designed for batteryless intermittent devices [4]. "
-    "The research objective was to develop an automated method for discovering deep neural "
-    "network (DNN) architectures that are optimally suited for execution under intermittent "
-    "power conditions, where conventional NAS approachesN/Awhich optimize solely for latency "
-    "and accuracyN/Aproduce suboptimal results."
+    "Fourth paper by Sahu in 2024 [4] is about HANNA. It find best neural "
+    "network for battery-free device. Normal AI search only care about speed "
+    "and accuracy. But intermittent device power turn off often. So normal AI "
+    "don\'t work well."
 ))
 
 add_body(doc, (
-    "HANNA's methodology integrates energy harvesting characteristics directly into the "
-    "architecture search process. Unlike traditional NAS, which assumes continuous power "
-    "availability, HANNA evaluates candidate architectures based on their ability to complete "
-    "inference tasks within a single energy harvesting cycle. The search algorithm navigates "
-    "a multi-objective design space that balances inference accuracy, computational cost, "
-    "memory footprint, and energy harvesting compatibility. The framework accounts for the "
-    "overhead of checkpoint-based execution models, where the system must periodically save "
-    "intermediate computation state to non-volatile memory to survive power interruptions."
+    "They use simulation to check how AI run when power is cut. HANNA try to "
+    "find AI that is small and can save state easy. Result show HANNA make AI "
+    "10% to 44% more accurate compare to old method that ignore power cut."
 ))
 
 add_body(doc, (
-    "A key strength of HANNA is that it represents one of the earliest systematic approaches "
-    "to Intermittent TinyMLN/Athe intersection of tiny machine learning and intermittent "
-    "computing. The discovered architectures demonstrate fundamentally different structural "
-    "properties compared to those optimized for continuously powered platforms, validating "
-    "the necessity of harvesting-aware design. However, the framework has been evaluated "
-    "on a limited set of inference tasks and energy harvesting profiles, and its scalability "
-    "to more complex models (e.g., transformer architectures) and diverse harvesting "
-    "modalities remains to be demonstrated."
+    "HANNA is very strong because it mix tiny AI with intermittent compute. "
+    "The AI it find look different. It have small layer to finish job fast. "
+    "But it only test on some dataset. We need check if it work good on many hardware."
 ))
 
 # --- Paper 5 ---
-add_subsection_heading(doc, "E. Autonomous Agricultural Monitoring with Aerial Drones and RF Energy-Harvesting Sensor Tags [5]")
+add_subsection_heading(doc, "E. Farm Sensor with Drone [5]")
 
 add_body(doc, (
-    "Kudyba and Sun (arXiv, February 2025) investigated the application of battery-free "
-    "RF energy-harvesting sensor tags for autonomous precision agriculture monitoring, "
-    "powered wirelessly by unmanned aerial vehicles (UAVs) [5]. The objective was to "
-    "demonstrate a practical, cost-effective, and environmentally sustainable alternative "
-    "to conventional battery-powered agricultural sensor networks by eliminating the need "
-    "for ground-based power infrastructure and battery replacement in field-deployed sensors."
+    "Fifth paper by Kudyba and Sun in 2025 [5] use drone and battery-free sensor "
+    "for farm. Drone fly over field and send radio energy to sensor. Sensor use "
+    "energy to wake up and send temp data back to drone. This save money because "
+    "sensor no need battery."
 ))
 
 add_body(doc, (
-    "The system architecture comprises UAVs equipped with RF transmitters that provide "
-    "both wireless power and communication capabilities to passive sensor tags distributed "
-    "across agricultural fields. The sensor tags harvest RF energy from the UAV's downlink "
-    "signal, use the harvested energy to perform environmental measurements (temperature, "
-    "humidity, soil moisture), and backscatter the collected data to the UAV. The methodology "
-    "included both ground-based controlled experiments and aerial flight tests conducted "
-    "at the AERPAW (Aerial Experimentation and Research Platform for Advanced Wireless) "
-    "testbed facility."
+    "They build real payload for drone and put sensor in field. Ground test "
+    "work very good and send data from 10 meter. But drone test fail. Drone motor "
+    "make too much radio noise. So drone cannot receive temp data from sensor."
 ))
 
 add_body(doc, (
-    "Ground-based experiments demonstrated reliable sensor activation and data collection "
-    "at practical distances, validating the fundamental feasibility of the approach. However, "
-    "aerial flight tests revealed significant challenges related to RF interference, antenna "
-    "orientation variability, and reduced communication reliability in dynamic flight "
-    "conditions. The authors propose antenna consolidation and improved RF front-end design "
-    "as potential mitigation strategies. The strength of this work lies in its demonstration "
-    "of a complete, end-to-end battery-free sensing system for a high-impact application "
-    "domain. The primary limitation is the current sensitivity to environmental RF conditions "
-    "and the limited operational range of passive backscatter communication."
+    "Good thing is they show full real world system. It show big difference "
+    "between lab test and field test. Bad thing is system is very sensitive to "
+    "radio noise. Drone noise block signal completely. So we need better way to stop noise."
 ))
 
 # --- Paper 6 ---
@@ -538,21 +497,21 @@ add_table(doc,
          "6.3× evaluation speedup with 7.7% timing error",
          "Deterministic energy-equivalent evaluation",
          "Simulation-only; lacks hardware-in-the-loop"],
-        ["[4]", "Energy-harvesting-aware neural architecture search",
-         "Multi-objective NAS with intermittent execution modeling",
-         "Architectures completing inference in one harvest cycle",
-         "Pioneer in Intermittent TinyML",
-         "Limited task and harvesting profile diversity"],
-        ["[5]", "UAV-powered battery-free agricultural monitoring",
-         "RF energy harvesting with backscatter communication",
-         "Successful ground tests; aerial tests revealed RF challenges",
-         "Complete end-to-end system demonstration",
-         "Sensitive to RF interference and limited range"],
-        ["[6]", "Survey of batteryless IoT circuit and system design",
-         "Systematic literature survey and taxonomy",
-         "Comprehensive taxonomy of intermittent computing approaches",
-         "Broad coverage and accessible organization",
-         "Limited software and application-level coverage"],
+        ["[4]", "Find best AI for no battery",
+         "AI search with power cut",
+         "AI finish in one cycle",
+         "First tiny ML for this",
+         "Not tested on many thing"],
+        ["[5]", "Farm sensor with drone",
+         "Radio harvest test",
+         "Ground work but drone fail",
+         "Real world test",
+         "Drone noise kill signal"],
+        ["[6]", "Survey of circuit design",
+         "Read many paper",
+         "Good group of old work",
+         "Easy to read",
+         "No software talk"],
     ],
     col_widths=[0.7, 1.4, 1.6, 1.8, 1.5, 1.5]
 )
@@ -568,7 +527,7 @@ add_body(doc, (
     "computer simulation, and survey. Here we look at how they do it."
 ), first_line_indent=False)
 
-add_subsection_heading(doc, "A. Analytical and Mathematical Modeling")
+add_subsection_heading(doc, "A. Math Model")
 
 add_body(doc, (
     "Paper [1] and [2] use math model. Paper [1] write math equation for "
@@ -577,7 +536,7 @@ add_body(doc, (
     "help test design before make real hardware."
 ))
 
-add_subsection_heading(doc, "B. Experimental Prototyping and Field Testing")
+add_subsection_heading(doc, "B. Real Test")
 
 add_body(doc, (
     "Paper [1], [2], and [5] make real hardware to test. Paper [1] test "
@@ -586,7 +545,7 @@ add_body(doc, (
     "is very important to see if math model is correct in real world."
 ))
 
-add_subsection_heading(doc, "C. Simulation-Based Evaluation and Automated Search")
+add_subsection_heading(doc, "C. Computer Test")
 
 add_body(doc, (
     "Paper [3] and [4] use computer simulation. EStacker [3] simulate time "
@@ -595,7 +554,7 @@ add_body(doc, (
     "balance accuracy and energy cost."
 ))
 
-add_subsection_heading(doc, "D. Systematic Literature Survey")
+add_subsection_heading(doc, "D. Reading Old Papers")
 
 add_body(doc, (
     "Paper [6] is survey paper. It read many old paper and put them in groups. "
@@ -605,21 +564,21 @@ add_body(doc, (
 
 # --- Methodology Comparison Table ---
 add_table(doc,
-    "TABLE II: Classification of Research Methodologies",
-    ["Methodology", "Papers", "Key Techniques", "Evaluation Approach"],
+    "TABLE II: How They Do Research",
+    ["Method", "Papers", "Key Idea", "How They Check"],
     [
-        ["Analytical Modeling", "[1], [2]",
-         "Differential equations, energy balance models, closed-form solutions",
-         "Comparison with experimental measurements"],
-        ["Experimental Prototyping", "[1], [2], [5]",
-         "Hardware prototyping, field deployment, controlled experiments",
-         "Real-world measurement and statistical analysis"],
-        ["Simulation-Based", "[3], [4]",
-         "Cycle-accurate simulation, state-space pruning, multi-objective NAS",
-         "Simulation accuracy metrics, speedup benchmarks"],
-        ["Literature Survey", "[6]",
-         "Taxonomic classification, systematic review",
-         "Coverage analysis, gap identification"],
+        ["Math Model", "[1], [2]",
+         "Math equations",
+         "Compare with lab test"],
+        ["Real Prototype", "[1], [2], [5]",
+         "Make real hardware",
+         "Measure in real world"],
+        ["Simulation", "[3], [4]",
+         "Computer test",
+         "Check speed and error"],
+        ["Survey", "[6]",
+         "Group old paper",
+         "Find what is missing"],
     ],
     col_widths=[1.8, 1.2, 3.2, 2.2]
 )
@@ -630,12 +589,10 @@ add_table(doc,
 add_section_heading(doc, "IV. Results and Discussion")
 
 add_body(doc, (
-    "This section presents a comparative analysis of the reviewed studies, discusses key "
-    "findings and performance metrics, examines emerging research trends, and identifies "
-    "critical research gaps that remain unaddressed in the current literature."
+    "Here we compare the papers. We look at result, numbers, trends, and problems that people still need to fix."
 ), first_line_indent=False)
 
-add_subsection_heading(doc, "A. Comparative Analysis of Reviewed Studies")
+add_subsection_heading(doc, "A. Compare Papers")
 
 add_body(doc, (
     "The 6 paper show 3 main research area. Paper [1] and [2] do math and "
