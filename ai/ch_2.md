@@ -2,370 +2,388 @@
 
 # 2.1 First-Order Logic (FOL) and Reasoning
 
-> **Consider a scenario: Ram was searching a job and attempted two interviews. In attempting the interview, he found the two statements written in the two different companies. In company A, it was written "If you are qualified, you will get the job." and in company B, it was written "If you did not get the job, you were not qualified." Does both statements are saying the same thing? Answer it using a truth-table approach. [7 marks] (2025 Spring - PU)**
+> **What is Knowledge? How can we represent it? Discuss about the Properties of a Good Knowledge Representation System. (7) (Fall 2025)**
+>
+> **What are the advantages of First-Order Logic over Propositional Logic? Suppose a KB contains the following premises: A ∨ B, A ⟹ C and ¬B. Now, prove C using resolution method. (7) (Spring 2025)**
+>
+> **Does "If you are qualified, you will get the job" and "If you did not get the job, you were not qualified" say the same thing? Answer using a truth-table approach. (7) (Internal 2025)**
 
-**Propositional logic** deals with simple declarative propositions that are either true or false, combined using logical connectives (¬, ∧, ∨, →, ↔). It cannot express relationships between objects, quantify over objects, or represent general statements about categories.
+## Knowledge and Knowledge Representation
 
-**First-Order Logic (FOL)** extends propositional logic by introducing objects, predicates, functions, and quantifiers, allowing much richer knowledge representation.
+**Knowledge** is the awareness or understanding of facts, concepts, relationships, and procedures acquired through experience, observation, or learning. In AI, knowledge refers to information that an agent uses to reason and make decisions.
 
-**Syntax of FOL:**
+**Knowledge Representation (KR)** is the method by which knowledge about the real world is encoded into a form that a computer system can use for reasoning and problem-solving. The goal is to enable an intelligent agent to store, retrieve, and manipulate knowledge to derive new conclusions.
 
-1. **Constants:** Refer to specific objects in the domain (e.g., John, 5, BlockA).
-2. **Variables:** Stand for arbitrary objects (e.g., x, y, z).
-3. **Predicates:** Represent properties of objects or relations between objects (e.g., Brother(x, y), King(John)).
-4. **Functions:** Map objects to objects (e.g., Father(John) returns an object).
-5. **Connectives:** Same as propositional logic (¬, ∧, ∨, →, ↔).
-6. **Quantifiers:**
-   - **Universal quantifier (∀):** "For all." ∀x P(x) means P holds for every object x in the domain.
-   - **Existential quantifier (∃):** "There exists." ∃x P(x) means P holds for at least one object x.
+**Properties of a Good Knowledge Representation System:**
 
-**Semantics of FOL:**
+1. **Representational Adequacy:** The ability to represent all kinds of knowledge required in the domain — facts, rules, relationships, and constraints.
+2. **Inferential Adequacy:** The ability to manipulate representational structures to derive new knowledge from existing knowledge through logical inference.
+3. **Inferential Efficiency:** The ability to incorporate additional mechanisms (heuristics, control strategies) to direct the inference process and derive conclusions in a reasonable time.
+4. **Acquisitional Efficiency:** The ability to acquire new knowledge easily, either from human experts, sensors, or through automated learning, without restructuring the entire system.
 
-A sentence in FOL is interpreted with respect to a **model** that specifies the domain of objects, the mapping of constants to objects, the extension of each predicate (the set of tuples for which it is true), and the mapping of each function. A sentence is true in a model if, under the given interpretation, the sentence holds.
+## Propositional Logic (Recap)
 
-**Important equivalences:**
+Propositional logic deals with propositions (statements that are either true or false) and logical connectives. Each proposition is represented by a symbol (P, Q, R, ...).
 
-1. ∀x P(x) ≡ ¬∃x ¬P(x) (universal can be expressed using existential and negation).
-2. ∃x P(x) ≡ ¬∀x ¬P(x) (existential can be expressed using universal and negation).
-3. ∀x ∀y is the same as ∀y ∀x (order of same-type quantifiers can be swapped).
-4. ∃x ∃y is the same as ∃y ∃x.
-5. ∃x ∀y is NOT the same as ∀y ∃x (order of different quantifiers matters).
+**Logical Connectives:** ¬ (NOT), ∧ (AND), ∨ (OR), → (implication), ↔ (biconditional).
 
-**Inference in FOL:**
+**Truth-table approach — Are the two statements equivalent?**
 
-**Unification:** The process of finding a substitution (a mapping of variables to terms) that makes two logical expressions identical. For example, Knows(John, x) and Knows(John, Jane) unify with substitution {x/Jane}. Unification is the key mechanism that enables inference rules to be applied in FOL.
+Company A: "If you are qualified, you will get the job" → P → Q
+Company B: "If you did not get the job, you were not qualified" → ¬Q → ¬P
 
-**Generalized Modus Ponens:** If we know p₁', p₂', ..., pₙ' and a rule (p₁ ∧ p₂ ∧ ... ∧ pₙ) → q, and there exists a substitution θ such that pᵢ'θ = pᵢθ for all i, then we can infer qθ. This "lifts" the propositional Modus Ponens to work with variables.
+The second statement is the **contrapositive** of the first. By the law of contraposition: P → Q ≡ ¬Q → ¬P.
 
-**Forward Chaining:** Starting from known facts in the knowledge base, the algorithm repeatedly applies inference rules to derive new facts until the query is answered or no new facts can be derived. It is data-driven and useful when the system needs to derive all consequences of new data.
+| P | Q | P → Q | ¬Q | ¬P | ¬Q → ¬P |
+|---|---|-------|----|----|---------|
+| T | T |   T   |  F |  F |    T    |
+| T | F |   F   |  T |  F |    F    |
+| F | T |   T   |  F |  T |    T    |
+| F | F |   T   |  T |  T |    T    |
 
-**Backward Chaining:** Starting from the query (the goal), the algorithm works backward to find facts and rules that support the goal. If the goal matches a known fact, it succeeds. If the goal matches the head of a rule, the algorithm recursively tries to prove each premise of the rule. It is goal-driven and avoids deriving irrelevant facts.
+Since P → Q and ¬Q → ¬P have identical truth values in every row, **both statements are logically equivalent**.
 
-**Resolution:** A complete inference procedure for FOL. The knowledge base and the negation of the query are converted to Conjunctive Normal Form (CNF), a conjunction of clauses where each clause is a disjunction of literals. The resolution rule states: from (A ∨ B) and (¬B ∨ C), infer (A ∨ C). If the empty clause is derived, the original query is proved by contradiction (refutation). Conversion to CNF involves eliminating implications, moving negations inward, standardizing variables, Skolemization (eliminating existential quantifiers by replacing them with Skolem functions), dropping universal quantifiers, and distributing disjunctions over conjunctions.
+**Limitations of Propositional Logic:** It cannot represent objects, properties, or relations between objects. It lacks variables and quantifiers, so every individual fact needs a separate proposition. For example, to say "All humans are mortal," propositional logic requires a separate statement for every human, making it impractical for complex domains.
 
-**Truth Table for the Exam Question:**
+## First-Order Logic (FOL)
 
-Let P = "You are qualified" and Q = "You get the job."
+First-Order Logic (also called Predicate Logic) extends propositional logic by introducing **objects**, **predicates** (properties and relations), **functions**, and **quantifiers**. It is far more expressive and can compactly represent general knowledge.
 
-Company A says: P → Q (If qualified, then get job).
-Company B says: ¬Q → ¬P (If not get job, then not qualified).
+**Components of FOL:**
 
-| P | Q | P → Q | ¬Q → ¬P |
-|---|---|-------|---------|
-| T | T |   T   |    T    |
-| T | F |   F   |    F    |
-| F | T |   T   |    T    |
-| F | F |   T   |    T    |
+- **Constants:** Refer to specific objects (e.g., John, 5, Nepal).
+- **Variables:** Stand for any object in the domain (e.g., x, y).
+- **Predicates:** Represent properties or relations (e.g., Human(x), Brother(x, y)).
+- **Functions:** Map objects to objects (e.g., Father(x) returns the father of x).
+- **Connectives:** Same as propositional logic — ¬, ∧, ∨, →, ↔.
+- **Quantifiers:**
+  - **Universal Quantifier (∀):** "For all" — ∀x Human(x) → Mortal(x) means "All humans are mortal."
+  - **Existential Quantifier (∃):** "There exists" — ∃x Human(x) ∧ Smart(x) means "There exists a human who is smart."
 
-Since the truth values of P → Q and ¬Q → ¬P are identical in every row, both statements are logically equivalent. The statement ¬Q → ¬P is the **contrapositive** of P → Q, and a conditional statement is always logically equivalent to its contrapositive.
+**Advantages of FOL over Propositional Logic:**
+
+- Can represent relationships between objects, not just isolated facts.
+- Uses variables and quantifiers to write general rules compactly.
+- Supports functions for expressing complex relationships.
+- More natural for representing real-world knowledge.
+
+## Inference in FOL
+
+**Key Inference Rules:**
+
+- **Modus Ponens:** From P and P → Q, infer Q.
+- **Universal Instantiation:** From ∀x P(x), infer P(c) for any constant c.
+- **Existential Instantiation:** From ∃x P(x), infer P(k) for a new constant k (Skolem constant).
+- **Unification:** The process of finding a substitution that makes two logical expressions identical. For example, unifying Knows(John, x) with Knows(John, Jane) gives {x/Jane}.
+
+**Forward Chaining:** Starts from known facts, applies inference rules to derive new facts until the query is answered or no new facts can be derived. Data-driven approach.
+
+**Backward Chaining:** Starts from the query (goal), works backward to find supporting facts and rules. Goal-driven approach. Used in Prolog.
+
+**Resolution:** A single inference rule that is complete for FOL. It works by proof by contradiction (refutation). All sentences are converted to Conjunctive Normal Form (CNF), the negation of the goal is added, and resolution is applied until the empty clause (contradiction) is derived.
+
+**Example — Prove C from: A ∨ B, A ⟹ C, ¬B using Resolution:**
+
+Step 1: Convert to CNF.
+- Clause 1: A ∨ B
+- Clause 2: ¬A ∨ C (from A → C)
+- Clause 3: ¬B
+
+Step 2: Add negation of goal. Clause 4: ¬C
+
+Step 3: Resolve.
+- Resolve Clause 2 (¬A ∨ C) with Clause 4 (¬C) → Clause 5: ¬A
+- Resolve Clause 1 (A ∨ B) with Clause 5 (¬A) → Clause 6: B
+- Resolve Clause 6 (B) with Clause 3 (¬B) → **Empty clause (∅)**
+
+Since the empty clause is derived, the assumption ¬C is inconsistent with the premises. Therefore, **C is proven**.
 
 ---
 
 # 2.2 Probabilistic Reasoning
 
-Probabilistic reasoning handles uncertainty using probability theory. Instead of asserting that facts are true or false, an agent assigns degrees of belief (probabilities) to propositions and updates these beliefs as new evidence arrives.
+> **What are Hidden Markov Models (HMMs)? Explain their structure and how they are used for probabilistic reasoning over time with a suitable example. (8) (Fall 2025)**
 
-**Bayes' Theorem:**
-
-P(H | E) = P(E | H) × P(H) / P(E)
-
-Where P(H | E) is the posterior probability of hypothesis H given evidence E, P(E | H) is the likelihood of observing evidence E given H, P(H) is the prior probability of H, and P(E) is the marginal probability of evidence E.
-
-**Bayesian Networks:**
-
-A Bayesian Network (Belief Network) is a directed acyclic graph (DAG) where each node represents a random variable, directed edges represent direct probabilistic dependencies, and each node has a conditional probability table (CPT) specifying the probability distribution of the node given its parents. A Bayesian Network encodes the full joint probability distribution compactly by exploiting conditional independence: P(X₁, X₂, ..., Xₙ) = Π P(Xᵢ | Parents(Xᵢ)).
-
-## 2.2.1 Hidden Markov Models (HMMs)
-
-An HMM is a temporal probabilistic model used when the system's true state is not directly observable (hidden), but the agent receives observations (evidence) that depend on the hidden state. It is a special case of a Dynamic Bayesian Network with a single discrete hidden state variable.
-
-**Components of an HMM:**
-
-1. **States (S):** A finite set of hidden states {s₁, s₂, ..., sₙ}.
-2. **Transition Model P(Xₜ | Xₜ₋₁):** The probability of transitioning from one state to another. Represented as a transition matrix A, where aᵢⱼ = P(Xₜ = sⱼ | Xₜ₋₁ = sᵢ).
-3. **Observation Model P(Eₜ | Xₜ):** The probability of observing evidence eₜ given the current hidden state. Represented as an emission/observation matrix B.
-4. **Initial Distribution π:** The probability distribution over states at time t = 0.
+Many real-world environments are **dynamic** and **uncertain** — the state of the world changes over time, and the agent cannot observe it perfectly. Probabilistic reasoning over time addresses this by modeling how the world evolves and how observations relate to hidden states.
 
 **Key Assumptions:**
 
-1. **Markov Assumption:** The current state depends only on the immediately previous state, P(Xₜ | X₀:ₜ₋₁) = P(Xₜ | Xₜ₋₁). The future is conditionally independent of the past given the present.
-2. **Sensor Markov Assumption:** The current observation depends only on the current state, P(Eₜ | X₀:ₜ, E₀:ₜ₋₁) = P(Eₜ | Xₜ).
+- **Markov Assumption (First-Order):** The current state depends only on the immediately previous state, not on the entire history. P(X_t | X_0:t−1) = P(X_t | X_{t−1}).
+- **Stationary Process:** The transition and observation models do not change over time.
 
-**Inference Tasks in HMMs:**
+**Two fundamental models define a temporal probabilistic system:**
 
-1. **Filtering:** Computing P(Xₜ | e₁:ₜ), the belief state (posterior distribution over the current state given all evidence so far). This is the most common task for real-time monitoring. The **Forward Algorithm** computes this recursively: f₁:ₜ₊₁ = α × O(eₜ₊₁) × T^T × f₁:ₜ, where α is a normalization constant, O is a diagonal observation matrix, and T is the transition matrix.
+1. **Transition Model:** P(X_t | X_{t−1}) — how the state evolves from one time step to the next.
+2. **Sensor (Observation) Model:** P(E_t | X_t) — the probability of an observation given the current hidden state.
 
-2. **Prediction:** Computing P(Xₜ₊ₖ | e₁:ₜ) for k > 0, the probability distribution over a future state given evidence up to the present. Prediction is filtering without incorporating new evidence. As k increases, the distribution converges to the stationary distribution of the Markov chain.
+**Inference Tasks:**
 
-3. **Smoothing:** Computing P(Xₖ | e₁:ₜ) for 0 ≤ k < t, the probability distribution over a past state given all evidence including future observations. Smoothing gives a better estimate of past states than filtering because it uses more evidence. The **Forward-Backward Algorithm** computes this by combining the forward message f₁:ₖ and the backward message bₖ₊₁:ₜ.
+- **Filtering:** Compute P(X_t | e_{1:t}) — the belief state at current time given all evidence so far. This is what an agent needs for decision-making.
+- **Prediction:** Compute P(X_{t+k} | e_{1:t}) — estimate future states given current evidence.
+- **Smoothing:** Compute P(X_k | e_{1:t}) for 0 ≤ k < t — revise past estimates given later evidence. More accurate than filtering.
+- **Most Likely Explanation:** Find the sequence of states that best explains the observations (Viterbi algorithm).
 
-4. **Most Likely Explanation (Decoding):** Finding the most likely sequence of hidden states argmax_{x₁:ₜ} P(x₁:ₜ | e₁:ₜ). The **Viterbi Algorithm** solves this using dynamic programming. Unlike the forward algorithm which sums over all possible previous states, Viterbi takes the maximum, and maintains backpointers to reconstruct the most probable path.
+## 2.2.1 Hidden Markov Models (HMMs)
 
-**Example:** Consider a scenario where the hidden states are {Rainy, Sunny} and the observations are {Umbrella, No Umbrella}. The transition model specifies how weather changes day to day, and the observation model specifies the probability of seeing an umbrella given the weather. Filtering answers "What is the probability it is raining today given the umbrella observations so far?" The Viterbi algorithm answers "What was the most likely weather sequence over the past week given the observations?"
+An HMM is a temporal probabilistic model where the system is assumed to be a Markov process with **hidden (unobservable) states** that produce **observable outputs**. It is a special case of a Dynamic Bayesian Network with a single discrete state variable.
+
+**Structure of an HMM:**
+
+- **States (S):** A finite set of hidden states {s₁, s₂, ..., s_N}.
+- **Observations (O):** A finite set of observable symbols {o₁, o₂, ..., o_M}.
+- **Transition Probability Matrix (A):** a_{ij} = P(X_t = s_j | X_{t−1} = s_i) — probability of moving from state i to state j.
+- **Observation/Emission Probability Matrix (B):** b_j(o_k) = P(E_t = o_k | X_t = s_j) — probability of observing o_k when in state s_j.
+- **Initial State Distribution (π):** π_i = P(X_1 = s_i) — probability of starting in state i.
+
+An HMM is fully specified by λ = (A, B, π).
+
+**Three Fundamental Problems of HMMs:**
+
+1. **Evaluation (Likelihood):** Given a model λ and an observation sequence, compute P(O | λ). Solved by the **Forward Algorithm**.
+2. **Decoding:** Given a model λ and an observation sequence, find the most likely state sequence. Solved by the **Viterbi Algorithm**.
+3. **Learning:** Given observation sequences, find the model parameters λ that maximize P(O | λ). Solved by the **Baum-Welch Algorithm** (a special case of EM).
+
+**Example:** A doctor cannot directly observe whether a patient is Healthy or has a Fever (hidden states). The doctor observes the patient's activities: Normal, Cold, Dizzy (observations). The transition matrix defines probabilities like P(Fever today | Healthy yesterday) = 0.3. The emission matrix defines P(Dizzy | Fever) = 0.5. Given a sequence of observations over several days, the HMM can infer the most likely sequence of health states.
+
+**Applications:** Speech recognition, POS tagging in NLP, gene sequence analysis, gesture recognition, weather prediction.
 
 ## 2.2.2 Dynamic Bayesian Networks (DBNs)
 
-A Dynamic Bayesian Network is a generalization of the HMM that allows the state at each time step to be represented by multiple state variables rather than a single variable. Each time slice of a DBN is a standard Bayesian Network, and the temporal connections between slices specify the transition model.
+A Dynamic Bayesian Network is a generalization of HMMs that represents the state of the world using a **set of random variables** rather than a single variable. Each time slice contains multiple state variables and observation variables, connected by a Bayesian network structure.
 
-**Structure of a DBN:**
+**Structure:**
 
-1. Each time slice t contains a set of state variables X₁ₜ, X₂ₜ, ..., Xₙₜ and observation variables E₁ₜ, E₂ₜ, ..., Eₘₜ.
-2. The transition model specifies dependencies between variables at time t−1 and variables at time t.
-3. The sensor model specifies how observation variables depend on state variables within the same time slice.
+- Each time slice t has a set of state variables X_t = {X_t^1, X_t^2, ..., X_t^n} and evidence variables E_t.
+- **Intra-slice connections:** Represent dependencies among variables within the same time step.
+- **Inter-slice connections:** Represent how variables at time t depend on variables at time t−1 (the transition model).
+- The network is defined by the structure and CPTs (Conditional Probability Tables) of just **two time slices** — this is then "unrolled" for as many time steps as needed.
 
-**Relationship between HMMs and DBNs:**
+**Relationship to HMMs:** An HMM is a DBN with a single state variable. A DBN is more general — it can factorize the state space into multiple variables, exploiting conditional independence to reduce the number of parameters exponentially.
 
-Every HMM is a DBN with a single hidden state variable. Conversely, every DBN can be "flattened" into an HMM by creating a single composite state variable that is the cross-product of all the individual state variables. However, this flattening results in an exponentially large state space. For example, if a DBN has 20 Boolean state variables, the equivalent HMM would have 2²⁰ (over one million) states, making the transition matrix infeasible to store or compute. DBNs are therefore exponentially more compact than their equivalent HMMs for multi-variable systems.
+**Example:** A vehicle monitoring system. State variables at each time step: Battery_t, Fuel_t, Engine_t. Observations: Gauge_t, StarterMotor_t. The DBN captures that Battery_t depends on Battery_{t−1} and Fuel_t depends on Fuel_{t−1}, while Engine_t depends on both Battery_t and Fuel_t within the same slice.
 
-**Advantages of DBNs over HMMs:**
-
-1. They can represent complex systems with many interacting state variables compactly by exploiting conditional independence among state variables.
-2. The transition model in a DBN requires only O(n) parameters (where each variable has a bounded number of parents), compared to O(2ⁿ × 2ⁿ) for the equivalent HMM transition matrix.
-3. They support both discrete and continuous variables.
-
-**Inference in DBNs:**
-
-Exact inference can be performed by "unrolling" the DBN into a static Bayesian Network and applying standard algorithms like variable elimination. However, for long time sequences, approximate inference methods such as **particle filtering** (sequential Monte Carlo) are used. Particle filtering represents the belief state by a set of weighted samples (particles) and updates them as new evidence arrives.
+**Inference in DBNs:** Exact inference can be done by unrolling the network and applying standard Bayesian network inference (variable elimination, junction tree). However, this becomes intractable for long sequences. **Approximate methods** like particle filtering (sequential Monte Carlo) are commonly used.
 
 ---
 
 # 2.3 Ontological Engineering
 
-Ontological engineering is the process of defining a general framework of concepts, categories, and relationships to represent knowledge about the world in a way that enables AI systems to reason about diverse domains.
+> **What is ontology engineering? Explain the stages in ontology development life cycle. (8) (Spring 2025)**
 
-**Motivation:**
+**Ontological engineering** is the process of defining a general framework of concepts — an **upper ontology** — that provides a shared vocabulary for representing knowledge about the world. Unlike narrow, domain-specific knowledge engineering, ontological engineering aims to create broad, reusable representations of general concepts such as time, space, events, objects, and categories.
 
-Creating a knowledge base for every specific domain from scratch is inefficient. Ontological engineering aims to build a shared, reusable conceptual framework (an upper ontology) that can be specialized for different applications. This parallels how a library of reusable code components works in software engineering.
+**Purpose:** When building AI systems for complex domains, instead of creating knowledge representations from scratch each time, an ontology provides a standard set of concepts and relationships that can be reused and extended across domains.
 
-**Upper Ontology:**
+**General Concepts in an Upper Ontology:**
 
-An upper ontology defines the most general categories that apply across all domains. Russell and Norvig describe a hierarchy with the following general categories:
+- **Categories and Objects:** The world is organized into categories (e.g., Animals, Vehicles). Objects are instances of categories. Categories can be organized into hierarchies (taxonomies) with inheritance of properties.
+- **Events and Processes:** Represent actions and changes over time using event calculus or situation calculus.
+- **Time and Space:** Represent temporal intervals, spatial locations, and their relationships.
+- **Physical and Abstract Objects:** Distinguish between tangible entities and abstract concepts like numbers, beliefs, or plans.
+- **Substances and Quantities:** Represent stuff (water, gold) vs. individual objects, along with measurable quantities (mass, temperature).
 
-1. **Things (Entities):** Everything that exists. Divided into abstract objects and physical objects.
-2. **Categories:** Sets of objects with common properties (e.g., Dogs, Chairs). Categories can be organized into taxonomies using subcategory relationships.
-3. **Measures:** Quantities like length, mass, and currency used to describe properties of objects numerically.
-4. **Composite Objects:** Objects that are made up of parts (e.g., a car is composed of an engine, wheels, body). The PartOf relation is transitive.
-5. **Time and Events:** Events are occurrences that happen at particular time points or over intervals. Processes are continuous events. Fluents are properties of the world that change over time.
-6. **Mental Objects and Beliefs:** Propositions, beliefs, and knowledge that agents hold about the world.
+**Stages in the Ontology Development Life Cycle:**
 
-**Key Concepts:**
+1. **Specification:** Define the purpose, scope, and intended users of the ontology. Determine what competency questions the ontology should answer.
+2. **Conceptualization:** Identify the key concepts, relationships, and constraints in the domain. Create an informal model (glossary of terms, concept maps).
+3. **Formalization:** Translate the conceptual model into a formal representation using a knowledge representation language (e.g., OWL — Web Ontology Language, Description Logic).
+4. **Implementation:** Encode the formalized ontology in a machine-readable format using ontology tools (e.g., Protégé).
+5. **Evaluation:** Verify and validate the ontology — check for logical consistency, completeness, and whether it satisfies the competency questions.
+6. **Maintenance:** Update the ontology as the domain evolves — add new concepts, refine relationships, and remove obsolete elements.
 
-1. **Reification:** Treating an abstract concept (such as an event or a proposition) as a concrete object so it can be referred to and reasoned about in the knowledge base.
-2. **Inheritance:** Subcategories inherit properties of their parent categories. For example, if "All mammals breathe air," then "dogs breathe air" follows automatically because Dog is a subcategory of Mammal.
-3. **Intrinsic vs. Extrinsic Properties:** Intrinsic properties are inherent to the object itself (e.g., mass, color). Extrinsic properties depend on the object's relationship to other things (e.g., price, ownership).
-
-**Practical Ontologies:**
-
-1. **CYC:** One of the largest ontological engineering projects, containing millions of assertions about common-sense knowledge.
-2. **WordNet:** A lexical database that organizes English words into synsets (synonym sets) linked by semantic relations.
-3. **OWL (Web Ontology Language):** A formal language based on description logic, used on the semantic web to define and share ontologies.
+Throughout the life cycle, **documentation** and **knowledge acquisition** (gathering domain expertise from experts, textbooks, existing databases) are ongoing activities.
 
 ---
 
 # 2.4 Semantic Networks
 
-A semantic network is a graph-based knowledge representation formalism where knowledge is encoded as a network of nodes (representing objects, concepts, or categories) connected by labeled links (representing relationships between them).
+Semantic networks are a graphical approach to knowledge representation where knowledge is depicted as a **directed graph**. **Nodes** represent concepts or objects, and **edges** (links) represent relationships between them.
 
-**Components:**
+**Common Relationship Types:**
 
-1. **Nodes:** Represent entities, concepts, events, or categories (e.g., Animal, Bird, Tweety).
-2. **Links (Edges):** Represent relationships between nodes. Each link is labeled with the type of relationship.
+- **IS-A (subclass):** Dog IS-A Animal — represents class hierarchy.
+- **Instance-of:** Fido Instance-of Dog — represents membership.
+- **Has-part:** Car Has-part Engine — represents composition.
+- **Property links:** Bird Has-property Can-fly — represents attributes.
 
-**Common Link Types:**
+**Inheritance:** Properties are inherited through the IS-A hierarchy. If "Bird Can-fly" and "Sparrow IS-A Bird," then Sparrow inherits the property Can-fly. This supports **default reasoning** — a property is assumed unless explicitly overridden (e.g., Penguin IS-A Bird but has an explicit "Cannot-fly" property).
 
-1. **IS-A (subclass):** Represents that one category is a subcategory of another (e.g., Bird IS-A Animal).
-2. **Instance-of:** Represents that an individual object is a member of a category (e.g., Tweety Instance-of Bird).
-3. **Has-Part:** Represents composition (e.g., Bird Has-Part Wing).
-4. **Has-Property:** Represents an attribute (e.g., Bird Has-Property CanFly).
-5. **Other domain-specific relations:** e.g., Lives-In, Eats, Caused-By.
+**Example:**
 
-**Inheritance in Semantic Networks:**
+```
+  Animal
+    ↑ IS-A
+   Bird ——Has-property——→ Can-fly
+    ↑ IS-A
+  Sparrow ——Has-color——→ Brown
+```
 
-A fundamental feature is property inheritance through the IS-A hierarchy. A subclass inherits all properties of its superclass. For example, if Bird Has-Property CanFly and Sparrow IS-A Bird, then Sparrow inherits the property CanFly. This reduces redundancy because shared properties need only be stated once at the most general applicable level.
+Sparrow inherits "Can-fly" from Bird and "Living-thing" properties from Animal.
 
-**Exceptions and Overriding:**
+**Advantages:** Intuitive and easy to visualize. Good for organizing taxonomic knowledge. Support inheritance for efficient knowledge storage.
 
-Inheritance can be overridden for specific subcategories. For example, Penguin IS-A Bird, but Penguin Has-Property CannotFly overrides the inherited CanFly property from Bird. This is handled using a **shortest-path heuristic**: the property defined at the most specific (closest) node takes precedence.
-
-**Multiple Inheritance:**
-
-A concept can have multiple parent categories (e.g., a Platypus IS-A Mammal and IS-A EggLayingAnimal). Multiple inheritance can lead to ambiguity when conflicting properties are inherited from different parents, creating the "diamond problem."
-
-**Advantages:**
-
-1. Intuitive and visual representation of knowledge that is easy for humans to understand.
-2. Efficient inheritance-based reasoning for simple queries.
-3. Natural representation of taxonomic hierarchies.
-
-**Limitations:**
-
-1. Lack of formal semantics. Unlike FOL, the meaning of nodes and links is not precisely defined, leading to potential ambiguity.
-2. Difficulty representing complex logical expressions (negation, disjunction, quantification).
-3. Limited to binary relations (each link connects exactly two nodes). Representing n-ary relations requires workarounds like reification.
-4. No standard for handling conflicting inherited properties in multiple inheritance.
+**Limitations:** Lack formal semantics — the meaning of links can be ambiguous. Cannot easily represent disjunction, negation, or quantified statements. No standardized inference procedures. These limitations motivated the development of **Description Logic**.
 
 ---
 
 # 2.5 Description Logic
 
-> **Define descriptive logic. Explain the components of descriptive logic in detail. [8 marks] (2025 Spring - PU)**
+> **Define descriptive logic. Explain the components of descriptive logic in detail. (8) (Internal 2025)**
 
-Description Logic (DL) is a family of formal knowledge representation languages that provide a logical foundation for representing structured knowledge. It addresses the limitations of semantic networks and frames by providing precise, formal semantics grounded in logic while remaining computationally decidable. Description Logic is the formal basis of the Web Ontology Language (OWL).
+**Description Logic (DL)** is a family of formal knowledge representation languages that provides a logical foundation for semantic networks and ontologies. It is designed to represent structured knowledge about concepts (classes), roles (relationships), and individuals in a domain, with well-defined semantics and decidable inference procedures.
 
-**Key Idea:** DL balances expressive power (the ability to describe complex domains) with computational tractability (the guarantee that reasoning algorithms will terminate with a correct answer in finite time).
+Description Logic underlies the **Web Ontology Language (OWL)**, the standard for representing ontologies on the Semantic Web.
 
 **Components of Description Logic:**
 
-1. **Concepts (Classes):** Represent sets of individuals. Atomic concepts are basic named sets (e.g., Person, Student, Course). Complex concepts are built from atomic concepts using constructors.
+**1. Concepts (Classes):** Represent sets of individuals. Atomic concepts are named classes (e.g., Person, Animal). Complex concepts are built using constructors:
+- **Intersection (⊓):** Person ⊓ Female — individuals that are both persons and female.
+- **Union (⊔):** Doctor ⊔ Lawyer — individuals that are doctors or lawyers.
+- **Negation (¬):** ¬Male — individuals that are not male.
+- **Existential Restriction (∃):** ∃hasChild.Female — individuals that have at least one child who is female.
+- **Universal Restriction (∀):** ∀hasChild.Doctor — individuals all of whose children are doctors.
+- **Number Restrictions (≥n, ≤n):** ≥2 hasChild — individuals with at least 2 children.
 
-2. **Roles (Properties):** Represent binary relations between individuals (e.g., hasChild, enrolledIn, teaches).
+**2. Roles (Relations):** Represent binary relationships between individuals (e.g., hasChild, worksFor, teaches). Roles can have properties:
+- **Inverse roles:** If hasChild relates parent to child, then hasParent is its inverse.
+- **Transitive roles:** ancestorOf is transitive — if A is ancestor of B and B is ancestor of C, then A is ancestor of C.
 
-3. **Individuals (Instances):** Represent specific named objects in the domain (e.g., John, CS101, Kathmandu).
+**3. Individuals:** Specific objects in the domain (e.g., John, MIT, Nepal).
 
-**Knowledge Base Structure:**
+**Knowledge Base in DL has two components:**
 
-A DL knowledge base consists of two components:
+- **TBox (Terminological Box):** Contains concept definitions and axioms — the schema or vocabulary. Example: Mother ≡ Person ⊓ Female ⊓ ∃hasChild.Person (a mother is a female person who has at least one child who is a person).
+- **ABox (Assertional Box):** Contains assertions about specific individuals. Example: Person(John), hasChild(Mary, Tom).
 
-1. **TBox (Terminological Box):** Contains axioms that define concepts and their relationships. It describes the schema or vocabulary of the domain.
-   - **Concept Inclusion:** Mother ⊑ Female (every mother is female).
-   - **Concept Equivalence:** Bachelor ≡ Male ⊓ ¬Married (a bachelor is exactly a male who is not married).
+**Key Reasoning Tasks:**
 
-2. **ABox (Assertional Box):** Contains assertions about specific individuals using the vocabulary defined in the TBox.
-   - **Concept Assertion:** John : Student (John is a student).
-   - **Role Assertion:** (John, CS101) : enrolledIn (John is enrolled in CS101).
+- **Subsumption:** Is concept C a subset of concept D? (e.g., Is Mother subsumed by Person?)
+- **Consistency:** Is the knowledge base free of contradictions?
+- **Classification:** Determine the most specific concept an individual belongs to.
+- **Instance Checking:** Does individual a belong to concept C?
 
-**Concept Constructors in ALC (Attributive Language with Complement):**
-
-ALC is the foundational description logic. It builds complex concepts from atomic ones using these constructors:
-
-1. **Negation (¬C):** The set of all individuals that are NOT in concept C. Example: ¬Student represents all non-students.
-2. **Conjunction (C ⊓ D):** The set of individuals that belong to both C and D. Example: Student ⊓ Female represents female students.
-3. **Disjunction (C ⊔ D):** The set of individuals that belong to C or D or both. Example: Student ⊔ Employee represents anyone who is a student or an employee.
-4. **Existential Restriction (∃R.C):** The set of individuals that have at least one R-relationship to some individual in C. Example: ∃hasChild.Doctor represents individuals who have at least one child who is a doctor.
-5. **Universal Restriction (∀R.C):** The set of individuals whose R-relationships all lead to individuals in C. Example: ∀hasChild.Female represents individuals all of whose children are female.
-6. **Top (⊤):** The set of all individuals in the domain.
-7. **Bottom (⊥):** The empty set (no individuals).
-
-**Reasoning Tasks in Description Logic:**
-
-1. **Satisfiability:** Determining whether a concept can possibly have any instances (is not inherently contradictory). Example: Male ⊓ ¬Male is unsatisfiable.
-2. **Subsumption:** Determining whether one concept is more general than another (C ⊑ D). Example: checking whether Mother ⊑ Parent.
-3. **Consistency:** Determining whether the knowledge base (TBox + ABox) is free of contradictions.
-4. **Instance Checking:** Determining whether a specific individual belongs to a given concept.
-
-**Relationship to FOL:**
-
-Description Logic is a decidable fragment of First-Order Logic. Every DL statement can be translated into FOL, but DL restricts the expressiveness to ensure that all reasoning tasks are decidable. For example, ∃hasChild.Doctor translates to ∃y (hasChild(x, y) ∧ Doctor(y)) in FOL.
+**Advantages over Semantic Networks:** Formal semantics, decidable reasoning, support for complex concept construction, and standardized inference algorithms.
 
 ---
 
-# 2.6 Fuzzy Logic
+# 2.6 Fuzzy Logic — Fuzzy Inference Systems
 
-> **Illustrate the Mamdani Fuzzy Inference System with a suitable example. [8 marks] (2025 Spring - PU)**
+> **Illustrate the Mamdani Fuzzy Inference System with a suitable example. (8) (Internal 2025)**
+>
+> **A city uses a fuzzy logic-based traffic control system to adjust green light duration depending on traffic density. How can we design a FIS? Explain the role of defuzzification in final decision-making. (8) (Fall 2025)**
+>
+> **Illustrate the Sugeno Fuzzy Inference System with a suitable example. How does it differ from Mamdani? (7) (Spring 2025)**
 
-Classical logic and probability deal with propositions that are either true or false, or with events that either occur or do not. **Fuzzy logic** extends classical logic to handle degrees of truth, allowing a proposition to be partially true (e.g., "The water is warm" might be 0.7 true and "The water is hot" might be 0.3 true simultaneously).
+Classical (Boolean) logic deals with only two truth values: 0 (false) and 1 (true). **Fuzzy logic**, introduced by Lotfi Zadeh in 1965, extends this by allowing **partial truth** — a degree of membership between 0 and 1. This is useful for modeling vague, imprecise, or uncertain concepts that are common in human reasoning (e.g., "tall," "warm," "fast").
 
-**Fuzzy Sets:**
+**Fuzzy Set:** A set where each element has a **degree of membership** μ(x) ∈ [0, 1], rather than simply belonging or not. For example, in the fuzzy set "Tall": a person of height 6'2" might have μ = 0.9, while a person of 5'6" might have μ = 0.4.
 
-A classical (crisp) set has a sharp boundary: an element either belongs to the set or does not. A fuzzy set has a gradual boundary defined by a **membership function** μ(x) that maps each element to a value in [0, 1], indicating the degree to which it belongs to the set. Common membership function shapes include triangular, trapezoidal, Gaussian, and bell-shaped functions.
+**Membership Functions:** Define the degree of membership for each value. Common shapes: triangular, trapezoidal, Gaussian, bell-shaped.
 
 **Fuzzy Operations:**
 
-1. **Union (OR):** μ(A ∪ B) = max(μ_A(x), μ_B(x))
-2. **Intersection (AND):** μ(A ∩ B) = min(μ_A(x), μ_B(x))
-3. **Complement (NOT):** μ(¬A) = 1 − μ_A(x)
+- **Union (OR):** μ_{A∪B}(x) = max(μ_A(x), μ_B(x))
+- **Intersection (AND):** μ_{A∩B}(x) = min(μ_A(x), μ_B(x))
+- **Complement (NOT):** μ_{¬A}(x) = 1 − μ_A(x)
 
-**Linguistic Variables and Hedges:**
+## Fuzzy Inference System (FIS)
 
-A linguistic variable takes linguistic values rather than numerical ones (e.g., Temperature = {Cold, Warm, Hot}). Each linguistic value is defined by a fuzzy set. Hedges are modifiers that alter the meaning of a linguistic value (e.g., "Very Hot" is obtained by squaring the membership function of "Hot"; "Somewhat Hot" is obtained by taking the square root).
+A Fuzzy Inference System maps crisp inputs to a crisp output using fuzzy logic. It processes inputs through fuzzy rules (IF-THEN rules with fuzzy sets) to produce a decision.
 
-## 2.6.1 Fuzzy Inference Systems (FIS)
+**General Steps of a FIS:**
 
-A Fuzzy Inference System maps crisp inputs to crisp outputs through a set of fuzzy If-Then rules. The general steps are:
+1. **Fuzzification:** Convert crisp input values into fuzzy membership values using membership functions.
+2. **Rule Evaluation:** Apply fuzzy IF-THEN rules. Each rule has an antecedent (IF part) and a consequent (THEN part). The firing strength of each rule is computed using fuzzy AND/OR operations.
+3. **Aggregation:** Combine the outputs of all fired rules into a single fuzzy output.
+4. **Defuzzification:** Convert the aggregated fuzzy output into a single crisp value.
 
-1. **Fuzzification:** Convert crisp input values into degrees of membership in fuzzy sets using input membership functions.
-2. **Rule Evaluation:** Apply the fuzzy If-Then rules. For each rule, compute the firing strength by applying fuzzy AND (min) or OR (max) operations to the antecedent membership values.
-3. **Implication:** Apply the firing strength to the consequent of each rule to produce a fuzzy output.
-4. **Aggregation:** Combine the fuzzy outputs from all rules into a single fuzzy set.
-5. **Defuzzification:** Convert the aggregated fuzzy output into a single crisp value.
+## 2.6.1 Mamdani Fuzzy Inference System
 
-### Mamdani Fuzzy Inference System
-
-The Mamdani FIS is the most widely used type. Both the antecedent and the consequent of each rule are fuzzy sets. The output is a fuzzy set that must be defuzzified.
+The Mamdani FIS (proposed by Ebrahim Mamdani, 1975) is the most commonly used fuzzy inference system. Both the antecedent and consequent of the rules use **fuzzy sets**.
 
 **Steps:**
 
-1. **Fuzzification:** Determine the degree of membership of each crisp input in each relevant fuzzy set.
-2. **Rule Evaluation:** For each rule, apply the AND operator (typically min) across antecedent conditions to get the firing strength.
-3. **Implication:** Clip (or scale) the consequent fuzzy set of each rule by its firing strength. The min implication clips the output fuzzy set at the firing strength level.
-4. **Aggregation:** Combine all clipped output fuzzy sets using the max operator (union) to produce a single aggregated output fuzzy set.
-5. **Defuzzification:** Convert the aggregated fuzzy set to a crisp value using a defuzzification method (typically centroid).
+1. **Fuzzification:** Determine the degree of membership of each crisp input in all relevant fuzzy sets.
+2. **Rule Evaluation:** For each rule, compute the firing strength by applying AND (min) or OR (max) to the antecedent membership values. The consequent fuzzy set is then "clipped" (using min) or "scaled" to the firing strength.
+3. **Aggregation:** Combine all clipped/scaled consequent fuzzy sets into a single output fuzzy set using max (union).
+4. **Defuzzification:** Convert the aggregated fuzzy set into a crisp output value.
 
-**Example: Tipping Problem**
+**Example — Traffic Light Control System:**
 
-Inputs: Food Quality (0–10), Service Quality (0–10). Output: Tip Percentage (5–25%).
+Inputs: Traffic_Density (Low, Medium, High), Waiting_Time (Short, Medium, Long).
+Output: Green_Duration (Short, Medium, Long).
 
-Fuzzy sets for Food Quality: Poor, Average, Good. Fuzzy sets for Service Quality: Poor, Average, Good. Fuzzy sets for Tip: Low, Medium, High.
+Membership functions: Triangular functions defined for each linguistic variable.
 
 Rules:
-- Rule 1: IF Food is Poor OR Service is Poor THEN Tip is Low.
-- Rule 2: IF Service is Average THEN Tip is Medium.
-- Rule 3: IF Food is Good OR Service is Good THEN Tip is High.
+- IF Traffic_Density is High AND Waiting_Time is Long THEN Green_Duration is Long.
+- IF Traffic_Density is Low AND Waiting_Time is Short THEN Green_Duration is Short.
+- IF Traffic_Density is Medium THEN Green_Duration is Medium.
 
-Suppose Food = 7.5 and Service = 4.0.
+Suppose Traffic_Density = 70 vehicles → μ_High = 0.7, μ_Medium = 0.3. Waiting_Time = 50 sec → μ_Long = 0.6.
 
-Step 1 (Fuzzification): Food = 7.5 → μ_Average(7.5) = 0.3, μ_Good(7.5) = 0.7. Service = 4.0 → μ_Poor(4.0) = 0.2, μ_Average(4.0) = 0.6.
+Rule 1: Firing strength = min(0.7, 0.6) = 0.6. Clip the "Long" output fuzzy set at 0.6.
+Rule 3: Firing strength = 0.3. Clip the "Medium" output fuzzy set at 0.3.
 
-Step 2 (Rule Evaluation): Rule 1: max(μ_PoorFood, μ_PoorService) = max(0, 0.2) = 0.2. Rule 2: μ_AverageService = 0.6. Rule 3: max(μ_GoodFood, μ_GoodService) = max(0.7, 0) = 0.7.
+Aggregate: Take the union (max) of all clipped output sets.
+Defuzzify: Apply centroid method to get a crisp Green_Duration value.
 
-Step 3 (Implication): Clip the Low tip fuzzy set at 0.2, the Medium tip set at 0.6, and the High tip set at 0.7.
+**Defuzzification Techniques:**
 
-Step 4 (Aggregation): Take the max (union) of all three clipped output sets to form one combined fuzzy set.
+- **Centroid (Center of Gravity):** x* = ∫μ(x)·x dx / ∫μ(x) dx — the most widely used method. Computes the center of mass of the aggregated fuzzy set.
+- **Bisector of Area (BOA):** The value that divides the area of the fuzzy set into two equal halves.
+- **Mean of Maximum (MOM):** The average of the values at which the membership function reaches its maximum.
+- **Smallest of Maximum (SOM):** The smallest value at which maximum membership occurs.
+- **Largest of Maximum (LOM):** The largest value at which maximum membership occurs.
 
-Step 5 (Defuzzification): Apply the centroid method to find the center of gravity of the combined set. The result is the crisp tip percentage (e.g., approximately 19.6%).
+## 2.6.2 Sugeno Fuzzy Inference System (Takagi-Sugeno-Kang)
 
-### Sugeno Fuzzy Inference System
+In the Sugeno FIS, the antecedent is a fuzzy set (same as Mamdani), but the **consequent is a crisp function** of the inputs — either a constant (zero-order Sugeno) or a linear function (first-order Sugeno).
 
-In the Sugeno (Takagi-Sugeno-Kang) FIS, the antecedent is a fuzzy set (same as Mamdani), but the consequent is a crisp mathematical function of the inputs rather than a fuzzy set.
-
-**Rule format:** IF x is A AND y is B THEN z = f(x, y), where f is typically a constant (zero-order Sugeno) or a linear function (first-order Sugeno: z = ax + by + c).
-
-**Steps:**
-
-1. Fuzzification and rule evaluation are the same as Mamdani.
-2. Each rule produces a crisp output value zᵢ = f(x, y) along with its firing strength wᵢ.
-3. The final output is computed as a **weighted average**: z = Σ(wᵢ × zᵢ) / Σ(wᵢ).
-
-**Advantages over Mamdani:** Computationally efficient because no complex defuzzification is needed. Well-suited for mathematical analysis, optimization, and control systems. Works well with linear techniques and adaptive methods (e.g., ANFIS).
-
-**Disadvantage:** Less intuitive than Mamdani because the output rules are mathematical functions rather than linguistic terms.
-
-### Tsukamoto Fuzzy Inference System
-
-In the Tsukamoto FIS, each rule has a fuzzy set as the consequent, but the membership functions must be **monotonic** (either monotonically increasing or monotonically decreasing). Because of monotonicity, each rule's firing strength maps directly to a unique crisp output value.
+**Rule Format:** IF x is A AND y is B THEN z = f(x, y), where f is typically a constant or a linear polynomial (e.g., z = ax + by + c).
 
 **Steps:**
 
-1. Fuzzification and rule evaluation are the same as Mamdani.
-2. For each rule, the firing strength wᵢ is used to find a crisp value zᵢ by inverting the monotonic output membership function (i.e., finding the z where μ(z) = wᵢ).
-3. The final output is a **weighted average**: z = Σ(wᵢ × zᵢ) / Σ(wᵢ).
+1. **Fuzzification:** Same as Mamdani.
+2. **Rule Evaluation:** Compute the firing strength w_i for each rule using AND (min or product).
+3. **Output Computation:** Each rule produces a crisp output z_i = f_i(inputs).
+4. **Defuzzification:** Use **weighted average** — z* = Σ(w_i · z_i) / Σ(w_i). No complex area computation is needed.
 
-**Advantage:** Produces a crisp output directly without aggregation or defuzzification of fuzzy sets.
+**Example — Tip Calculation:**
 
-**Limitation:** Restricted to monotonic output membership functions, which limits its expressiveness.
+Inputs: Service (Poor, Good, Excellent), Food (Rancid, Delicious).
+Output: Tip (percentage).
 
-## 2.6.2 Defuzzification Techniques
+Rules:
+- IF Service is Poor OR Food is Rancid THEN Tip = 5%.
+- IF Service is Good THEN Tip = 15%.
+- IF Service is Excellent OR Food is Delicious THEN Tip = 25%.
 
-Defuzzification converts the aggregated fuzzy output set into a single crisp numerical value. The main methods are:
+Suppose Service = 7 → μ_Good = 0.6, μ_Excellent = 0.3. Food = 8 → μ_Delicious = 0.7.
 
-1. **Centroid (Center of Gravity):** Calculates the center of mass of the aggregated fuzzy set. z* = ∫ z × μ(z) dz / ∫ μ(z) dz. It is the most commonly used method because it considers the entire shape of the output distribution. It produces smooth output changes.
+Rule 2: w₂ = 0.6, z₂ = 15.
+Rule 3: w₃ = max(0.3, 0.7) = 0.7, z₃ = 25.
 
-2. **Bisector:** Finds the vertical line that divides the area of the aggregated fuzzy set into two equal halves. It is similar to the centroid but focuses on equal-area partitioning.
+Output: z* = (0.6 × 15 + 0.7 × 25) / (0.6 + 0.7) = (9 + 17.5) / 1.3 = 26.5 / 1.3 ≈ 20.38%.
 
-3. **Mean of Maxima (MOM):** Finds the average of all z values that have the maximum membership degree in the aggregated set. It is computationally simpler but ignores the shape of the output distribution.
+**Differences between Mamdani and Sugeno:**
 
-4. **Smallest of Maxima (SOM):** Returns the smallest z value that has the maximum membership degree.
+- **Consequent:** Mamdani uses fuzzy sets; Sugeno uses crisp functions (constant or linear).
+- **Aggregation and Defuzzification:** Mamdani requires area-based aggregation and defuzzification (e.g., centroid); Sugeno uses simple weighted average.
+- **Computational Efficiency:** Sugeno is more computationally efficient, better suited for mathematical analysis and optimization.
+- **Interpretability:** Mamdani is more intuitive and human-readable; Sugeno is more suitable for control systems and adaptive models.
 
-5. **Largest of Maxima (LOM):** Returns the largest z value that has the maximum membership degree.
+## 2.6.3 Tsukamoto Fuzzy Inference System
 
-6. **Weighted Average:** Used specifically in Sugeno and Tsukamoto systems. z* = Σ(wᵢ × zᵢ) / Σ(wᵢ), where wᵢ is the firing strength and zᵢ is the crisp output of the i-th rule. It is computationally the most efficient method.
+In the Tsukamoto FIS, the consequent of each rule is a fuzzy set with a **monotonic membership function** (either strictly increasing or strictly decreasing). This ensures that each rule produces a unique crisp output for a given firing strength.
+
+**Working:**
+
+1. **Fuzzification:** Same as other FIS types.
+2. **Rule Evaluation:** Compute the firing strength w_i for each rule.
+3. **Output Computation:** For each rule, find the crisp output z_i such that μ_output(z_i) = w_i by inverting the monotonic membership function.
+4. **Defuzzification:** Use **weighted average** — z* = Σ(w_i · z_i) / Σ(w_i).
+
+**Key Requirement:** The output membership functions must be monotonic (e.g., sigmoid-like, S-shaped, or Z-shaped functions).
+
+**Comparison:** Tsukamoto combines aspects of both Mamdani (uses fuzzy sets in the consequent) and Sugeno (produces crisp rule outputs and uses weighted average). It is computationally simpler than Mamdani but less commonly used than either Mamdani or Sugeno.

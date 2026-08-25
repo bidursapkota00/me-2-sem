@@ -1,295 +1,259 @@
 # 1. Foundation of Advanced Artificial Intelligence
 
-# 1.1 Intelligent Agents: Structure, Types and Implementation
+# 1.1 Intelligent Agents — Structure, Types and Implementation
 
-An **agent** is anything that perceives its environment through **sensors** and acts upon it through **actuators**. A **rational agent** selects actions that maximize its expected performance measure, given its percept sequence and built-in knowledge.
+> **Define an intelligent agent. Discuss different types of agents with example. (7) (Fall 2025)**
+>
+> **Write a short note on Learning Agent. (5) (Internal 2025)**
 
-**Agent Function and Agent Program:**
+An **intelligent agent** is anything that perceives its environment through **sensors** and acts upon it through **actuators**. A human agent has eyes, ears (sensors) and hands, legs, vocal tract (actuators). A robotic agent has cameras, infrared sensors and motors, grippers. A software agent receives keystrokes, file contents and displays output, writes files.
 
-The **agent function** is the abstract mathematical description that maps every possible percept sequence to an action. The **agent program** is the concrete implementation of the agent function that runs on the physical agent architecture. The relationship is: Agent = Architecture + Program.
+The agent function maps a percept sequence to an action: **f: P* → A**. The agent program is the concrete implementation running on a physical architecture. Agent = Architecture + Program.
 
-**PEAS Framework:**
+**Rationality:** A rational agent selects the action that maximizes its expected performance measure, given the percept sequence and built-in knowledge. Rationality ≠ omniscience (knowing everything) and ≠ perfection (always correct outcomes). A rational agent should be autonomous — it learns from experience rather than relying solely on prior knowledge.
 
-To design a rational agent, the task environment must be fully specified using the PEAS description:
+**PEAS Framework:** To design an agent, we specify its task environment using PEAS:
 
-1. **Performance Measure:** The criterion for evaluating the agent's success (e.g., safe arrival, minimized time, fuel efficiency for a self-driving car).
-2. **Environment:** The external world in which the agent operates (e.g., roads, traffic, pedestrians).
-3. **Actuators:** The mechanisms through which the agent acts on the environment (e.g., steering, accelerator, brake, signals).
-4. **Sensors:** The devices through which the agent perceives the environment (e.g., cameras, GPS, speedometer, LIDAR).
+- **P — Performance Measure:** Criteria for success (e.g., safe, fast, legal driving for a taxi agent).
+- **E — Environment:** The world the agent operates in (e.g., roads, traffic, pedestrians).
+- **A — Actuators:** Mechanisms to take actions (e.g., steering, accelerator, brake, signal).
+- **S — Sensors:** Devices to perceive the environment (e.g., cameras, GPS, speedometer).
 
-**Environment Types:**
+**Environment Properties:**
 
-The nature of the environment significantly influences agent design:
+1. **Fully observable vs. Partially observable:** Whether sensors detect all relevant aspects of the environment state.
+2. **Deterministic vs. Stochastic:** Whether the next state is completely determined by the current state and action.
+3. **Episodic vs. Sequential:** Whether the agent's experience is divided into independent episodes or current decisions affect future ones.
+4. **Static vs. Dynamic:** Whether the environment changes while the agent deliberates.
+5. **Discrete vs. Continuous:** Whether there are a finite number of distinct states, percepts, and actions.
+6. **Single agent vs. Multi-agent:** Whether the environment contains other agents (cooperative or competitive).
+7. **Known vs. Unknown:** Whether the agent knows the rules/laws governing the environment.
 
-1. **Fully observable vs. Partially observable:** In a fully observable environment, the agent's sensors give it access to the complete state of the environment at each time step. In a partially observable environment, some aspects of the state are hidden due to noisy or limited sensors.
-2. **Deterministic vs. Stochastic:** A deterministic environment means the next state is completely determined by the current state and the agent's action. A stochastic environment involves randomness or uncertainty in outcomes.
-3. **Episodic vs. Sequential:** In an episodic environment, the agent's experience is divided into atomic episodes where each episode's action does not affect future episodes. In a sequential environment, current decisions affect all future decisions.
-4. **Static vs. Dynamic:** A static environment does not change while the agent is deliberating. A dynamic environment can change during deliberation, requiring the agent to act quickly or accept a less optimal decision.
-5. **Discrete vs. Continuous:** A discrete environment has a finite number of distinct states, percepts, and actions. A continuous environment has a continuous range of values.
-6. **Single-agent vs. Multi-agent:** A single-agent environment has only one agent acting. A multi-agent environment has multiple agents that may be cooperative or competitive.
-7. **Known vs. Unknown:** In a known environment, the agent knows the outcomes (or outcome probabilities) for all actions. In an unknown environment, the agent must learn how the environment works.
+**Types of Agents:**
 
-**Types of Intelligent Agents:**
+**1. Simple Reflex Agents:** Act based only on the current percept using condition-action rules (if-then rules), ignoring percept history. They work only in fully observable environments. Example: a thermostat that turns on heating when temperature drops below a threshold.
 
-1. **Simple Reflex Agents:** These agents select actions based only on the current percept, ignoring the rest of the percept history. They use condition-action rules of the form "if condition then action." They work only in fully observable environments because they have no memory. For example, a thermostat that turns on heating if the temperature drops below a threshold.
+**2. Model-Based Reflex Agents:** Maintain an internal state (model of the world) to handle partial observability. The internal state is updated using knowledge of how the world evolves and how the agent's actions affect the world. Example: a self-driving car that tracks the positions of other vehicles even when they are temporarily occluded.
 
-2. **Model-Based Reflex Agents:** These agents maintain an internal state that tracks aspects of the world not currently visible. They use a model of the world that describes how the world evolves independently of the agent and how the agent's actions affect the world. This internal state is updated using the current percept and the previous state. They can handle partially observable environments.
+**3. Goal-Based Agents:** Beyond knowing the current state, these agents have goal information that describes desirable states. They use search and planning to find action sequences leading to the goal. More flexible than reflex agents because the goal can be changed without rewriting rules. Example: a navigation agent planning a route from source to destination.
 
-3. **Goal-Based Agents:** In addition to maintaining an internal state, these agents have goal information that describes desirable situations. They consider the future consequences of actions by using search and planning algorithms to find action sequences that achieve their goals. They are more flexible than reflex agents because changing the goal changes the agent's behavior without rewriting condition-action rules.
+**4. Utility-Based Agents:** Use a utility function that maps a state to a real number indicating the degree of "happiness." When multiple action sequences achieve the goal, the agent chooses the one that maximizes expected utility. Handles trade-offs (e.g., faster but riskier vs. slower but safer routes). Example: a taxi agent that balances speed, safety, fuel cost, and passenger comfort.
 
-4. **Utility-Based Agents:** These agents use a utility function that maps a state (or a sequence of states) to a real number representing the degree of happiness or satisfaction. When there are multiple possible goal states or conflicting goals, the utility function allows the agent to choose the action that maximizes expected utility. This is especially useful in stochastic environments where the agent must make trade-offs.
+**5. Learning Agents:** Have four conceptual components:
 
-5. **Learning Agents:** These agents can improve their performance over time through experience. A learning agent has four conceptual components: the **learning element** (responsible for making improvements by modifying the performance element based on feedback), the **performance element** (selects external actions based on percepts, equivalent to the agent types described above), the **critic** (provides feedback on how the agent is doing relative to a fixed performance standard), and the **problem generator** (suggests exploratory actions that lead to new and informative experiences).
+- **Learning element:** Makes improvements based on feedback from the critic.
+- **Performance element:** Selects external actions (this is the previously described agent).
+- **Critic:** Provides feedback on how the agent is doing relative to a fixed performance standard.
+- **Problem generator:** Suggests exploratory actions that may lead to new and informative experiences.
 
-**Implementation:**
-
-Agent programs can be implemented using various approaches depending on the complexity of the task: lookup tables (impractical for real problems due to enormous table size), condition-action rules, state-based models with internal representations, goal-based search and planning algorithms, or machine learning techniques that adapt over time.
+Example: a chess-playing agent that starts with basic rules, plays games, learns from wins and losses, and improves its strategy over time.
 
 ---
 
 # 1.2 Advanced Search Techniques
 
-> **What are the limitations of A\* search? How does the iterative deepening search resolve these problems? Explain in detail. [7 marks] (2025 Spring - PU)**
+> **Why is the bidirectional A\* search more efficient than the standard A\* search? Illustrate with a suitable example. (7) (Spring 2025)**
+>
+> **What are the limitations of A\* search? How does the iterative deepening search resolve these problems? (7) (Internal 2025)**
 
-**Limitations of A\* Search:**
+**A\* Search (Recap):** A\* is a best-first search that uses the evaluation function **f(n) = g(n) + h(n)**, where g(n) is the path cost from start to node n, and h(n) is the heuristic estimate from n to the goal. A\* is complete and optimal when the heuristic is admissible (never overestimates) and consistent (h(n) ≤ c(n,a,n') + h(n')).
 
-A\* is an optimal and complete best-first search algorithm that uses the evaluation function f(n) = g(n) + h(n), where g(n) is the path cost from the start to node n, and h(n) is an admissible heuristic estimate of the cost from n to the goal. Despite its optimality, A\* has significant limitations:
-
-1. **Exponential memory usage:** A\* stores all generated nodes in memory (both the open list and closed list). For large state spaces, this causes the algorithm to exhaust available memory long before it exhausts time.
-2. **Exponential time complexity:** In the worst case, the number of nodes expanded is exponential in the solution depth, specifically O(b^d) where b is the branching factor and d is the solution depth.
-3. **Impractical for large-scale problems:** Problems like the 15-puzzle or route planning on large maps can generate millions of nodes, making standard A\* infeasible.
+**Limitations of A\*:** A\* stores all generated nodes in memory (both OPEN and CLOSED lists). Its space complexity is O(b^d), which makes it impractical for large state spaces — it often runs out of memory before running out of time.
 
 ## 1.2.1 Bidirectional A\* Search
 
-Bidirectional A\* runs two simultaneous A\* searches: a forward search from the initial state toward the goal and a backward search from the goal state toward the initial state. The algorithm terminates when the two search frontiers meet.
+Bidirectional A\* runs two simultaneous searches: one **forward** from the initial state and one **backward** from the goal state, until the two search frontiers meet. Each direction uses the A\* evaluation function.
 
-**Advantage:** The theoretical time complexity is reduced from O(b^d) to O(b^(d/2)), because each search only needs to explore half the depth of the solution.
+**Why more efficient:** If the branching factor is b and the solution depth is d, standard A\* explores O(b^d) nodes. Bidirectional search explores roughly O(2 × b^(d/2)) = O(b^(d/2)) nodes, which is exponentially smaller.
 
-**Challenges:**
+**Working:**
 
-1. The backward search requires the ability to generate predecessor states, which is not always straightforward.
-2. Determining the optimal termination condition is complex. Simply stopping when the frontiers first meet does not guarantee an optimal path. The algorithm must ensure that no unexplored path could produce a shorter total cost.
-3. The two searches need different heuristic functions: the forward search uses h(n) estimating cost to the goal, while the backward search uses h(n) estimating cost to the start.
-4. The algorithmic complexity of correctly implementing and synchronizing the two searches often outweighs the practical performance gains over standard unidirectional A\*.
+1. Maintain two open lists: OPEN_F (forward) and OPEN_B (backward).
+2. Alternate expanding the node with the smallest f-value from each frontier.
+3. When a node appears in both the forward and backward CLOSED lists, a solution path is found.
+4. The algorithm must verify this is the optimal path by checking if the sum g_F(n) + g_B(n) for the meeting node is ≤ the minimum f-value in either open list.
+
+**Example:** Finding shortest path from city A to city Z in a road network. Forward search explores from A; backward search explores from Z. They meet at some intermediate city M, producing path A→...→M→...→Z. Instead of exploring the entire space from A to Z, each direction only explores roughly half the depth.
+
+**Challenges:** Requires a well-defined way to search backward (predecessor generation), and selecting which frontier to expand next is non-trivial.
 
 ## 1.2.2 Iterative Deepening A\* (IDA\*)
 
-IDA\* combines the optimality guarantee of A\* with the linear memory usage of depth-first search. It resolves the primary limitation of A\*, which is its exponential memory requirement.
+IDA\* combines the optimality of A\* with the space efficiency of depth-first search. It performs a series of depth-first searches, each with an increasing f-cost limit (threshold), instead of a depth limit.
 
 **Algorithm:**
 
-1. Set the initial cost threshold (cutoff) to f(start) = h(start), since g(start) = 0.
-2. Perform a depth-first search, expanding nodes only if f(n) = g(n) + h(n) does not exceed the current threshold. If f(n) exceeds the threshold, the node is not expanded and its f-value is recorded.
-3. If the goal is found, return the solution. If the goal is not found within the current threshold, set the new threshold to the minimum f-value among all nodes that exceeded the previous threshold.
-4. Repeat the depth-first search with the new threshold.
-5. Continue until the goal is found.
+1. Set the initial threshold = h(start).
+2. Perform a depth-first search, pruning any node where f(n) > threshold.
+3. If the goal is found, return the solution.
+4. Otherwise, set the new threshold = minimum f-value among all nodes that exceeded the previous threshold.
+5. Repeat until a solution is found.
 
 **Properties:**
 
-1. **Space complexity:** O(bd), which is linear, since it only stores the nodes along the current path (like DFS). This is the key advantage over A\*.
-2. **Optimality:** IDA\* is optimal if the heuristic h(n) is admissible (never overestimates the true cost).
-3. **Completeness:** IDA\* is complete for finite state spaces with non-negative step costs.
-4. **Re-expansion overhead:** Because IDA\* does not maintain a closed list, it may re-expand the same nodes across different iterations. However, this overhead is typically acceptable because the majority of nodes are generated in the final iteration.
-5. **Best suited for:** Memory-constrained environments where standard A\* runs out of memory, such as large combinatorial puzzles (e.g., 15-puzzle, Rubik's Cube).
+- **Space complexity:** O(bd) — linear, like depth-first search, since it does not store the frontier.
+- **Optimality:** Guaranteed when the heuristic is admissible.
+- **Time complexity:** May revisit nodes in successive iterations, but the overhead is usually small because most nodes are at the deepest level.
 
-**Limitation of IDA\*:** In domains where f-values are real-valued (continuous), the threshold may only increase by a tiny amount at each iteration, causing an impractically large number of iterations. In such cases, IDA\* with an epsilon-increase strategy or other memory-bounded algorithms like RBFS or SMA\* are preferred.
+IDA\* resolves A\*'s memory problem by trading space for time — it uses only linear memory while still finding optimal solutions.
 
 ## 1.2.3 Online Search
 
-In standard (offline) search, the agent computes a complete solution before taking any action. In contrast, **online search** interleaves computation with action. The agent does not have a complete model of the environment and must explore it by physically taking actions, observing outcomes, and updating its knowledge.
+In **offline search**, the agent computes a complete solution before taking any action. In **online search**, the agent interleaves computation and action — it must act before knowing the full search space. Online search is necessary in **unknown or partially observable environments** where the agent discovers the state space by exploring.
 
-**Why online search is needed:**
+**Online DFS Agent:** Maintains a map of states it has visited and the results of actions taken. It uses depth-first exploration, backtracking when it reaches dead ends. It maintains an untried list for each state (actions not yet attempted) and an unbacktracked list (states from which it hasn't backtracked).
 
-1. The environment is unknown, so the agent cannot build a complete search tree in advance.
-2. The environment may be dynamic, requiring the agent to react to changes.
-3. The environment may be too large for offline computation.
+**Key characteristics:**
 
-**Online DFS Agent:**
-
-The simplest online search algorithm is Online DFS, which explores the state space using depth-first traversal. It maintains a map of visited states and the results of actions taken. When the agent reaches a dead end (no unvisited successors), it backtracks to the most recent state that has unexplored successors. This requires that actions be reversible.
-
-**LRTA\* (Learning Real-Time A\*):**
-
-LRTA\* is an online heuristic search algorithm that allows the agent to learn better heuristic values through experience. At each step, the agent updates the heuristic value of the current state to reflect the best f-value among its neighbors, then moves to the neighbor with the lowest estimated cost. Over time, the heuristic values converge to the true shortest-path distances, ensuring that the agent eventually finds the optimal path if the environment is safely explorable.
-
-**Challenges in online search:**
-
-1. **Irreversible actions:** If the agent takes an action that cannot be undone (e.g., falling off a cliff), it may reach a dead end from which the goal is unreachable.
-2. **Competitive ratio:** The performance of an online algorithm is measured by comparing the actual path cost (including exploration) to the optimal offline path cost. The competitive ratio can be unbounded in the worst case for environments with dead ends.
-3. **Safely explorable environments:** An environment is safely explorable if there exists a path from every reachable state to every other reachable state. In such environments, the agent is guaranteed to eventually find the goal.
+- The agent cannot plan ahead because the transition model is unknown.
+- Competitive ratio measures online algorithm quality: the ratio of the online path cost to the actual optimal path cost.
+- Learning real-time A\* (LRTA\*) is an online version that updates heuristic estimates based on experience, eventually finding optimal paths.
 
 ---
 
 # 1.3 Local Search
 
-Local search algorithms operate on a single current state (rather than maintaining a search tree) and move to neighboring states. They are useful for optimization problems where the path to the solution does not matter, only the final state. They use very little memory and can find reasonable solutions in large or infinite state spaces.
-
-**Hill-Climbing Search (Steepest-Ascent):**
-
-Hill climbing continuously moves to the neighbor with the highest value (or lowest cost). It terminates when no neighbor has a better value than the current state. Hill climbing is fast and memory-efficient but suffers from several problems:
-
-1. **Local maxima:** A peak higher than all its neighbors but lower than the global maximum. The algorithm gets stuck because all moves appear to go downhill.
-2. **Ridges:** A sequence of local maxima that are not directly connected by uphill moves. The surface slopes upward in a direction that is not aligned with the available moves.
-3. **Plateaux:** A flat area of the state space where all neighbors have the same value. The algorithm cannot determine which direction to move.
-
-## 1.3.1 Simulated Annealing
-
-> **How does the simulated annealing resolve the problems of local hill-climbing search? Apply the simulated annealing to optimize a function: f(x) = −x² + 4x. [8 marks] (2025 Spring - PU)**
+> **Why are the local searches more space-efficient? Why may the hill-climbing search get stuck in local maximum? How can this be resolved? (8) (Spring 2025)**
 >
-> **OR**
+> **How does the simulated annealing resolve the problems of local hill-climbing search? Apply the simulated annealing to optimize a function: f(x) = −x² + 4x. (8) (Internal 2025)**
 >
-> **What is the idea behind the local beam search? Illustrate with a suitable example. (2025 Spring - PU)**
+> **What is the idea behind the local beam search? Illustrate with a suitable example. (Internal 2025)**
 
-Simulated annealing resolves the problems of hill climbing by allowing the algorithm to occasionally accept worse moves, thereby escaping local maxima. It is inspired by the metallurgical process of annealing, where a material is heated and then slowly cooled to reach a low-energy crystalline state.
+Local search algorithms operate on a **single current state** (or a small set of states) and move to neighboring states. They do not maintain a search tree or track paths. They are useful for **optimization problems** where the goal is to find the best state according to an objective function, and the path to the solution is irrelevant.
+
+**Advantages:** Use very little memory (constant space) and can find reasonable solutions in large or infinite state spaces where systematic search is impractical.
+
+**State-space landscape:** Visualized as a surface where each point is a state, the height is the objective function value, and the agent moves across the landscape trying to find the highest peak (maximum) or lowest valley (minimum).
+
+## 1.3.1 Hill-Climbing Search
+
+Also called **greedy local search**, it continuously moves to the neighboring state with the highest value (for maximization). It terminates when no neighbor has a higher value than the current state.
 
 **Algorithm:**
 
-1. Start with an initial state and a high temperature T.
-2. At each step, randomly select a neighbor of the current state.
-3. If the neighbor is better (higher value for maximization), always accept the move.
-4. If the neighbor is worse by an amount ΔE (where ΔE = value(neighbor) − value(current) < 0), accept the move with probability p = e^(ΔE/T). At high temperatures, this probability is close to 1, so worse moves are accepted frequently. At low temperatures, the probability approaches 0, making the algorithm behave like standard hill climbing.
-5. Gradually decrease the temperature according to a cooling schedule (e.g., T = T × α, where 0 < α < 1).
-6. Terminate when the temperature reaches zero or a sufficiently small value.
+1. Start with an initial state (current).
+2. Generate all neighbors of current.
+3. If the best neighbor is better than current, move to it. Otherwise, stop.
 
-**Properties:**
+**Problems (why it gets stuck):**
 
-1. If the temperature is decreased slowly enough, simulated annealing is guaranteed to find the global optimum with probability approaching 1.
-2. The cooling schedule is critical. Too fast results in getting stuck; too slow wastes computation.
-3. It is widely used in VLSI layout, scheduling, and combinatorial optimization problems.
+1. **Local maxima:** A peak that is higher than all its neighbors but not the global maximum. The algorithm stops here, thinking it has found the best.
+2. **Ridges:** A sequence of local maxima that makes it difficult for greedy moves to navigate.
+3. **Plateaus (flat regions):** Areas where neighboring states have the same value. The algorithm cannot determine which direction to move. A plateau may be a shoulder (eventually leads upward) or a flat local maximum.
 
-**Example: Optimizing f(x) = −x² + 4x**
+**Variants to mitigate these issues:**
 
-The maximum of f(x) = −x² + 4x occurs at x = 2 (by setting f'(x) = −2x + 4 = 0), giving f(2) = 4.
+- **Stochastic hill climbing:** Chooses randomly among uphill moves, with probability proportional to steepness. Slower convergence but may escape some local maxima.
+- **First-choice hill climbing:** Generates successors randomly until one is better than current. Useful when a state has many successors.
+- **Random-restart hill climbing:** Conducts a series of hill-climbing searches from randomly generated initial states. Complete with probability approaching 1. If each search has probability p of finding the global maximum, the expected number of restarts is 1/p.
 
-Step-by-step application:
+## 1.3.2 Simulated Annealing
 
-1. Start with x₀ = 0, T = 10, cooling rate α = 0.8.
-2. f(0) = 0. Generate random neighbor x₁ = 1. f(1) = −1 + 4 = 3. ΔE = 3 − 0 = 3 > 0, so accept. Current state: x = 1.
-3. T = 10 × 0.8 = 8. Generate neighbor x₂ = 3. f(3) = −9 + 12 = 3. ΔE = 3 − 3 = 0, accept.
-4. T = 8 × 0.8 = 6.4. Generate neighbor x₃ = 2. f(2) = −4 + 8 = 4. ΔE = 4 − 3 = 1 > 0, accept. Current state: x = 2.
-5. T = 6.4 × 0.8 = 5.12. Generate neighbor x₄ = 4. f(4) = −16 + 16 = 0. ΔE = 0 − 4 = −4. Probability = e^(−4/5.12) ≈ e^(−0.78) ≈ 0.458. Generate random number r. If r < 0.458, accept; otherwise reject.
-6. Continue decreasing T and repeating until convergence. The algorithm converges to x = 2 with f(2) = 4.
+Simulated annealing resolves the local maxima problem of hill climbing by allowing **"downhill" moves** (moves to worse states) with a probability that decreases over time. It is inspired by the metallurgical process of annealing — heating metal and slowly cooling it to reach a low-energy crystalline state.
 
-## 1.3.2 Local Beam Search
+**Algorithm:**
 
-Local beam search maintains k states in parallel rather than just one. At each step, it generates all successors of all k states, then selects the k best successors from the entire pool.
+1. Start with initial state and a high temperature T.
+2. At each step, pick a random neighbor.
+3. If the neighbor is better (ΔE > 0), always move to it.
+4. If the neighbor is worse (ΔE < 0), move to it with probability **p = e^(ΔE/T)**.
+5. Decrease T according to a cooling schedule.
+6. Repeat until T ≈ 0 or a termination condition is met.
+
+At high T, the probability of accepting bad moves is high (exploration). As T decreases, the probability drops and the search behaves more like hill climbing (exploitation). If the schedule lowers T slowly enough, the algorithm is guaranteed to find the global optimum.
+
+**Example — Optimize f(x) = −x² + 4x:**
+
+The maximum is at x = 2 (by calculus: f'(x) = −2x + 4 = 0 → x = 2, f(2) = 4).
+
+1. Initialize: x_current = 0, T = 10, cooling rate α = 0.9.
+2. Iteration 1: Random neighbor x_new = 1. ΔE = f(1) − f(0) = 3 − 0 = 3 > 0 → Accept. Current = 1.
+3. Iteration 2: T = 9. Random neighbor x_new = 3. ΔE = f(3) − f(1) = 3 − 3 = 0 → Accept (no change).
+4. Iteration 3: T = 8.1. Random neighbor x_new = 2. ΔE = f(2) − f(3) = 4 − 3 = 1 > 0 → Accept. Current = 2.
+5. As T → 0, the algorithm settles at x = 2, f(x) = 4, which is the global maximum.
+
+## 1.3.3 Local Beam Search
+
+Local beam search keeps track of **k states** simultaneously rather than just one.
 
 **Algorithm:**
 
 1. Start with k randomly generated states.
-2. At each step, generate all successors of all k current states.
-3. If any successor is a goal state, stop and return it.
-4. Otherwise, select the k best successors from the complete list and repeat.
+2. At each step, generate all successors of all k states.
+3. If any successor is a goal, stop.
+4. Otherwise, select the k best successors from the entire pool and repeat.
 
-**Distinction from running k random hill climbs in parallel:** In k parallel hill climbs, each search is independent and does not share information. In local beam search, the k searches share information through the selection step. If one state generates several good successors and another state generates poor successors, the algorithm abandons the poor line of search and concentrates resources on the more promising region.
+**Key difference from k parallel hill climbs:** In random-restart hill climbing with k parallel searches, each search is independent. In local beam search, information is **shared** — if one state generates several good successors, the other states can be abandoned, concentrating resources on the more promising region.
 
-**Problem:** Local beam search can suffer from a lack of diversity. All k states may quickly converge to a small region of the state space, effectively reducing the search to a single hill climb.
+**Problem:** Can suffer from lack of diversity — all k states may converge to the same local region. **Stochastic beam search** addresses this by selecting successors with probability proportional to their value, similar to natural selection, maintaining diversity.
 
-**Stochastic beam search** addresses this by selecting successors probabilistically, with probability proportional to the successor's value, rather than always selecting the k best. This maintains diversity and is analogous to natural selection in evolutionary biology.
+**Example:** Finding the minimum of a function over integers 1–10 with k=3. Start with states {2, 7, 5}. Generate neighbors for each, evaluate, pick the 3 best from all neighbors combined, and repeat.
 
-**Example:** Consider finding the maximum of f(x) = −(x−3)² + 9 with k = 3.
+## 1.3.4 Searching in Partially Observable Environments
 
-1. Start with k = 3 random states: x₁ = 0, x₂ = 5, x₃ = 1.
-2. f(0) = 0, f(5) = 5, f(1) = 5. Generate neighbors: for x₁: {−1, 1}, for x₂: {4, 6}, for x₃: {0, 2}.
-3. Evaluate all successors: f(−1) = −7, f(1) = 5, f(4) = 8, f(6) = 0, f(0) = 0, f(2) = 8.
-4. Select k = 3 best: x = 4 (f=8), x = 2 (f=8), x = 1 (f=5). The search concentrates around the optimal region (x = 3).
+When the environment is partially observable, the agent cannot determine the exact current state. Instead, it works with **belief states** — sets of possible physical states the agent might be in.
 
-## 1.3.3 Searching in Partially Observable Environments
+**Sensorless (Conformant) problems:** The agent has no observations at all. It searches in belief-state space, where each belief state is a set of physical states. An action transforms a belief state by applying the transition model to every state in the set. A solution is a sequence of actions that maps the initial belief state to a belief state where every physical state is a goal.
 
-When the agent cannot fully observe the environment's state, it must reason about sets of possible states rather than a single known state.
+**Partially observable problems:** The agent receives partial observations after each action. The belief state is updated using both the action's predicted effect and the observation received (state estimation). This combines prediction (through the transition model) and filtering (through the observation model).
 
-**Belief State:**
-
-A belief state is the set of all physical states the agent considers possible given its percept history. The agent searches through belief-state space rather than physical state space.
-
-**Sensorless (Conformant) Problems:**
-
-When the agent has no sensors at all, it must find a plan that works regardless of which state it starts in. The initial belief state is the set of all possible states. Each action transforms the belief state by applying the action to every state in the set. A solution is a sequence of actions that maps the initial belief state to a belief state where every state satisfies the goal.
-
-**Contingency Problems:**
-
-When the agent receives partial observations, it can use percepts to narrow its belief state during execution. This leads to contingency plans (conditional plans) that branch depending on what the agent perceives. The solution takes the form of an AND-OR tree, where OR nodes represent agent choices and AND nodes represent possible outcomes of actions or observations.
-
-**AND-OR Search:**
-
-AND-OR search is used to find contingent solutions. An OR node succeeds if any one of its children succeeds (the agent can choose the best action). An AND node succeeds only if all of its children succeed (the solution must handle every possible outcome). The solution is a subtree (not just a path) that reaches goal states at every leaf.
+**Contingency problems:** When observations are possible, the agent can create contingency plans — plans that branch based on what is observed. The plan takes the form: [action, if observation₁ then plan₁, if observation₂ then plan₂, ...].
 
 ---
 
-# 1.4 Games
+# 1.4 Games — Adversarial Search
 
-Games are a natural domain for studying adversarial search because they have well-defined rules, clear criteria for success, and an opponent whose behavior must be anticipated. In AI, a game is formally defined by: the initial state, a function that defines legal moves (actions) from a state, a transition model defining the result of each move, a terminal test determining when the game ends, and a utility function that assigns a numeric value to terminal states.
+> **No direct question appeared yet on this topic in available papers, but the syllabus explicitly includes it.**
 
-## 1.4.1 Adversarial Search
+Game playing is a classic AI problem because games are well-defined, have clear success criteria, and involve adversarial agents. A **game** can be formally defined by: initial state, player function (whose turn), actions, transition model, terminal test, and utility function.
 
-Adversarial search algorithms are used in competitive multi-agent environments where one agent's gain is another agent's loss (zero-sum games).
+## 1.4.1 Adversarial Search (Minimax)
 
-**Minimax Algorithm:**
+In a two-player zero-sum game, one player's gain is the other's loss. The **minimax algorithm** determines the optimal strategy by assuming the opponent also plays optimally.
 
-Minimax is the foundational algorithm for two-player, zero-sum, perfect-information games. It constructs a complete game tree where MAX (the agent) tries to maximize the utility and MIN (the opponent) tries to minimize it.
+**Minimax Value:**
 
-**Algorithm:**
+- If the node is terminal: UTILITY(n).
+- If it is MAX's turn: minimax(n) = max over successors s of minimax(s).
+- If it is MIN's turn: minimax(n) = min over successors s of minimax(s).
 
-1. Generate the complete game tree from the current state down to terminal states.
-2. Apply the utility function to each terminal state.
-3. Propagate values upward: at MAX nodes, choose the maximum of the children's values; at MIN nodes, choose the minimum.
-4. The optimal move for MAX at the root is the action leading to the child with the highest minimax value.
+**Algorithm:** Performs a complete depth-first exploration of the game tree. Time complexity: O(b^m), Space complexity: O(bm), where b is the branching factor and m is the maximum depth.
 
-**Properties:** Minimax is complete (if the game tree is finite), optimal (against an optimal opponent), has time complexity O(b^m) and space complexity O(bm), where b is the branching factor and m is the maximum depth.
+**Alpha-Beta Pruning:** An optimization of minimax that eliminates branches that cannot influence the final decision. It maintains two values: α (best value MAX can guarantee) and β (best value MIN can guarantee). If α ≥ β at any node, prune the remaining children. With perfect move ordering, it reduces the effective branching factor from b to √b, allowing search to twice the depth in the same time.
 
-**Alpha-Beta Pruning:**
+**Imperfect real-time decisions:** In practice, the game tree is too large to search completely. The agent uses:
 
-Alpha-beta pruning is an optimization of minimax that prunes branches that cannot influence the final decision, without changing the result.
-
-1. **Alpha (α):** The best value that MAX can guarantee along the current path (initialized to −∞).
-2. **Beta (β):** The best value that MIN can guarantee along the current path (initialized to +∞).
-3. **Pruning rule:** At a MIN node, if the value becomes ≤ α, prune the remaining children (MAX will never choose this path). At a MAX node, if the value becomes ≥ β, prune the remaining children (MIN will never choose this path).
-
-**Efficiency:** With perfect move ordering, alpha-beta pruning reduces the effective branching factor from b to approximately √b, effectively doubling the searchable depth compared to plain minimax within the same time budget.
-
-**Evaluation Functions and Cutoff:**
-
-For complex games like chess, it is infeasible to search to terminal states. The agent uses a depth-limited search with a heuristic evaluation function that estimates the utility of non-terminal states. The evaluation function should be fast to compute, agree with the utility function on terminal states, and correlate strongly with actual winning chances.
+- **Cutoff test:** Replace the terminal test with a depth limit.
+- **Evaluation function:** Replace the utility function with a heuristic estimate of the position's value (e.g., weighted material count in chess).
 
 ## 1.4.2 Monte Carlo Tree Search (MCTS)
 
-MCTS is a heuristic search algorithm that does not require a domain-specific evaluation function. Instead, it uses random simulations (playouts) to estimate the value of moves.
+MCTS evaluates moves through **random simulations** (playouts) rather than heuristic evaluation functions. It is especially effective for games with enormous branching factors (e.g., Go, with b ≈ 250).
 
-**Four phases (repeated iteratively):**
+**Four steps per iteration:**
 
-1. **Selection:** Starting from the root, repeatedly select child nodes using a tree policy until a leaf node or an unexpanded node is reached. The most common tree policy is the Upper Confidence Bound for Trees (UCT), which balances exploitation (choosing moves with high average reward) and exploration (choosing less-visited moves). UCT selects the child that maximizes: UCT(n) = Q(n)/N(n) + c × √(ln N(parent) / N(n)), where Q(n) is the total reward, N(n) is the visit count of node n, N(parent) is the visit count of the parent, and c is an exploration constant.
+1. **Selection:** Starting from the root, use a tree policy (e.g., UCB1 — Upper Confidence Bound) to traverse the tree, balancing exploration and exploitation.
+2. **Expansion:** When a leaf node is reached, add one or more child nodes to the tree.
+3. **Simulation (Rollout):** From the new node, play out the game randomly (or with a lightweight policy) until a terminal state.
+4. **Backpropagation:** Update the statistics (win/visit counts) of all nodes along the path from the new node back to the root.
 
-2. **Expansion:** Add one or more child nodes to the tree corresponding to untried actions from the selected leaf node.
+The UCB1 formula for node selection: **UCB1(n) = w_i/n_i + c × √(ln(N)/n_i)**, where w_i = wins, n_i = visits of child, N = visits of parent, c = exploration constant.
 
-3. **Simulation (Playout/Rollout):** From the newly expanded node, perform a random simulation by playing random moves until a terminal state is reached. The result (win, loss, or draw) is recorded.
-
-4. **Backpropagation:** Propagate the simulation result back up the tree, updating the visit count N and total reward Q of each ancestor node.
-
-**Properties:**
-
-1. MCTS is an anytime algorithm. It can be stopped at any time and will return the best move found so far (typically the move with the highest visit count from the root).
-2. With enough simulations, MCTS converges to the optimal solution (minimax).
-3. MCTS does not require a heuristic evaluation function, making it applicable to games where designing such a function is difficult.
-4. MCTS was the key algorithm behind AlphaGo's success in the game of Go, combined with deep neural networks for position evaluation and move selection.
+**Advantages:** Does not require a domain-specific evaluation function. It is anytime — more iterations improve the decision. It naturally handles large branching factors by focusing on promising moves.
 
 ## 1.4.3 Stochastic Games
 
-Stochastic games introduce an element of chance (randomness) into the game, such as dice rolls or card draws. The game tree now includes **chance nodes** in addition to MAX and MIN nodes.
+Stochastic games introduce **chance elements** (e.g., dice rolls, card deals). The game tree includes **chance nodes** in addition to MAX and MIN nodes. At chance nodes, the outcome is determined by probability.
 
-**Expectiminimax Algorithm:**
+**Expectiminimax Algorithm:** Extends minimax to handle chance:
 
-Expectiminimax extends minimax to handle chance nodes. It computes the expected utility at chance nodes by taking the weighted average of all possible outcomes.
+- Terminal node: UTILITY(n).
+- MAX node: max over successors.
+- MIN node: min over successors.
+- CHANCE node: **weighted average** (expected value) over all outcomes: Σ P(outcome) × expectiminimax(successor).
 
-1. At MAX nodes: choose the action with the maximum expected value.
-2. At MIN nodes: choose the action with the minimum expected value.
-3. At CHANCE nodes: compute the expected value as the sum of (probability × value) over all possible outcomes. That is, ExpectiMinimax(Chance) = Σᵢ P(dᵢ) × ExpectiMinimax(childᵢ).
+**Example:** In backgammon, after MAX decides a move, dice are rolled (chance node), then MIN plays. The algorithm computes the expected utility across all possible dice outcomes.
 
-**Example: Backgammon.**
+**Implication:** Alpha-beta pruning is less effective in stochastic games because chance nodes prevent tight bounding. The evaluation function must be a positive linear transformation of the true utility (not just order-preserving) for correct expectiminimax behavior.
 
-In backgammon, after each player decides a move, dice are rolled to determine the actual outcome. The game tree alternates: MAX → CHANCE → MIN → CHANCE → MAX → .... At each chance node, the algorithm weighs every possible dice roll by its probability.
-
-**Complexity:** The time complexity is O(b^m × n^m), where n is the number of distinct chance outcomes. This makes stochastic games significantly more expensive to solve than deterministic games.
-
-**Effect on evaluation functions:** In deterministic games, an evaluation function only needs to preserve the ordering of states (ordinal utility). In stochastic games, the evaluation function must preserve the relative magnitude of differences between state values because these are multiplied by probabilities. A nonlinear transformation of the utility values would change the expected values and lead to different (incorrect) decisions.
-
-**Pruning in stochastic games:** Standard alpha-beta pruning cannot be directly applied to chance nodes because the expected value depends on all children. However, if bounds on the utility values are known, a variant called star-alpha-beta (*-alpha-beta) pruning can be used to prune some branches.
+**Partially observable games:** Games where players have hidden information (e.g., card games like poker). The agent must reason about information sets — sets of states that are indistinguishable given the player's observations. Strategies may involve randomized actions to prevent exploitation.
