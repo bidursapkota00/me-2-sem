@@ -2,9 +2,9 @@
 
 # 5.1 Software Practices for Embedded Systems
 
-> **Evaluate the statement: "Good embedded software is not just about meeting functional requirements, but also about maintainability." Discuss the role of modularity, abstraction, and version control in achieving long-term software maintainability. [7 marks]**
+> **Evaluate the statement: "Good embedded software is not just about meeting functional requirements, but also about maintainability." Discuss the role of modularity, abstraction, and version control in achieving long-term software maintainability. [7 marks] (2025)**
 >
-> **Discuss advanced concepts of Modular Design and Separation of Concerns in embedded software with relevant industry examples. [7 marks]**
+> **Discuss advanced concepts of Modular Design and Separation of Concerns in embedded software with relevant industry examples. [7 marks] (2024)**
 
 Embedded software differs fundamentally from general-purpose application software. It runs on resource-constrained hardware, interacts directly with physical peripherals, must often meet real-time deadlines, and is expected to operate reliably for years or decades with minimal maintenance intervention. These constraints demand disciplined software practices that go beyond simply making the code work. The quality of embedded software is determined not only by its functional correctness but also by its readability, maintainability, testability, and portability. As Elecia White emphasizes in *Making Embedded Systems*, good architecture and disciplined practices are what separate professional firmware from fragile, unmaintainable code.
 
@@ -76,7 +76,7 @@ Coding standards also cover formatting conventions (indentation, brace placement
 
 # 5.2 Software Maintainability
 
-> **Evaluate the statement: "Good embedded software is not just about meeting functional requirements, but also about maintainability." [7 marks]**
+> **Evaluate the statement: "Good embedded software is not just about meeting functional requirements, but also about maintainability." [7 marks] (2025)**
 
 Software maintainability is the ease with which a software system can be modified to correct faults, improve performance, adapt to a changed environment, or add new functionality. In embedded systems, where products often remain in service for 10 to 20 years or longer, maintainability is not a luxury but an economic necessity. The cost of maintaining embedded software over its lifecycle typically exceeds the cost of initial development.
 
@@ -109,11 +109,11 @@ Unlike general-purpose software, embedded refactoring must account for real-time
 
 # 5.3 State Machines, Encapsulation, and Modularity
 
-> **How do design patterns improve embedded software quality? Using the Finite State Machine (FSM) pattern, explain how it simplifies the implementation of a complex control system compared to a monolithic procedural approach. [8 marks]**
+> **How do design patterns improve embedded software quality? Using the Finite State Machine (FSM) pattern, explain how it simplifies the implementation of a complex control system compared to a monolithic procedural approach. [8 marks] (2025)**
 >
-> **Explain the role of Encapsulation in enhancing maintainability and reliability, citing real-world use cases. [8 marks]**
+> **Explain the role of Encapsulation in enhancing maintainability and reliability, citing real-world use cases. [8 marks] (2024)**
 >
-> **Explain how modular design and separation of concerns contribute to the scalability of embedded systems with the relevant example. [7 marks]**
+> **Explain how modular design and separation of concerns contribute to the scalability of embedded systems with the relevant example. [7 marks] (Model)**
 
 ## 5.3.1 Finite State Machines (FSMs) and Hierarchical FSMs
 
@@ -202,9 +202,9 @@ Modular design with interfaces directly enables system scalability. To add a new
 
 # 5.4 Design Patterns and Testing
 
-> **How do design patterns improve embedded software quality? [8 marks]**
+> **How do design patterns improve embedded software quality? [8 marks] (2025)**
 >
-> **Write short notes on: Unit Testing [5 marks]**
+> **Write short notes on: Unit Testing [5 marks] (2025)**
 
 ## 5.4.1 Event Queues and Watchdog Timers
 

@@ -2,9 +2,9 @@
 
 # 4.1 Real-Time Requirements and System Models
 
-> **Identify and classify the system's real-time requirements. Which tasks are hard real-time? Which are soft real-time? [2+2]**
+> **Identify and classify the system's real-time requirements. Which tasks are hard real-time? Which are soft real-time? [2+2] (Model)**
 >
-> **Model the system using event-triggered and time-triggered paradigms. [4]**
+> **Model the system using event-triggered and time-triggered paradigms. [4] (Model)**
 
 A real-time system is a computing system that must respond to external events within a specified time constraint called a deadline. Correctness in a real-time system depends not only on the logical result of the computation but also on the time at which the result is produced. Real-time systems are the foundation of most embedded applications, including automotive control, robotics, avionics, medical devices, and industrial automation.
 
@@ -56,9 +56,9 @@ Jitter is the variation in the timing of a recurring event. Release jitter is th
 
 # 4.2 Task Scheduling: Fixed and Dynamic Priority
 
-> **Check whether tasks are schedulable using Earliest Deadline First (EDF) Scheduling. Apply Rate Monotonic Scheduling and Earliest Deadline First Scheduling. [8]**
+> **Check whether tasks are schedulable using Earliest Deadline First (EDF) Scheduling. Apply Rate Monotonic Scheduling and Earliest Deadline First Scheduling. [8] (2025)**
 >
-> **Analyze the CPU utilization using Rate Monotonic Scheduling and Earliest Deadline First on periodic tasks. [5]**
+> **Analyze the CPU utilization using Rate Monotonic Scheduling and Earliest Deadline First on periodic tasks. [5] (Model)**
 
 Task scheduling is the mechanism by which the operating system or runtime determines which task should execute on the processor at any given time. In real-time systems, the scheduling algorithm must ensure that all tasks meet their deadlines.
 
@@ -119,7 +119,7 @@ Using the same tasks: U = 0.75. Since 0.75 ≤ 1.0, the task set is schedulable 
 
 ## 4.2.3 Priority Inversion, and Mitigation (Priority Inheritance and Priority Ceiling)
 
-> **Explain the concept of priority inversion in an RTOS. Illustrate how it can occur and critically evaluate the effectiveness of priority inheritance and priority ceiling protocols in mitigating it. [7]**
+> **Explain the concept of priority inversion in an RTOS. Illustrate how it can occur and critically evaluate the effectiveness of priority inheritance and priority ceiling protocols in mitigating it. [7] (2025)**
 
 **Priority Inversion:**
 
@@ -229,7 +229,7 @@ The MPU is a hardware component available on ARM Cortex-M3 and higher processors
 
 # 4.5 Design Using FreeRTOS
 
-> **Consider a real-time embedded system controlling a robotic arm, which performs three periodic tasks. Check schedulability and apply RMS and EDF. [8]**
+> **Consider a real-time embedded system controlling a robotic arm, which performs three periodic tasks. Check schedulability and apply RMS and EDF. [8] (2025)**
 
 FreeRTOS is a widely used, open-source, real-time operating system kernel designed for microcontrollers and small embedded systems. It is written in C and supports over 40 processor architectures including ARM Cortex-M, RISC-V, and MSP430. FreeRTOS provides a preemptive, priority-based scheduler with optional time-slicing, and its kernel is small enough to run on processors with as little as 4 KB of RAM.
 
