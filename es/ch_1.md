@@ -3,12 +3,16 @@
 # 1.1 Embedded Computing Systems
 
 > **Embedded Systems are everywhere, but you rarely see them. Justify this statement with suitable example. [8 marks] (2025)**
+>
+> **Critically analyze the concept of embedded systems, discussing architectural characteristics and operational constraints. [7 marks] (2024)**
 
 An embedded system is a special-purpose computing system designed to perform one or a few dedicated functions, often as part of a larger mechanical or electrical system. Unlike general-purpose computers such as laptops or desktops, embedded systems are tightly integrated into the products they control and are usually invisible to the end user.
 
 Examples include anti-lock braking systems (ABS) in automobiles, microwave oven controllers, smart thermostats, medical pacemakers, and the control units inside washing machines. These systems are everywhere, from consumer electronics and home appliances to automotive, industrial, medical, and military applications. Users interact with the product's functionality without being aware that a dedicated computer is operating inside.
 
 ## 1.1.1 Basic Components: Processor, Memory, Peripherals and I/O Devices
+
+> **Identify and explain the essential components of an embedded system, illustrating with two complex real-world applications. [8 marks] (2024)**
 
 Every embedded system is built around four fundamental hardware components.
 
@@ -232,6 +236,20 @@ The integrated system is tested against the original requirements specification.
 
 After successful validation, the system is manufactured, deployed, and delivered to end users. Post-deployment activities include monitoring field performance, releasing firmware updates to fix bugs or add features, and providing technical support throughout the product lifecycle.
 
-**Example: ABS Embedded System Design**
+**Example 1: ABS Embedded System Design**
 
 Consider the design of an Anti-lock Braking System (ABS) for a vehicle. The requirements include monitoring four wheel-speed sensors at a rate of at least 100 Hz, detecting impending wheel lock-up within 5 ms, modulating hydraulic brake pressure through solenoid valves, and operating reliably from -40°C to 125°C. The architecture consists of a 32-bit automotive-grade microcontroller, wheel-speed sensor interfaces (ADC or pulse counters), solenoid valve drivers (GPIO with current amplifiers), a CAN bus interface for communication with the vehicle network, and a power management unit. The control algorithm is implemented in software for flexibility, while time-critical sensor sampling is handled by hardware timers and interrupt-driven routines.
+
+- **Processor:** A 32-bit automotive-grade microcontroller (e.g., ARM Cortex-R or Cortex-M class) rated for extended temperature range, capable of executing the control algorithm within the 5 ms deadline.
+- **Memory:** Flash memory stores the brake control firmware and calibration tables. RAM holds real-time wheel-speed data, computed slip ratios, and controller state variables.
+- **Peripherals and I/O:** Four ADC channels or timer-based pulse counters read wheel-speed sensor signals. GPIO pins with high-current drivers control hydraulic solenoid valves. A CAN bus controller communicates with the vehicle's ECU network. Timers generate periodic interrupts for fixed-rate sampling.
+- **Operational Constraints:** Hard real-time deadlines (5 ms response), extreme operating temperature (-40°C to 125°C), high reliability (ISO 26262 ASIL-D functional safety certification), vibration and shock resistance, and automotive-grade component lifetime (15+ years).
+
+**Example 2: Smart Patient Monitoring System**
+
+A hospital-grade patient monitoring system continuously tracks a patient's vital signs — heart rate (ECG), blood oxygen saturation (SpO2), blood pressure, respiratory rate, and body temperature — and raises alarms when any parameter exceeds safe thresholds.
+
+- **Processor:** A low-power ARM Cortex-M4 microcontroller with floating-point unit (FPU) for real-time digital signal processing of ECG waveforms (QRS detection, arrhythmia analysis) and SpO2 signal processing.
+- **Memory:** Flash memory stores the firmware, alarm threshold tables, and patient configuration profiles. RAM holds incoming sensor data buffers, processed waveform samples, and real-time trend data. EEPROM stores patient ID and calibration constants that persist across power cycles.
+- **Peripherals and I/O:** Multiple high-resolution ADC channels simultaneously sample ECG electrodes and SpO2 photodiode signals at rates up to 500 Hz. A DAC drives the SpO2 LED emitter with precisely controlled current pulses. GPIO pins interface with alarm buzzers and indicator LEDs. A UART or USB interface connects to a bedside display unit. A Wi-Fi or Ethernet module transmits patient data to the hospital's central monitoring station. Timers generate precise sampling intervals for each sensor channel.
+- **Operational Constraints:** Soft real-time requirement for waveform display (latency under 100 ms for visual responsiveness) combined with hard real-time requirement for critical alarm detection (arrhythmia detection within 1 second). Strict regulatory compliance (IEC 62304 for medical device software, IEC 60601 for electrical safety). Patient safety demands that no single hardware or software failure can suppress a critical alarm (redundant alarm pathways). Low power consumption for battery-backed operation during patient transport. Data security and privacy compliance (HIPAA) for transmitted patient data. Continuous operation for days or weeks without reboot.

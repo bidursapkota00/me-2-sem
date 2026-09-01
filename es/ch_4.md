@@ -59,6 +59,10 @@ Jitter is the variation in the timing of a recurring event. Release jitter is th
 > **Check whether tasks are schedulable using Earliest Deadline First (EDF) Scheduling. Apply Rate Monotonic Scheduling and Earliest Deadline First Scheduling. [8] (2025)**
 >
 > **Analyze the CPU utilization using Rate Monotonic Scheduling and Earliest Deadline First on periodic tasks. [5] (Model)**
+>
+> **Compare RMS and EDF scheduling algorithms, discussing schedulability analysis and utilization bounds. [7] (2024)**
+>
+> **Evaluate limitations of these algorithms and propose scenarios where hybrid scheduling strategies are needed. [8] (2024)**
 
 Task scheduling is the mechanism by which the operating system or runtime determines which task should execute on the processor at any given time. In real-time systems, the scheduling algorithm must ensure that all tasks meet their deadlines.
 
@@ -117,7 +121,53 @@ EDF is more complex to implement because priorities must be recalculated dynamic
 
 Using the same tasks: U = 0.75. Since 0.75 ≤ 1.0, the task set is schedulable under EDF.
 
-## 4.2.3 Priority Inversion, and Mitigation (Priority Inheritance and Priority Ceiling)
+## 4.2.3 RMS vs. EDF: Comparative Analysis
+
+| Feature                       | RMS (Rate Monotonic)                                      | EDF (Earliest Deadline First)                                    |
+| ----------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------- |
+| Priority Assignment           | Static (fixed at design time, based on period)            | Dynamic (changes at runtime, based on nearest deadline)          |
+| Optimality                    | Optimal among all fixed-priority algorithms               | Optimal among all uniprocessor algorithms                        |
+| Maximum Utilization Bound     | ~69.3% (for large n); n(2^(1/n)−1) for n tasks            | 100% (full processor utilization)                                |
+| Schedulability Test           | Sufficient test (Liu-Layland bound); exact test via RTA   | Necessary and sufficient test (U ≤ 1)                            |
+| Implementation Complexity     | Simple (priorities fixed, no runtime recalculation)       | Complex (priorities recomputed at each task release/deadline)    |
+| Predictability Under Overload | Predictable — highest-priority tasks still meet deadlines | Unpredictable — any task can miss its deadline (domino effect)   |
+| Runtime Overhead              | Low (static priority lookup)                              | Higher (dynamic priority sorting at each scheduling point)       |
+| Deadline Model                | Deadline must equal period (D = T) for standard analysis  | Handles arbitrary deadlines (D ≤ T or D > T)                     |
+| RTOS Support                  | Widely supported in commercial and open-source RTOS       | Less commonly supported natively; requires custom implementation |
+| Use Cases                     | Safety-critical systems, automotive, avionics             | High-utilization systems, multimedia, soft real-time             |
+
+## 4.2.4 Limitations and Hybrid Scheduling Strategies
+
+**Limitations of RMS:**
+
+1. RMS wastes processor capacity because its utilization bound is well below 100%. A system using RMS may require a faster (and more expensive/power-hungry) processor simply because the scheduling algorithm cannot utilize the full processor capacity.
+2. RMS requires that deadlines equal periods (D = T). When a task's deadline is shorter or longer than its period, the standard RMS priority assignment (shorter period = higher priority) is no longer optimal, and alternative policies such as Deadline Monotonic Scheduling (DMS) must be used.
+3. RMS does not handle aperiodic or sporadic tasks directly. Special server mechanisms (polling server, deferrable server, sporadic server) must be added to accommodate non-periodic workloads alongside periodic tasks.
+4. RMS assumes task independence. When tasks share resources and experience blocking due to mutexes, the schedulability analysis becomes significantly more complex, requiring the inclusion of blocking terms and protocols such as Priority Inheritance or Priority Ceiling.
+
+**Limitations of EDF:**
+
+1. EDF's critical weakness is its behavior under transient overload. When total utilization temporarily exceeds 100% (due to a burst of sporadic tasks or an execution time overrun), EDF causes a cascading failure: multiple tasks may miss their deadlines unpredictably because the algorithm provides no guarantee about which tasks will fail. This makes EDF unsuitable for safety-critical systems where predictable degradation under overload is essential.
+2. EDF has higher runtime overhead due to the need to dynamically sort tasks by their absolute deadlines at every scheduling point. This overhead, while small, adds to the scheduler's worst-case execution time.
+3. EDF is not natively supported by most commercial RTOS implementations. Most RTOS kernels (including FreeRTOS, VxWorks, and RTEMS) implement fixed-priority scheduling, making EDF difficult to deploy in practice without custom scheduler modifications.
+4. Analyzing systems with shared resources under EDF is more complex than under fixed-priority scheduling. The Stack Resource Policy (SRP) is used instead of PIP/PCP, adding design complexity.
+
+**Hybrid Scheduling Strategies:**
+
+In practice, many real-time systems contain a mix of hard and soft real-time tasks, periodic and aperiodic workloads, and tasks with varying criticality levels. Neither pure RMS nor pure EDF is ideal for such mixed workloads. Hybrid scheduling strategies combine elements of both approaches.
+
+1. **Hierarchical Scheduling:** The system is partitioned into multiple scheduling groups (or servers). Each group is allocated a fixed share of the processor using a top-level fixed-priority scheduler (RMS), while tasks within each group are scheduled using EDF. This combines RMS's predictability at the system level with EDF's efficiency within each group.
+
+2. **Mixed-Criticality Scheduling:** Safety-critical (high-criticality) tasks are assigned fixed priorities using RMS to guarantee predictable behavior under all conditions. Non-critical (low-criticality) tasks are scheduled using EDF to maximize utilization of the remaining processor capacity. If overload occurs, low-criticality tasks are dropped or degraded while high-criticality tasks continue to meet their deadlines.
+
+3. **Server-Based Aperiodic Handling:** A periodic server task (e.g., sporadic server) is integrated into the RMS schedule to handle aperiodic requests. The server is assigned a fixed budget and period, and it uses its budget to execute aperiodic tasks with improved response times compared to pure background processing. This is a hybrid approach because the server is scheduled by RMS, but it internally services aperiodic work.
+
+4. **Scenarios Requiring Hybrid Approaches:**
+   - An automotive system where the engine control unit runs hard real-time control loops (RMS for predictability) alongside an infotainment interface processing user inputs and media streaming (EDF for high utilization).
+   - An industrial IoT gateway that processes time-critical sensor data from a factory floor (fixed-priority) while also handling cloud telemetry uploads and firmware updates (dynamic-priority, best-effort).
+   - A medical device that must guarantee hard deadlines for patient monitoring alarms (RMS) while efficiently scheduling data logging and display updates (EDF).
+
+## 4.2.5 Priority Inversion, and Mitigation (Priority Inheritance and Priority Ceiling)
 
 > **Explain the concept of priority inversion in an RTOS. Illustrate how it can occur and critically evaluate the effectiveness of priority inheritance and priority ceiling protocols in mitigating it. [7] (2025)**
 

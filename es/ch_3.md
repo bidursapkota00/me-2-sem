@@ -5,8 +5,66 @@
 > **Design the 3-stage pipeline operation of NVIC and how it enables low-latency interrupt servicing. [4+3] (Model)**
 >
 > **Explain the interrupt masking mechanism using BASEPRI, PRIMASK, and FAULTMASK with example scenarios. [7] (2025)**
+>
+> **Draw a well-labeled block diagram of the ARM Cortex-M3 core, highlighting control and data flow. [7] (2024)**
+>
+> **Explain the functional roles of its registers, focusing on exception and interrupt handling mechanisms. [8] (2024)**
 
 The ARM Cortex-M3 is a 32-bit processor core based on the ARMv7-M architecture, designed specifically for deeply embedded, deterministic, real-time applications. It uses the Thumb-2 instruction set (a mix of 16-bit and 32-bit instructions), a Harvard bus architecture with separate instruction and data buses, and an integrated Nested Vectored Interrupt Controller (NVIC) for efficient exception handling.
+
+**ARM Cortex-M3 Core Block Diagram:**
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        ARM Cortex-M3 Core                             │
+│                                                                       │
+│  ┌─────────────────────────────────────────────────────────────────┐  │
+│  │                    Cortex-M3 Processor                         │  │
+│  │                                                                │  │
+│  │  ┌──────────────┐   ┌──────────────┐   ┌──────────────────┐   │  │
+│  │  │  Instruction │   │   Decode     │   │    Execute       │   │  │
+│  │  │    Fetch     │──►│   Stage      │──►│    Stage (ALU)   │   │  │
+│  │  │   Stage      │   │              │   │                  │   │  │
+│  │  └──────┬───────┘   └──────────────┘   └────────┬─────────┘   │  │
+│  │         │                                       │             │  │
+│  │  ┌──────┴───────────────────────────────────────┴──────────┐  │  │
+│  │  │              Register File (R0–R15)                     │  │  │
+│  │  │   R0-R12 (General Purpose)  │ R13 (SP: MSP/PSP)        │  │  │
+│  │  │   R14 (Link Register)       │ R15 (Program Counter)    │  │  │
+│  │  │   xPSR (APSR, IPSR, EPSR)  │ CONTROL, PRIMASK, BASEPRI│  │  │
+│  │  └─────────────────────────────────────────────────────────┘  │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+│                                                                       │
+│  ┌───────────────────┐  ┌───────────────────┐  ┌──────────────────┐  │
+│  │       NVIC        │  │   System Control  │  │    SysTick       │  │
+│  │  (Nested Vectored │  │   Block (SCB)     │  │    Timer         │  │
+│  │   Interrupt Ctrl) │  │                   │  │   (24-bit)       │  │
+│  │  - 240 IRQs       │  │  - Vector Table   │  │                  │  │
+│  │  - Priority Mgmt  │  │    Offset (VTOR)  │  │                  │  │
+│  │  - Tail-chaining  │  │  - Priority Group │  │                  │  │
+│  └───────┬───────────┘  └───────────────────┘  └──────────────────┘  │
+│          │                                                            │
+│  ┌───────┴────────────────────────────────────────────────────────┐   │
+│  │                     Bus Matrix / Interconnect                  │   │
+│  └──┬──────────────┬─────────────────┬────────────────────────┬───┘   │
+│     │              │                 │                        │       │
+│  ┌──┴──────┐  ┌────┴────┐  ┌────────┴────────┐  ┌───────────┴───┐   │
+│  │ I-Code  │  │ D-Code  │  │   System Bus    │  │  Private      │   │
+│  │  Bus    │  │  Bus    │  │                 │  │  Peripheral   │   │
+│  │(Instr)  │  │ (Data)  │  │ (Peripherals,  │  │  Bus (PPB)    │   │
+│  └──┬──────┘  └────┬────┘  │  Ext Memory)   │  │ (NVIC, SCB,   │   │
+│     │              │       └────────┬────────┘  │  Debug, MPU)  │   │
+│     ▼              ▼                ▼           └───────────────┘   │
+│  ┌─────────┐  ┌─────────┐   ┌──────────────┐                       │
+│  │  Flash  │  │  SRAM   │   │ Peripherals  │                       │
+│  │ (Code)  │  │ (Data)  │   │ (GPIO, UART, │                       │
+│  │         │  │         │   │  SPI, I2C,   │                       │
+│  │         │  │         │   │  Timers, ADC)│                       │
+│  └─────────┘  └─────────┘   └──────────────┘                       │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+The diagram illustrates the key components and data/control flow within the Cortex-M3 core. Instructions are fetched from Flash via the I-Code bus, decoded, and executed through the 3-stage pipeline. The register file provides operands to the ALU and stores results. The NVIC receives interrupt requests from peripherals and manages priority-based preemption. The bus matrix routes transactions from the processor to the appropriate memory or peripheral through separate buses (I-Code for instruction fetch, D-Code for data in the code region, System bus for SRAM and peripherals, and the Private Peripheral Bus for internal system components).
 
 ## 3.1.1 Pipeline, Memory Map, and NVIC
 

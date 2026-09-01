@@ -5,6 +5,10 @@
 > **How do modern heterogeneous SoCs differ from traditional monolithic microcontroller-based design? Explain bus architecture in details, highlighting how interconnect strategies. [4+4] (Model)**
 >
 > **Discuss about AMBA bus architecture standards: AHB and APB. Explain their respective roles in system integration and performance optimization within embedded systems. Provide a block diagram to illustrate a typical SoC bus hierarchy. [8] (2025)**
+>
+> **Define System-on-Chip (SoC) and evaluate its design features in terms of performance, power, and scalability. [7] (2024)**
+>
+> **Discuss the strategic significance and future trends of SoC technology in embedded platforms. [8] (2024)**
 
 An embedded computing platform is the combination of hardware architecture and the associated software that runs on it. The platform defines the processor, memory organization, bus interconnects, and peripheral interfaces available to the embedded software designer. Choosing the right platform architecture is a foundational decision that affects the system's performance, power consumption, cost, and scalability.
 
@@ -32,7 +36,35 @@ A traditional monolithic microcontroller integrates a simple processor, fixed me
 
 SoCs include sophisticated power management units (PMUs) that can independently power down or clock-gate individual IP blocks when they are not in use. This enables fine-grained power optimization, which is critical for battery-operated devices.
 
-## 2.1.2 Bus Architectures (AMBA, AHB, APB)
+**6. Performance, Power, and Scalability Evaluation:**
+
+SoC design features can be evaluated along three critical axes. In terms of performance, SoCs achieve high throughput by integrating hardware accelerators and multiple processing cores that operate in parallel, combined with high-bandwidth on-chip bus architectures (AXI/AHB) that minimize data transfer latency. Tightly coupled memories and DMA controllers further reduce CPU overhead for data movement. In terms of power, SoCs employ dynamic voltage and frequency scaling (DVFS), where the operating voltage and clock frequency of individual cores are adjusted based on workload demand. Clock gating disables the clock to idle modules, and power gating completely shuts down unused IP blocks. Multiple power domains allow different parts of the chip to operate at different voltage levels simultaneously. In terms of scalability, the IP-based modular design philosophy allows SoC designers to add or remove functional blocks to create product variants from a common platform. A single SoC platform can be scaled from a low-cost IoT sensor node (using minimal peripherals) to a high-performance gateway (adding application processors, more memory, and networking interfaces) by selecting different combinations of IP blocks.
+
+## 2.1.2 Strategic Significance and Future Trends of SoC Technology
+
+SoC technology has become strategically central to the embedded systems industry for several reasons.
+
+**1. Market and Industry Impact:**
+
+SoC integration has driven the miniaturization and cost reduction of electronic products, enabling the proliferation of smartphones, wearables, automotive electronics, and IoT devices. Companies that design or control SoC platforms (such as Apple, Qualcomm, and NVIDIA) gain significant competitive advantages because the SoC defines the performance, power efficiency, and feature set of the end product. Custom SoC design has shifted from being exclusive to large semiconductor companies to being accessible through RISC-V open-source ISA and cloud-based EDA tools, democratizing chip design.
+
+**2. Heterogeneous Integration and Chiplet Architectures:**
+
+Future SoCs are moving toward chiplet-based architectures, where different functional blocks (CPU, GPU, memory, I/O) are manufactured as separate small dies (chiplets) using the most appropriate process technology for each, and then interconnected on a common substrate using advanced packaging technologies such as 2.5D interposers or 3D die stacking. This approach overcomes the yield and cost challenges of manufacturing very large monolithic dies and allows mixing of different semiconductor process nodes.
+
+**3. AI and Machine Learning at the Edge:**
+
+Modern SoCs increasingly integrate dedicated neural processing units (NPUs) or machine learning accelerators to enable on-device AI inference without relying on cloud connectivity. This trend is driven by the need for low-latency decision-making, data privacy, and reduced bandwidth consumption in applications such as autonomous vehicles, smart cameras, and predictive maintenance systems.
+
+**4. Enhanced Security:**
+
+Future SoC designs embed hardware-based security features such as secure enclaves (e.g., ARM TrustZone), hardware root of trust, secure boot chains, and cryptographic accelerators directly into the silicon. This hardware-level security is becoming essential for IoT devices, automotive systems, and any connected embedded platform.
+
+**5. Advanced Process Technologies and Energy Efficiency:**
+
+SoC fabrication is advancing to smaller process nodes (5nm, 3nm, and beyond), which provide higher transistor density, lower switching energy per transistor, and higher clock frequencies. Combined with architectural innovations like near-threshold voltage computing and energy harvesting interfaces, future SoCs will enable embedded devices that can operate for years on a single battery or even harvest energy from their environment.
+
+## 2.1.3 Bus Architectures (AMBA, AHB, APB)
 
 A bus is a shared communication pathway that connects the processor, memory, and peripherals within an SoC. The bus carries three types of signals: address signals (specifying the target device or memory location), data signals (carrying the actual information), and control signals (indicating the type and timing of the transfer).
 
@@ -78,7 +110,7 @@ AXI is the highest-performance protocol in the AMBA family, introduced in AMBA 3
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## 2.1.3 Memory-Mapped I/O and Peripheral Integration
+## 2.1.4 Memory-Mapped I/O and Peripheral Integration
 
 Memory-mapped I/O (MMIO) is the standard technique used in ARM-based and most modern embedded systems to interface peripherals with the processor.
 
