@@ -1,3 +1,5 @@
+### 2025
+
 **1. a)** During peak traffic on a rainy day, a vehicle equipped with ABS encounters sudden braking at 80 km/h. The road surface is slippery, and the system must adapt to prevent skidding while ensuring stopping efficiency. Propose an ABS embedded system design for this scenario, highlighting its key components and their roles. **[7]**
 
 **b)** Embedded Systems are everywhere, but you rarely see them. Justify this statement with suitable example. **[8]**
@@ -42,6 +44,39 @@ Explain the interrupt masking mechanism using BASEPRI, PRIMASK, and FAULTMASK wi
 &nbsp;&nbsp;&nbsp;d) Exception types
 
 ---
+
+### 2024
+
+**1.**
+a) Critically analyze the concept of embedded systems, discussing architectural characteristics and operational constraints. **[7]**
+b) Identify and explain the essential components of an embedded system, illustrating with two complex real-world applications. **[8]**
+
+**2.**
+a) Define System-on-Chip (SoC) and evaluate its design features in terms of performance, power, and scalability. **[7]**
+b) Discuss the strategic significance and future trends of SoC technology in embedded platforms. **[8]**
+
+**3.**
+a) Draw a well-labeled block diagram of the ARM Cortex-M3 core, highlighting control and data flow. **[7]**
+b) Explain the functional roles of its registers, focusing on exception and interrupt handling mechanisms. **[8]**
+
+**4.**
+a) Compare RMS and EDF scheduling algorithms, discussing schedulability analysis and utilization bounds. **[7]**
+b) Evaluate limitations of these algorithms and propose scenarios where hybrid scheduling strategies are needed. **[8]**
+
+**5.**
+a) Discuss advanced concepts of Modular Design and Separation of Concerns in embedded software with relevant industry examples. **[7]**
+b) Explain the role of Encapsulation in enhancing maintainability and reliability, citing real-world use cases. **[8]**
+
+**6.**
+a) Provide a comparative technical analysis of UART and SPI communication protocols, considering speed, complexity, and reliability. **[7]**
+b) Evaluate the strengths and weaknesses of the I2C protocol in multi-device embedded systems. **[8]**
+
+**7.**
+Explain the four-layer IoT architecture and critically assess the role of Transport Layer Security (TLS) in ensuring secure communication, discussing vulnerabilities and mitigation strategies. **[10]**
+
+---
+
+### Model
 
 **1. a)** A smart building in Kathmandu is equipped with a centralized Smart Air Conditioning System that adjusts temperature and airflow based on occupancy, external weather, and energy efficiency goals. The system uses temperature sensors, humidity sensors, CO₂ sensors, and PIR motion detectors across multiple zones. At 2:00 PM on a humid summer day, the external temperature is 34°C and indoor humidity is 70%. The meeting room (Zone 3) suddenly registers high CO₂ levels and multiple motion events, indicating increased occupancy. Meanwhile, the energy management system signals a need to reduce power consumption by 20% due to peak load pricing.
 **Task:** Design an embedded system of Smart Air Conditioning System along with its components. **[7]**

@@ -2,9 +2,9 @@
 
 # 2.1 Embedded Computing Platform Architecture
 
-> **How do modern heterogeneous SoCs differ from traditional monolithic microcontroller-based design? Explain bus architecture in details, highlighting how interconnect strategies. [4+4]**
+> **How do modern heterogeneous SoCs differ from traditional monolithic microcontroller-based design? Explain bus architecture in details, highlighting how interconnect strategies. [4+4] (Model)**
 >
-> **Discuss about AMBA bus architecture standards: AHB and APB. Explain their respective roles in system integration and performance optimization within embedded systems. Provide a block diagram to illustrate a typical SoC bus hierarchy. [8]**
+> **Discuss about AMBA bus architecture standards: AHB and APB. Explain their respective roles in system integration and performance optimization within embedded systems. Provide a block diagram to illustrate a typical SoC bus hierarchy. [8] (2025)**
 
 An embedded computing platform is the combination of hardware architecture and the associated software that runs on it. The platform defines the processor, memory organization, bus interconnects, and peripheral interfaces available to the embedded software designer. Choosing the right platform architecture is a foundational decision that affects the system's performance, power consumption, cost, and scalability.
 
@@ -111,7 +111,7 @@ In port-mapped (isolated) I/O, used in older architectures such as x86, peripher
 
 # 2.2 Processor and Memory Systems
 
-> **Compare and contrast DSPs and Microcontrollers in the context of embedded system use cases. Highlight scenarios where each would be more suitable. [7]**
+> **Compare and contrast DSPs and Microcontrollers in the context of embedded system use cases. Highlight scenarios where each would be more suitable. [7] (2025)**
 
 ## 2.2.1 Processor Types: RISC vs. CISC, DSP vs. Microcontroller
 

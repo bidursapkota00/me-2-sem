@@ -2,9 +2,7 @@
 
 # 1.1 Embedded Computing Systems
 
-> **What is an embedded system? Explain its basic components with examples. [7 marks]**
->
-> **Embedded Systems are everywhere, but you rarely see them. Justify this statement with suitable example. [8 marks]**
+> **Embedded Systems are everywhere, but you rarely see them. Justify this statement with suitable example. [8 marks] (2025)**
 
 An embedded system is a special-purpose computing system designed to perform one or a few dedicated functions, often as part of a larger mechanical or electrical system. Unlike general-purpose computers such as laptops or desktops, embedded systems are tightly integrated into the products they control and are usually invisible to the end user.
 
@@ -158,11 +156,9 @@ Many embedded products remain in service for 10 to 20 years or longer. Designers
 
 # 1.2 Embedded System Design Process
 
-> **Describe the embedded system design process with its key phases. [7 marks]**
->
-> **Design an embedded system of Smart Air Conditioning System along with its components. [7 marks]**
+> **Design an embedded system of Smart Air Conditioning System along with its components. [7 marks] (Model)**
 
-The embedded system design process is a systematic, top-down methodology that transforms an initial concept into a fully functional, tested, and deployable product. It involves iterative refinement through well-defined phases, where decisions at each stage are validated against the original requirements. The process is adapted from Marilyn Wolf's methodology in *Computers as Components*.
+The embedded system design process is a systematic, top-down methodology that transforms an initial concept into a fully functional, tested, and deployable product. It involves iterative refinement through well-defined phases, where decisions at each stage are validated against the original requirements. The process is adapted from Marilyn Wolf's methodology in _Computers as Components_.
 
 ## 1.2.1 Requirements Analysis and Specification
 

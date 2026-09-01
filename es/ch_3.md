@@ -2,9 +2,9 @@
 
 # 3.1 ARM Cortex-M3 Architecture
 
-> **Design the 3-stage pipeline operation of NVIC and how it enables low-latency interrupt servicing. [4+3]**
+> **Design the 3-stage pipeline operation of NVIC and how it enables low-latency interrupt servicing. [4+3] (Model)**
 >
-> **Explain the interrupt masking mechanism using BASEPRI, PRIMASK, and FAULTMASK with example scenarios. [7]**
+> **Explain the interrupt masking mechanism using BASEPRI, PRIMASK, and FAULTMASK with example scenarios. [7] (2025)**
 
 The ARM Cortex-M3 is a 32-bit processor core based on the ARMv7-M architecture, designed specifically for deeply embedded, deterministic, real-time applications. It uses the Thumb-2 instruction set (a mix of 16-bit and 32-bit instructions), a Harvard bus architecture with separate instruction and data buses, and an integrated Nested Vectored Interrupt Controller (NVIC) for efficient exception handling.
 
@@ -148,7 +148,7 @@ When an exception occurs, the processor hardware automatically pushes eight regi
 
 # 3.2 Programming for Bare-Metal Environments
 
-> **Explain in detail about Bare Metal Programming along with startup code and linker script used in ARM Cortex-M3 programming. Highlight memory mapping and initialization steps. [7]**
+> **Explain in detail about Bare Metal Programming along with startup code and linker script used in ARM Cortex-M3 programming. Highlight memory mapping and initialization steps. [7] (2025)**
 
 Bare-metal programming means writing firmware that runs directly on the processor hardware without an operating system. The programmer has full control over the hardware and must manually initialize the processor, memory, peripherals, and the C runtime environment.
 
@@ -325,7 +325,7 @@ The RCC peripheral (specific to STM32 implementations) provides registers to con
 
 # 3.3 Interrupts and Exception Handling
 
-> **Write short notes on: Exception types [5]**
+> **Write short notes on: Exception types [5] (2025)**
 
 ## 3.3.1 NVIC Setup, Interrupt Priorities, and Vector Table
 
