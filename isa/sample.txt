@@ -1,0 +1,132 @@
+Information System Audit Report
+DRAFT REPORT
+Kumar Pudashine
+Information System Audit Report
+Submitted By,
+<Company Name>
+April 5, 2026
+Submitted To,
+<Company Name>
+Page No 0
+Information System Audit Report
+TABLE OF CONTENTS
+Introduction ........................................................................................................................................... 3
+Objectives ............................................................................................................................................... 3
+Scope of the Work .................................................................................................................................. 3
+A. Information System Review Based on ISO 27001:2022 Framework ............................................ 3
+A.1. Organizational Controls .................................................................................................................. 4
+A.1.1. Policies for Information Security ............................................................................................. 4
+A.1.2. Information Security Roles and Responsibilities ..................................................................... 4
+B. Recommendations ............................................................................................................................. 6
+Page No 1
+Information System Audit Report
+LIST OF ABBREVIATIONS
+AAA Authentication Authorization and Accounting
+ATS Auto Transfer Switch
+BCP Business Continuity Planning
+BCC Business Continuity Coordinator
+CIA Confidentiality Integrity and Availability
+DC Data Center
+DRC Data Recovery Center
+ISO International Organization for Standardization
+ICT Information and Communication Technologies
+IT Information Technology
+PAM Privilege Access Management
+QAT Quality Assessment Test
+RBAC Role Based Access Control
+RTO Recovery Time Objective
+RPO Recovery Point Objective
+SIEM Security Information Event Management
+UAT User Acceptance Test
+Page No 2
+Information System Audit Report
+Introduction
+Information and Communication Technologies (ICT) plays a vital role for <Company> to enable
+its entire business process. An IS audit enables <Company> to identify the existing Risk that is
+exposed from the ICT services. It enables in-depth analysis of existing technical environment,
+including existing computer applications, hardware infrastructure, IT Plan, Polices, adaptation
+of new technologies and IT-related personnel. Hence, IS Audit is a comprehensive analysis of
+how well your technology infrastructure aligns with the goals and need of your organization.
+This report presents the detail activities conducted by globally certified professional in the
+domain of IS Audit for <Company> based on Information Security Management Framework (ISO
+27001:2022). It aids to preserves the Confidentiality, Integrity and Availability (CIA) of
+information by applying a risk management process and gives confidence to interested
+stakeholders that risks are adequately managed.
+Objectives
+The main objective of this IS Audit is to evaluate the state of current information system that
+is present in <Company> which in turn will help to mitigate the existing Cyber Security Risk.
+Scope of the Work
+The scope of IS Audit done for <Company> is based on benchmark provisioned by ISO
+27001:2013 framework. In order to carry IS Audit, as part of it, we have identified gap in current
+work procedure, practice and polices. Following activities are carried out during the course of
+IS Audit.
+a) List all the Scope of the Work that is carried out.
+b) <Scope of the work>>
+The detail Control Objectives based on ISO 27001:2022 that was checked during the IS Audit
+are discussed below.
+A. Information System Review Based on ISO 27001:2022 Framework
+The review of Information Security Management System is done based on ISO 27001:2022. The
+information security management system preserves the confidentiality, integrity and
+availability of information by applying a risk management process and gives confidence to
+interested parties that risks are adequately managed. It is important that the information
+security management system is part of and integrated with the <company> processes and
+overall management structure and that information security is considered in the design of
+processes, information systems, and controls. The Information System Audit is done based on
+the 114 Control Objectives of Information Security Management Framework. The status of each
+control objective is validated and recommendations on each areas are provided during the IS
+Audit of <Company>. The details of each Control Objectives are given below
+Page No 3
+Information System Audit Report
+A.1. Organizational Controls
+A.1.1. Policies for Information Security
+Control
+Information security policy and topic-specific policies should be defined, approved by
+management, published, communicated to and acknowledged by relevant personnel and
+relevant interested parties, and reviewed at planned intervals and if significant changes occur.
+Purpose
+To ensure continuing suitability, adequacy, effectiveness of management direction and support
+for information security in accordance with business, legal, statutory, regulatory and
+contractual requirements
+Observations
+The organization has established and implemented its Information Security Policy (2021,
+Version XX); however, the policy has not been reviewed or updated since its initial release in
+2021
+Risk Rating: HIGH
+Recommendation
+At the highest level, the organization should define an “information security policy” which is
+approved by top management and which sets out the organization’s approach to managing its
+information security
+Management Response
+The policy shall be reviewed by the end of this fiscal year 2082/83.
+A.1.2. Information Security Roles and Responsibilities
+Control
+Information security roles and responsibilities should be defined and allocated according to the
+organization needs.
+Purpose
+To establish a defined, approved and understood structure for the implementation, operation
+and management of information security within the organization.
+Observations
+Information security roles and responsibilities are not properly defined by the organization.
+Risk Rating: HIGH
+Recommendation
+Allocation of information security roles and responsibilities should be done in accordance with
+the information security policy and topic-specific policies.
+Page No 4
+Information System Audit Report
+Management Response
+<< Insert Management Response>>
+Page No 5
+Information System Audit Report
+B. Recommendations
+This section provides list of recommendations based on the observation and evidences during
+the course of Information System Audit at <company>. The lists of major recommendations are
+enlisted below.
+▪ Establish Data Recovery Center (DRC) to enable Business Continuity Management.
+▪ Provide cyber security education, awareness training to all the employees of <company>
+at planned interval.
+▪ Perform Risk Assessment for every IT Project at a Planned Interval.
+▪ Provide Hands on IT Training to all the employees of <company> at planned interval.
+Page No 6
+Information System Audit Report
+END OF REPORT
+Page No 7
