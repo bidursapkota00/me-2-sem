@@ -49,6 +49,7 @@ A DBMS acts as an intermediary between the user/application and the database. It
 1. **Storage Manager:**
 
 The storage manager is the component that provides the interface between the low-level data stored on disk and the application programs and queries submitted to the system. It is responsible for efficient storage, retrieval, and updating of data. It includes:
+
 - **Authorization and Integrity Manager:** Checks that security and integrity constraints are satisfied.
 - **Transaction Manager:** Ensures the database remains in a consistent state despite system failures and manages concurrent transactions so that they do not interfere with one another.
 - **File Manager:** Manages the allocation of disk space and the data structures used to represent stored information.
@@ -57,6 +58,7 @@ The storage manager is the component that provides the interface between the low
 2. **Query Processor:**
 
 The query processor interprets and executes database queries. It includes:
+
 - **Parser and Translator:** Checks query syntax and translates SQL into an internal representation (relational algebra expression).
 - **Optimizer:** Evaluates multiple equivalent execution plans and selects the most efficient one based on statistical information about the data.
 - **Evaluation Engine:** Executes the selected query execution plan and returns the results.
@@ -174,11 +176,35 @@ CREATE TABLE Department (
     dept_name VARCHAR(50)
 );
 
+CREATE TABLE Department (
+    dept_id INT,
+    dept_name VARCHAR(50),
+    PRIMARY KEY (dept_id)
+);
+
 CREATE TABLE Employee (
     emp_id INT PRIMARY KEY,
     emp_name VARCHAR(50),
     dept_id INT,
     FOREIGN KEY (dept_id) REFERENCES Department(dept_id)
+);
+
+CREATE TABLE Student_Course (
+    student_id INT,
+    course_id INT,
+    enrollment_date DATE,
+
+    PRIMARY KEY (student_id, course_id)
+);
+
+CREATE TABLE Course_Grade (
+    student_id INT,
+    course_id INT,
+    grade CHAR(2),
+
+    PRIMARY KEY (student_id, course_id),
+    FOREIGN KEY (student_id, course_id)
+        REFERENCES Student_Course(student_id, course_id)
 );
 ```
 

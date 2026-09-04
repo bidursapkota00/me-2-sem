@@ -8,9 +8,9 @@
 
 An **intelligent agent** is anything that perceives its environment through **sensors** and acts upon it through **actuators**. A human agent has eyes, ears (sensors) and hands, legs, vocal tract (actuators). A robotic agent has cameras, infrared sensors and motors, grippers. A software agent receives keystrokes, file contents and displays output, writes files.
 
-The agent function maps a percept sequence to an action: **f: P* → A**. The agent program is the concrete implementation running on a physical architecture. Agent = Architecture + Program.
+<!-- The agent function maps a percept sequence to an action: **f: P* → A**. The agent program is the concrete implementation running on a physical architecture. Agent = Architecture + Program. -->
 
-**Rationality:** A rational agent selects the action that maximizes its expected performance measure, given the percept sequence and built-in knowledge. Rationality ≠ omniscience (knowing everything) and ≠ perfection (always correct outcomes). A rational agent should be autonomous — it learns from experience rather than relying solely on prior knowledge.
+**Rationality:** A rational agent selects the action that maximizes its expected performance measure, given the percept sequence and built-in knowledge. Rationality **≠ omniscience (knowing everything) and ≠ perfection (always correct outcomes).** A rational agent should be **autonomous — it learns from experience rather than relying solely on prior knowledge.**
 
 **PEAS Framework:** To design an agent, we specify its task environment using PEAS:
 
@@ -56,7 +56,9 @@ Example: a chess-playing agent that starts with basic rules, plays games, learns
 >
 > **What are the limitations of A\* search? How does the iterative deepening search resolve these problems? (7) (Internal 2025)**
 
-**A\* Search (Recap):** A\* is a best-first search that uses the evaluation function **f(n) = g(n) + h(n)**, where g(n) is the path cost from start to node n, and h(n) is the heuristic estimate from n to the goal. A\* is complete and optimal when the heuristic is admissible (never overestimates) and consistent (h(n) ≤ c(n,a,n') + h(n')).
+**A\* Search (Recap):** A\* is a best-first search that uses the evaluation function **f(n) = g(n) + h(n)**, where g(n) is the path cost from start to node n, and h(n) is the heuristic estimate from n to the goal.
+
+<!-- A\* is complete and optimal when the heuristic is admissible (never overestimates) and consistent (h(n) ≤ c(n,a,n') + h(n')). -->
 
 **Limitations of A\*:** A\* stores all generated nodes in memory (both OPEN and CLOSED lists). Its space complexity is O(b^d), which makes it impractical for large state spaces — it often runs out of memory before running out of time.
 
