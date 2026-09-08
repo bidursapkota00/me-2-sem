@@ -256,6 +256,8 @@ Stochastic games introduce **chance elements** (e.g., dice rolls, card deals). T
 
 **Example:** In backgammon, after MAX decides a move, dice are rolled (chance node), then MIN plays. The algorithm computes the expected utility across all possible dice outcomes.
 
-**Implication:** Alpha-beta pruning is less effective in stochastic games because chance nodes prevent tight bounding. The evaluation function must be a positive linear transformation of the true utility (not just order-preserving) for correct expectiminimax behavior.
+**Implication:** Alpha-beta pruning is less effective in stochastic games because chance nodes prevent tight bounding.
+
+<!-- The evaluation function must be a positive linear transformation of the true utility (not just order-preserving) for correct expectiminimax behavior. -->
 
 **Partially observable games:** Games where players have hidden information (e.g., card games like poker). The agent must reason about information sets — sets of states that are indistinguishable given the player's observations. Strategies may involve randomized actions to prevent exploitation.

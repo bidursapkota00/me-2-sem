@@ -34,12 +34,12 @@ Company B: "If you did not get the job, you were not qualified" → ¬Q → ¬P
 
 The second statement is the **contrapositive** of the first. By the law of contraposition: P → Q ≡ ¬Q → ¬P.
 
-| P | Q | P → Q | ¬Q | ¬P | ¬Q → ¬P |
-|---|---|-------|----|----|---------|
-| T | T |   T   |  F |  F |    T    |
-| T | F |   F   |  T |  F |    F    |
-| F | T |   T   |  F |  T |    T    |
-| F | F |   T   |  T |  T |    T    |
+| P   | Q   | P → Q | ¬Q  | ¬P  | ¬Q → ¬P |
+| --- | --- | ----- | --- | --- | ------- |
+| T   | T   | T     | F   | F   | T       |
+| T   | F   | F     | T   | F   | F       |
+| F   | T   | T     | F   | T   | T       |
+| F   | F   | T     | T   | T   | T       |
 
 Since P → Q and ¬Q → ¬P have identical truth values in every row, **both statements are logically equivalent**.
 
@@ -85,6 +85,7 @@ First-Order Logic (also called Predicate Logic) extends propositional logic by i
 **Example — Prove C from: A ∨ B, A ⟹ C, ¬B using Resolution:**
 
 Step 1: Convert to CNF.
+
 - Clause 1: A ∨ B
 - Clause 2: ¬A ∨ C (from A → C)
 - Clause 3: ¬B
@@ -92,11 +93,69 @@ Step 1: Convert to CNF.
 Step 2: Add negation of goal. Clause 4: ¬C
 
 Step 3: Resolve.
+
 - Resolve Clause 2 (¬A ∨ C) with Clause 4 (¬C) → Clause 5: ¬A
 - Resolve Clause 1 (A ∨ B) with Clause 5 (¬A) → Clause 6: B
 - Resolve Clause 6 (B) with Clause 3 (¬B) → **Empty clause (∅)**
 
 Since the empty clause is derived, the assumption ¬C is inconsistent with the premises. Therefore, **C is proven**.
+
+## Rules
+
+<!-- - **Quantifier Negation (De Morgan's Laws for Quantifiers):**
+- $\neg (\forall x \, P(x)) \equiv \exists x \, \neg P(x)$
+- $\neg (\exists x \, P(x)) \equiv \forall x \, \neg P(x)$
+
+- **Quantifier Distribution:**
+- $\forall x (P(x) \land Q(x)) \equiv (\forall x \, P(x)) \land (\forall x \, Q(x))$
+- $\exists x (P(x) \lor Q(x)) \equiv (\exists x \, P(x)) \lor (\exists x \, Q(x))$ -->
+<!-- - $\forall x (P(x) \lor Q(x)) \not\equiv (\forall x \, P(x)) \lor (\forall x \, Q(x))$ _(Implication holds left to right only)_
+- $\exists x (P(x) \land Q(x)) \not\equiv (\exists x \, P(x)) \land (\exists x \, Q(x))$ _(Implication holds right to left only)_ -->
+
+<!-- - **Scope Extension (where $A$ contains no free occurrences of $x$):**
+- $\forall x (P(x) \lor A) \equiv (\forall x \, P(x)) \lor A$
+- $\exists x (P(x) \land A) \equiv (\exists x \, P(x)) \land A$ -->
+<!-- - $\forall x (A \rightarrow P(x)) \equiv A \rightarrow (\forall x \, P(x))$
+- $\exists x (A \rightarrow P(x)) \equiv A \rightarrow (\exists x \, P(x))$
+- $\forall x (P(x) \rightarrow A) \equiv (\exists x \, P(x)) \rightarrow A$
+- $\exists x (P(x) \rightarrow A) \equiv (\forall x \, P(x)) \rightarrow A$ -->
+
+<!-- --- -->
+
+**Quantifier Rules of Inference**
+
+| Rule Name                           | Premise             | Conclusion          | Arbitrary / Specific Constraint                          |
+| ----------------------------------- | ------------------- | ------------------- | -------------------------------------------------------- |
+| **Universal Instantiation (UI)**    | $\forall x \, P(x)$ | $P(c)$              | $c$ can be _any_ arbitrary or specific element in domain |
+| **Universal Generalization (UG)**   | $P(c)$              | $\forall x \, P(x)$ | $c$ MUST be an _arbitrary_ element (not specific)        |
+| **Existential Instantiation (EI)**  | $\exists x \, P(x)$ | $P(c)$              | $c$ MUST be a _new, specific_ element not used prior     |
+| **Existential Generalization (EG)** | $P(c)$              | $\exists x \, P(x)$ | $c$ is a _known element_ in the domain                   |
+
+---
+
+**Propositional Rules of Inference**
+
+| Rule Name                  | Formula / Structure                                           |
+| -------------------------- | ------------------------------------------------------------- |
+| **Modus Ponens**           | $P, P \rightarrow Q \;\vdash\; Q$                             |
+| **Modus Tollens**          | $\neg Q, P \rightarrow Q \;\vdash\; \neg P$                   |
+| **Hypothetical Syllogism** | $P \rightarrow Q, Q \rightarrow R \;\vdash\; P \rightarrow R$ |
+| **Disjunctive Syllogism**  | $P \lor Q, \neg P \;\vdash\; Q$                               |
+| **Addition**               | $P \;\vdash\; P \lor Q$                                       |
+| **Simplification**         | $P \land Q \;\vdash\; P$                                      |
+| **Conjunction**            | $P, Q \;\vdash\; P \land Q$                                   |
+| **Resolution**             | $P \lor Q, \neg P \lor R \;\vdash\; Q \lor R$                 |
+
+---
+
+**Core Propositional Equivalences**
+
+- **Material Implication:** $P \rightarrow Q \equiv \neg P \lor Q$
+- **Biconditional Expansion:** $P \leftrightarrow Q \equiv (P \rightarrow Q) \land (Q \rightarrow P) \equiv (P \land Q) \lor (\neg P \land \neg Q)$
+- **Contraposition:** $P \rightarrow Q \equiv \neg Q \rightarrow \neg P$
+- **De Morgan's Laws:**
+- $\neg (P \land Q) \equiv \neg P \lor \neg Q$
+- $\neg (P \lor Q) \equiv \neg P \land \neg Q$
 
 ---
 
@@ -108,19 +167,19 @@ Many real-world environments are **dynamic** and **uncertain** — the state of 
 
 **Key Assumptions:**
 
-- **Markov Assumption (First-Order):** The current state depends only on the immediately previous state, not on the entire history. P(X_t | X_0:t−1) = P(X_t | X_{t−1}).
+- **Markov Assumption (First-Order):** The current state depends only on the immediately previous state, not on the entire history. $P(X_t \mid X_{0:t-1}) = P(X_t \mid X_{t-1})$.
 - **Stationary Process:** The transition and observation models do not change over time.
 
 **Two fundamental models define a temporal probabilistic system:**
 
-1. **Transition Model:** P(X_t | X_{t−1}) — how the state evolves from one time step to the next.
-2. **Sensor (Observation) Model:** P(E_t | X_t) — the probability of an observation given the current hidden state.
+1. **Transition Model:** $P(X_t \mid X_{t-1})$ — how the state evolves from one time step to the next.
+2. **Sensor (Observation) Model:** $P(E_t \mid X_t)$ — the probability of an observation given the current hidden state.
 
 **Inference Tasks:**
 
-- **Filtering:** Compute P(X_t | e_{1:t}) — the belief state at current time given all evidence so far. This is what an agent needs for decision-making.
-- **Prediction:** Compute P(X_{t+k} | e_{1:t}) — estimate future states given current evidence.
-- **Smoothing:** Compute P(X_k | e_{1:t}) for 0 ≤ k < t — revise past estimates given later evidence. More accurate than filtering.
+- **Filtering:** Compute $P(X_t \mid e_{1:t})$ — the belief state at current time given all evidence so far. This is what an agent needs for decision-making.
+- **Prediction:** Compute $P(X_{t+k} \mid e_{1:t})$ — estimate future states given current evidence.
+- **Smoothing:** Compute $P(X_k \mid e_{1:t})$ for $0 \leq k < t$ — revise past estimates given later evidence. More accurate than filtering.
 - **Most Likely Explanation:** Find the sequence of states that best explains the observations (Viterbi algorithm).
 
 ## 2.2.1 Hidden Markov Models (HMMs)
@@ -129,21 +188,23 @@ An HMM is a temporal probabilistic model where the system is assumed to be a Mar
 
 **Structure of an HMM:**
 
-- **States (S):** A finite set of hidden states {s₁, s₂, ..., s_N}.
-- **Observations (O):** A finite set of observable symbols {o₁, o₂, ..., o_M}.
-- **Transition Probability Matrix (A):** a_{ij} = P(X_t = s_j | X_{t−1} = s_i) — probability of moving from state i to state j.
-- **Observation/Emission Probability Matrix (B):** b_j(o_k) = P(E_t = o_k | X_t = s_j) — probability of observing o_k when in state s_j.
-- **Initial State Distribution (π):** π_i = P(X_1 = s_i) — probability of starting in state i.
+- **States (S):** A finite set of hidden states $\{s_1, s_2, \ldots, s_N\}$.
+- **Observations (O):** A finite set of observable symbols $\{o_1, o_2, \ldots, o_M\}$.
+- **Transition Probability Matrix (A):** $a_{ij} = P(X_t = s_j \mid X_{t-1} = s_i)$ — probability of moving from state $i$ to state $j$.
+- **Observation/Emission Probability Matrix (B):** $b_j(o_k) = P(E_t = o_k \mid X_t = s_j)$ — probability of observing $o_k$ when in state $s_j$.
+- **Initial State Distribution (π):** $\pi_i = P(X_1 = s_i)$ — probability of starting in state $i$.
 
-An HMM is fully specified by λ = (A, B, π).
+An HMM is fully specified by $\lambda = (A, B, \pi)$.
 
-**Three Fundamental Problems of HMMs:**
+![alt text](image.png)
 
-1. **Evaluation (Likelihood):** Given a model λ and an observation sequence, compute P(O | λ). Solved by the **Forward Algorithm**.
-2. **Decoding:** Given a model λ and an observation sequence, find the most likely state sequence. Solved by the **Viterbi Algorithm**.
-3. **Learning:** Given observation sequences, find the model parameters λ that maximize P(O | λ). Solved by the **Baum-Welch Algorithm** (a special case of EM).
+<!-- **Three Fundamental Problems of HMMs:**
 
-**Example:** A doctor cannot directly observe whether a patient is Healthy or has a Fever (hidden states). The doctor observes the patient's activities: Normal, Cold, Dizzy (observations). The transition matrix defines probabilities like P(Fever today | Healthy yesterday) = 0.3. The emission matrix defines P(Dizzy | Fever) = 0.5. Given a sequence of observations over several days, the HMM can infer the most likely sequence of health states.
+1. **Evaluation (Likelihood):** Given a model $\lambda$ and an observation sequence, compute $P(O \mid \lambda)$. Solved by the **Forward Algorithm**.
+2. **Decoding:** Given a model $\lambda$ and an observation sequence, find the most likely state sequence. Solved by the **Viterbi Algorithm**.
+3. **Learning:** Given observation sequences, find the model parameters $\lambda$ that maximize $P(O \mid \lambda)$. Solved by the **Baum-Welch Algorithm** (a special case of EM). -->
+
+**Example:** A doctor cannot directly observe whether a patient is Healthy or has a Fever (hidden states). The doctor observes the patient's activities: Normal, Cold, Dizzy (observations). The transition matrix defines probabilities like $P(\text{Fever today} \mid \text{Healthy yesterday}) = 0.3$. The emission matrix defines $P(\text{Dizzy} \mid \text{Fever}) = 0.5$. Given a sequence of observations over several days, the HMM can infer the most likely sequence of health states.
 
 **Applications:** Speech recognition, POS tagging in NLP, gene sequence analysis, gesture recognition, weather prediction.
 
@@ -153,14 +214,14 @@ A Dynamic Bayesian Network is a generalization of HMMs that represents the state
 
 **Structure:**
 
-- Each time slice t has a set of state variables X_t = {X_t^1, X_t^2, ..., X_t^n} and evidence variables E_t.
+- Each time slice $t$ has a set of state variables $X_t = \{X_t^1, X_t^2, \ldots, X_t^n\}$ and evidence variables $E_t$.
 - **Intra-slice connections:** Represent dependencies among variables within the same time step.
-- **Inter-slice connections:** Represent how variables at time t depend on variables at time t−1 (the transition model).
+- **Inter-slice connections:** Represent how variables at time $t$ depend on variables at time $t-1$ (the transition model).
 - The network is defined by the structure and CPTs (Conditional Probability Tables) of just **two time slices** — this is then "unrolled" for as many time steps as needed.
 
 **Relationship to HMMs:** An HMM is a DBN with a single state variable. A DBN is more general — it can factorize the state space into multiple variables, exploiting conditional independence to reduce the number of parameters exponentially.
 
-**Example:** A vehicle monitoring system. State variables at each time step: Battery_t, Fuel_t, Engine_t. Observations: Gauge_t, StarterMotor_t. The DBN captures that Battery_t depends on Battery_{t−1} and Fuel_t depends on Fuel_{t−1}, while Engine_t depends on both Battery_t and Fuel_t within the same slice.
+**Example:** A vehicle monitoring system. State variables at each time step: $\text{Battery}_t$, $\text{Fuel}_t$, $\text{Engine}_t$. Observations: $\text{Gauge}_t$, $\text{StarterMotor}_t$. The DBN captures that $\text{Battery}_t$ depends on $\text{Battery}_{t-1}$ and $\text{Fuel}_t$ depends on $\text{Fuel}_{t-1}$, while $\text{Engine}_t$ depends on both $\text{Battery}_t$ and $\text{Fuel}_t$ within the same slice.
 
 **Inference in DBNs:** Exact inference can be done by unrolling the network and applying standard Bayesian network inference (variable elimination, junction tree). However, this becomes intractable for long sequences. **Approximate methods** like particle filtering (sequential Monte Carlo) are commonly used.
 
@@ -237,6 +298,7 @@ Description Logic underlies the **Web Ontology Language (OWL)**, the standard fo
 **Components of Description Logic:**
 
 **1. Concepts (Classes):** Represent sets of individuals. Atomic concepts are named classes (e.g., Person, Animal). Complex concepts are built using constructors:
+
 - **Intersection (⊓):** Person ⊓ Female — individuals that are both persons and female.
 - **Union (⊔):** Doctor ⊔ Lawyer — individuals that are doctors or lawyers.
 - **Negation (¬):** ¬Male — individuals that are not male.
@@ -245,6 +307,7 @@ Description Logic underlies the **Web Ontology Language (OWL)**, the standard fo
 - **Number Restrictions (≥n, ≤n):** ≥2 hasChild — individuals with at least 2 children.
 
 **2. Roles (Relations):** Represent binary relationships between individuals (e.g., hasChild, worksFor, teaches). Roles can have properties:
+
 - **Inverse roles:** If hasChild relates parent to child, then hasParent is its inverse.
 - **Transitive roles:** ancestorOf is transitive — if A is ancestor of B and B is ancestor of C, then A is ancestor of C.
 
@@ -276,15 +339,15 @@ Description Logic underlies the **Web Ontology Language (OWL)**, the standard fo
 
 Classical (Boolean) logic deals with only two truth values: 0 (false) and 1 (true). **Fuzzy logic**, introduced by Lotfi Zadeh in 1965, extends this by allowing **partial truth** — a degree of membership between 0 and 1. This is useful for modeling vague, imprecise, or uncertain concepts that are common in human reasoning (e.g., "tall," "warm," "fast").
 
-**Fuzzy Set:** A set where each element has a **degree of membership** μ(x) ∈ [0, 1], rather than simply belonging or not. For example, in the fuzzy set "Tall": a person of height 6'2" might have μ = 0.9, while a person of 5'6" might have μ = 0.4.
+**Fuzzy Set:** A set where each element has a **degree of membership** $\mu(x) \in [0, 1]$, rather than simply belonging or not. For example, in the fuzzy set "Tall": a person of height 6'2" might have $\mu = 0.9$, while a person of 5'6" might have $\mu = 0.4$.
 
 **Membership Functions:** Define the degree of membership for each value. Common shapes: triangular, trapezoidal, Gaussian, bell-shaped.
 
 **Fuzzy Operations:**
 
-- **Union (OR):** μ_{A∪B}(x) = max(μ_A(x), μ_B(x))
-- **Intersection (AND):** μ_{A∩B}(x) = min(μ_A(x), μ_B(x))
-- **Complement (NOT):** μ_{¬A}(x) = 1 − μ_A(x)
+- **Union (OR):** $\mu_{A \cup B}(x) = \max(\mu_A(x),\, \mu_B(x))$
+- **Intersection (AND):** $\mu_{A \cap B}(x) = \min(\mu_A(x),\, \mu_B(x))$
+- **Complement (NOT):** $\mu_{\neg A}(x) = 1 - \mu_A(x)$
 
 ## Fuzzy Inference System (FIS)
 
@@ -316,21 +379,22 @@ Output: Green_Duration (Short, Medium, Long).
 Membership functions: Triangular functions defined for each linguistic variable.
 
 Rules:
+
 - IF Traffic_Density is High AND Waiting_Time is Long THEN Green_Duration is Long.
 - IF Traffic_Density is Low AND Waiting_Time is Short THEN Green_Duration is Short.
 - IF Traffic_Density is Medium THEN Green_Duration is Medium.
 
-Suppose Traffic_Density = 70 vehicles → μ_High = 0.7, μ_Medium = 0.3. Waiting_Time = 50 sec → μ_Long = 0.6.
+Suppose Traffic*Density = 70 vehicles → $\mu*{\text{High}} = 0.7$, $\mu_{\text{Medium}} = 0.3$. Waiting*Time = 50 sec → $\mu*{\text{Long}} = 0.6$.
 
-Rule 1: Firing strength = min(0.7, 0.6) = 0.6. Clip the "Long" output fuzzy set at 0.6.
-Rule 3: Firing strength = 0.3. Clip the "Medium" output fuzzy set at 0.3.
+Rule 1: Firing strength $= \min(0.7,\, 0.6) = 0.6$. Clip the "Long" output fuzzy set at 0.6.
+Rule 3: Firing strength $= 0.3$. Clip the "Medium" output fuzzy set at 0.3.
 
 Aggregate: Take the union (max) of all clipped output sets.
 Defuzzify: Apply centroid method to get a crisp Green_Duration value.
 
 **Defuzzification Techniques:**
 
-- **Centroid (Center of Gravity):** x* = ∫μ(x)·x dx / ∫μ(x) dx — the most widely used method. Computes the center of mass of the aggregated fuzzy set.
+- **Centroid (Center of Gravity):** $x^* = \dfrac{\int \mu(x) \cdot x\, dx}{\int \mu(x)\, dx}$ — the most widely used method. Computes the center of mass of the aggregated fuzzy set.
 - **Bisector of Area (BOA):** The value that divides the area of the fuzzy set into two equal halves.
 - **Mean of Maximum (MOM):** The average of the values at which the membership function reaches its maximum.
 - **Smallest of Maximum (SOM):** The smallest value at which maximum membership occurs.
@@ -340,14 +404,14 @@ Defuzzify: Apply centroid method to get a crisp Green_Duration value.
 
 In the Sugeno FIS, the antecedent is a fuzzy set (same as Mamdani), but the **consequent is a crisp function** of the inputs — either a constant (zero-order Sugeno) or a linear function (first-order Sugeno).
 
-**Rule Format:** IF x is A AND y is B THEN z = f(x, y), where f is typically a constant or a linear polynomial (e.g., z = ax + by + c).
+**Rule Format:** IF $x$ is $A$ AND $y$ is $B$ THEN $z = f(x, y)$, where $f$ is typically a constant or a linear polynomial (e.g., $z = ax + by + c$).
 
 **Steps:**
 
 1. **Fuzzification:** Same as Mamdani.
-2. **Rule Evaluation:** Compute the firing strength w_i for each rule using AND (min or product).
-3. **Output Computation:** Each rule produces a crisp output z_i = f_i(inputs).
-4. **Defuzzification:** Use **weighted average** — z* = Σ(w_i · z_i) / Σ(w_i). No complex area computation is needed.
+2. **Rule Evaluation:** Compute the firing strength $w_i$ for each rule using AND (min or product).
+3. **Output Computation:** Each rule produces a crisp output $z_i = f_i(\text{inputs})$.
+4. **Defuzzification:** Use **weighted average** — $z^* = \dfrac{\sum w_i \cdot z_i}{\sum w_i}$. No complex area computation is needed.
 
 **Example — Tip Calculation:**
 
@@ -355,16 +419,17 @@ Inputs: Service (Poor, Good, Excellent), Food (Rancid, Delicious).
 Output: Tip (percentage).
 
 Rules:
+
 - IF Service is Poor OR Food is Rancid THEN Tip = 5%.
 - IF Service is Good THEN Tip = 15%.
 - IF Service is Excellent OR Food is Delicious THEN Tip = 25%.
 
-Suppose Service = 7 → μ_Good = 0.6, μ_Excellent = 0.3. Food = 8 → μ_Delicious = 0.7.
+Suppose Service = 7 → $\mu_{\text{Good}} = 0.6$, $\mu_{\text{Excellent}} = 0.3$. Food = 8 → $\mu_{\text{Delicious}} = 0.7$.
 
-Rule 2: w₂ = 0.6, z₂ = 15.
-Rule 3: w₃ = max(0.3, 0.7) = 0.7, z₃ = 25.
+Rule 2: $w_2 = 0.6$, $z_2 = 15$.
+Rule 3: $w_3 = \max(0.3,\, 0.7) = 0.7$, $z_3 = 25$.
 
-Output: z* = (0.6 × 15 + 0.7 × 25) / (0.6 + 0.7) = (9 + 17.5) / 1.3 = 26.5 / 1.3 ≈ 20.38%.
+Output: $z^* = \dfrac{0.6 \times 15 + 0.7 \times 25}{0.6 + 0.7} = \dfrac{9 + 17.5}{1.3} = \dfrac{26.5}{1.3} \approx 20.38\%$.
 
 **Differences between Mamdani and Sugeno:**
 
@@ -380,9 +445,9 @@ In the Tsukamoto FIS, the consequent of each rule is a fuzzy set with a **monoto
 **Working:**
 
 1. **Fuzzification:** Same as other FIS types.
-2. **Rule Evaluation:** Compute the firing strength w_i for each rule.
-3. **Output Computation:** For each rule, find the crisp output z_i such that μ_output(z_i) = w_i by inverting the monotonic membership function.
-4. **Defuzzification:** Use **weighted average** — z* = Σ(w_i · z_i) / Σ(w_i).
+2. **Rule Evaluation:** Compute the firing strength $w_i$ for each rule.
+3. **Output Computation:** For each rule, find the crisp output $z_i$ such that $\mu_{\text{output}}(z_i) = w_i$ by inverting the monotonic membership function.
+4. **Defuzzification:** Use **weighted average** — $z^* = \dfrac{\sum w_i \cdot z_i}{\sum w_i}$.
 
 **Key Requirement:** The output membership functions must be monotonic (e.g., sigmoid-like, S-shaped, or Z-shaped functions).
 
