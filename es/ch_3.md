@@ -12,6 +12,7 @@
 
 The ARM Cortex-M3 is a 32-bit processor core based on the ARMv7-M architecture, designed specifically for deeply embedded, deterministic, real-time applications. It uses the Thumb-2 instruction set (a mix of 16-bit and 32-bit instructions), a Harvard bus architecture with separate instruction and data buses, and an integrated Nested Vectored Interrupt Controller (NVIC) for efficient exception handling.
 
+<!--
 **ARM Cortex-M3 Core Block Diagram:**
 
 ```
@@ -62,9 +63,11 @@ The ARM Cortex-M3 is a 32-bit processor core based on the ARMv7-M architecture, 
 │  │         │  │         │   │  Timers, ADC)│                       │
 │  └─────────┘  └─────────┘   └──────────────┘                       │
 └─────────────────────────────────────────────────────────────────────────┘
-```
+``` -->
 
-The diagram illustrates the key components and data/control flow within the Cortex-M3 core. Instructions are fetched from Flash via the I-Code bus, decoded, and executed through the 3-stage pipeline. The register file provides operands to the ALU and stores results. The NVIC receives interrupt requests from peripherals and manages priority-based preemption. The bus matrix routes transactions from the processor to the appropriate memory or peripheral through separate buses (I-Code for instruction fetch, D-Code for data in the code region, System bus for SRAM and peripherals, and the Private Peripheral Bus for internal system components).
+![alt text](image.png)
+
+The diagram illustrates the key components and data/control flow within the Cortex-M3 core. In ARM CPU, Instructions are fetched from Flash via the I-Code bus, decoded, and executed through the 3-stage pipeline. The register file provides operands to the ALU and stores results. The NVIC receives interrupt requests from peripherals and manages priority-based preemption. The bus matrix routes transactions from the processor to the appropriate memory or peripheral through separate buses (I-Code for instruction fetch, D-Code for data in the code region, System bus for SRAM and peripherals, and the Private Peripheral Bus for internal system components).
 
 ## 3.1.1 Pipeline, Memory Map, and NVIC
 
@@ -92,15 +95,21 @@ The Cortex-M3 defines a fixed, architecturally standardized 4 GB (32-bit) memory
 
 **1. Code Region (0x00000000 to 0x1FFFFFFF, 512 MB):**
 
-This region is intended for program code. It is accessed via the I-Code and D-Code buses, which are optimized for instruction fetches. On most microcontrollers, on-chip Flash is mapped here. The vector table, which must start at address 0x00000000 on reset, resides at the beginning of this region.
+This region is intended for program code. It is accessed via the I-Code and D-Code buses, which are optimized for instruction fetches.
+
+<!-- On most microcontrollers, on-chip Flash is mapped here. The vector table, which must start at address 0x00000000 on reset, resides at the beginning of this region. -->
 
 **2. SRAM Region (0x20000000 to 0x3FFFFFFF, 512 MB):**
 
-This region is for on-chip SRAM used as data memory (variables, stack, heap). It is accessed via the System bus. The first 1 MB of this region (0x20000000 to 0x200FFFFF) can be bit-banded, meaning each bit in this region can be individually addressed and atomically set or cleared through a corresponding 32-bit alias address in the bit-band alias region.
+This region is for on-chip SRAM used as data memory (variables, stack, heap). It is accessed via the System bus.
+
+<!-- The first 1 MB of this region (0x20000000 to 0x200FFFFF) can be bit-banded, meaning each bit in this region can be individually addressed and atomically set or cleared through a corresponding 32-bit alias address in the bit-band alias region. -->
 
 **3. Peripheral Region (0x40000000 to 0x5FFFFFFF, 512 MB):**
 
-This region is for memory-mapped peripheral registers (GPIO, UART, SPI, I2C, timers, ADC, etc.). Like the SRAM region, the first 1 MB of the peripheral region is bit-band accessible, allowing atomic bit-level access to peripheral control and status registers.
+This region is for memory-mapped peripheral registers (GPIO, UART, SPI, I2C, timers, ADC, etc.).
+
+<!-- Like the SRAM region, the first 1 MB of the peripheral region is bit-band accessible, allowing atomic bit-level access to peripheral control and status registers. -->
 
 **4. External RAM Region (0x60000000 to 0x9FFFFFFF, 1 GB):**
 
@@ -136,7 +145,9 @@ If a higher-priority interrupt arrives during the stacking phase of a lower-prio
 
 **5. Deterministic Latency:**
 
-The combination of hardware stacking, tail-chaining, and late arrival ensures that the worst-case interrupt latency is deterministic and short (12 clock cycles from interrupt assertion to the first instruction of the ISR, in zero-wait-state memory conditions).
+The combination of hardware stacking, tail-chaining, and late arrival ensures that the worst-case interrupt latency is deterministic and short.
+
+<!-- (12 clock cycles from interrupt assertion to the first instruction of the ISR, in zero-wait-state memory conditions). -->
 
 ## 3.1.2 Operating Modes: Thread, Handler, Privileged, Unprivileged
 
@@ -170,7 +181,9 @@ The Cortex-M3 has sixteen 32-bit core registers (R0–R15) and several special-p
 
 **1. R0–R12 (General-Purpose Registers):**
 
-R0 through R12 are general-purpose registers used for data processing. R0–R3 are used for passing arguments to functions and returning results (per the ARM Architecture Procedure Call Standard, AAPCS). R4–R11 are callee-saved registers (a called function must preserve their values). R12 (also called IP, the Intra-Procedure call scratch register) is used by the linker as a scratch register.
+R0 through R12 are general-purpose registers used for data processing.
+
+<!-- R0–R3 are used for passing arguments to functions and returning results (per the ARM Architecture Procedure Call Standard, AAPCS). R4–R11 are callee-saved registers (a called function must preserve their values). R12 (also called IP, the Intra-Procedure call scratch register) is used by the linker as a scratch register. -->
 
 **2. R13 (Stack Pointer, SP):**
 
@@ -182,7 +195,9 @@ R14 is the Link Register. When a function is called using the BL (Branch with Li
 
 **4. R15 (Program Counter, PC):**
 
-R15 is the Program Counter. It holds the address of the current instruction being fetched. Writing to the PC causes a branch to the written address. Due to the pipeline, reading the PC returns the address of the current instruction plus 4.
+R15 is the Program Counter. It holds the address of the current instruction being fetched.
+
+<!-- Writing to the PC causes a branch to the written address. Due to the pipeline, reading the PC returns the address of the current instruction plus 4. -->
 
 **5. Program Status Registers (xPSR):**
 
@@ -218,8 +233,10 @@ When the Cortex-M3 is powered on or reset, the hardware performs two automatic a
 
 **The Vector Table:**
 
-The vector table is an array of 32-bit addresses located at the beginning of the Flash memory. The first entry is the initial stack pointer value, and the subsequent entries are the addresses of exception and interrupt handlers. The vector table is typically defined in C as an array of function pointers, placed in a special linker section (`.isr_vector`) that the linker maps to address 0x00000000.
+The vector table is an array of 32-bit addresses located at the beginning of the Flash memory. The first entry is the initial stack pointer value, and the subsequent entries are the addresses of exception and interrupt handlers.
 
+<!-- The vector table is typically defined in C as an array of function pointers, placed in a special linker section (`.isr_vector`) that the linker maps to address 0x00000000. -->
+<!--
 ```c
 extern uint32_t _estack;  // Defined by linker script (top of stack)
 void Reset_Handler(void);
@@ -235,7 +252,7 @@ const uint32_t vector_table[] = {
     (uint32_t)&HardFault_Handler,// Hard fault handler
     // ... remaining exception and IRQ vectors ...
 };
-```
+``` -->
 
 **Startup Code (Reset_Handler):**
 
@@ -320,10 +337,6 @@ __asm volatile ("cpsid i");  // Set PRIMASK = 1
 
 // Enable all configurable interrupts
 __asm volatile ("cpsie i");  // Clear PRIMASK = 0
-
-// Read the current PRIMASK value
-uint32_t primask;
-__asm volatile ("mrs %0, primask" : "=r" (primask));
 ```
 
 **2. Memory Barrier Instructions:**

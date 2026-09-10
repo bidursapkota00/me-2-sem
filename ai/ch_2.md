@@ -225,6 +225,8 @@ A Dynamic Bayesian Network is a generalization of HMMs that represents the state
 
 **Inference in DBNs:** Exact inference can be done by unrolling the network and applying standard Bayesian network inference (variable elimination, junction tree). However, this becomes intractable for long sequences. **Approximate methods** like particle filtering (sequential Monte Carlo) are commonly used.
 
+![alt text](image-1.png)
+
 ---
 
 # 2.3 Ontological Engineering
