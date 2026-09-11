@@ -1,53 +1,12 @@
 # 2. Data Modeling and SQL
 
-# 2.1 Concept of Relations
-
-> **Differentiate between a Cartesian Product and a Join in relational databases. [7 marks] (2081)**
-
-A relation is the fundamental data structure of the relational model. It is a two-dimensional table consisting of rows and columns, with a unique name.
-
-**Formal Definitions:**
-
-1. **Relation Schema:** The logical design of a relation, written as R(A1, A2, ..., An), where R is the relation name and A1 through An are its attributes. For example, `Instructor(ID, name, dept_name, salary)` is a relation schema.
-
-2. **Relation Instance:** The actual set of tuples (rows) present in a relation at a particular moment in time. The instance changes whenever data is inserted, updated, or deleted.
-
-3. **Attribute:** A named column of a relation. Each attribute has a domain, which is the set of permitted values. All values in the relational model must be atomic (indivisible). The special value `null` belongs to every domain and signifies that a value is unknown or does not exist.
-
-4. **Tuple:** A single row in a relation. Each tuple represents one record or instance of the entity described by the relation.
-
-5. **Degree (Arity):** The number of attributes in a relation.
-
-6. **Cardinality:** The number of tuples in a relation instance.
-
-**Properties of Relations:**
-
-1. The order of tuples in a relation is immaterial since a relation is defined as a set of tuples.
-2. No two tuples in a relation are identical (duplicate rows are not allowed).
-3. The order of attributes in a relation schema is immaterial.
-4. All attribute values are atomic.
-
-**Keys:**
-
-1. **Superkey:** A set of one or more attributes whose combined values uniquely identify each tuple in a relation. For example, {ID} and {ID, name} are both superkeys of the Instructor relation.
-2. **Candidate Key:** A minimal superkey, meaning no proper subset of it is also a superkey. If {ID} uniquely identifies an instructor, then {ID} is a candidate key.
-3. **Primary Key:** The candidate key chosen by the database designer as the principal means of identifying tuples. Primary key values must not be null. It is denoted by underlining the attribute(s) in the schema notation.
-
----
+2.1 see ch1
 
 # 2.2 Referential Integrity and Foreign Key
 
 > **Explain how a foreign key can be used to enforce referential integrity constraints, including appropriate SQL syntax. [7 marks] (2081)**
 
-**Foreign Key:**
-
-A foreign key is a set of attributes in one relation whose values are required to match the primary key values of another relation. It creates a logical link between two relations.
-
-For a foreign key constraint from relation R (referencing relation) to relation S (referenced relation), every value appearing in the foreign key columns of R must either match an existing primary key value in S, or be null.
-
-**Referential Integrity:**
-
-Referential integrity is the constraint that ensures that foreign key values always reference valid, existing tuples in the referenced relation. It prevents dangling references where a tuple in one relation points to a non-existent tuple in another.
+see ch1 for fk, fk constraints defn
 
 **Violations and Enforcement:**
 
@@ -94,45 +53,45 @@ Relational algebra is a procedural query language that consists of a set of oper
 
 **Six Fundamental Operations:**
 
-**1. Select (σ):**
+**1. Select ($\sigma$):**
 
 Selects tuples from a relation that satisfy a given predicate. It is a unary operation (operates on one relation).
 
-Notation: σ_p(r), where p is the selection predicate and r is the relation.
+Notation: $\sigma_p(r)$, where $p$ is the selection predicate and $r$ is the relation.
 
 Example: Select all instructors from the Physics department.
 
-σ_{dept_name = "Physics"}(Instructor)
+$\sigma_{\text{dept\_name} = \text{"Physics"}}(\text{Instructor})$
 
 ```sql
 SELECT * FROM Instructor WHERE dept_name = 'Physics';
 ```
 
-The predicate can use comparison operators (=, ≠, <, >, ≤, ≥) and logical connectives (∧ for AND, ∨ for OR, ¬ for NOT).
+The predicate can use comparison operators ($=$, $\neq$, $<$, $>$, $\leq$, $\geq$) and logical connectives ($\land$ for AND, $\lor$ for OR, $\lnot$ for NOT).
 
-**2. Project (∏):**
+**2. Project ($\Pi$):**
 
 Returns specified attributes from a relation, removing all other attributes. Duplicate tuples in the result are eliminated. It is a unary operation.
 
-Notation: ∏_{A1, A2, ..., Ak}(r)
+Notation: $\Pi_{A_1, A_2, \ldots, A_k}(r)$
 
 Example: List only the names and salaries of all instructors.
 
-∏_{name, salary}(Instructor)
+$\Pi_{\text{name, salary}}(\text{Instructor})$
 
 ```sql
 SELECT DISTINCT name, salary FROM Instructor;
 ```
 
-**3. Union (∪):**
+**3. Union ($\cup$):**
 
 Combines tuples from two relations, eliminating duplicates. Both relations must be union-compatible (same number of attributes with compatible domains).
 
-Notation: r ∪ s
+Notation: $r \cup s$
 
 Example: Find all people who are either instructors or students (assuming both relations have a `name` attribute).
 
-∏_{name}(Instructor) ∪ ∏_{name}(Student)
+$\Pi_{\text{name}}(\text{Instructor}) \cup \Pi_{\text{name}}(\text{Student})$
 
 ```sql
 SELECT name FROM Instructor
@@ -140,15 +99,15 @@ UNION
 SELECT name FROM Student;
 ```
 
-**4. Set Difference (−):**
+**4. Set Difference ($-$):**
 
 Returns tuples that exist in the first relation but not in the second. Both relations must be union-compatible.
 
-Notation: r − s
+Notation: $r - s$
 
 Example: Find names of instructors who are not students.
 
-∏_{name}(Instructor) − ∏_{name}(Student)
+$\Pi_{\text{name}}(\text{Instructor}) - \Pi_{\text{name}}(\text{Student})$
 
 ```sql
 SELECT name FROM Instructor
@@ -156,15 +115,15 @@ EXCEPT
 SELECT name FROM Student;
 ```
 
-**5. Cartesian Product (×):**
+**5. Cartesian Product ($\times$):**
 
-Combines every tuple of one relation with every tuple of another. If relation r has n1 tuples and s has n2 tuples, the result has n1 × n2 tuples.
+Combines every tuple of one relation with every tuple of another. If relation $r$ has $n_1$ tuples and $s$ has $n_2$ tuples, the result has $n_1 \times n_2$ tuples.
 
-Notation: r × s
+Notation: $r \times s$
 
 Example: Combine every instructor with every department.
 
-Instructor × Department
+$\text{Instructor} \times \text{Department}$
 
 ```sql
 SELECT * FROM Instructor, Department;
@@ -172,19 +131,19 @@ SELECT * FROM Instructor, Department;
 
 The Cartesian product by itself is rarely useful because it produces all possible combinations regardless of any logical relationship. It becomes meaningful only when combined with a selection operation to filter relevant pairs.
 
-**6. Rename (ρ):**
+**6. Rename ($\rho$):**
 
 Assigns a new name to a relation or its attributes. This is essential for self-joins and for disambiguating attribute names.
 
-Notation: ρ_x(E) renames the result of expression E to x. ρ_{x(A1, A2, ..., An)}(E) also renames the attributes.
+Notation: $\rho_x(E)$ renames the result of expression $E$ to $x$. $\rho_{x(A_1, A_2, \ldots, A_n)}(E)$ also renames the attributes.
 
-**Additional Operations (derived from the fundamental six):**
+**Additional Operations (Derived from the Fundamental Six):**
 
-**Set Intersection (∩):**
+**Set Intersection ($\cap$):**
 
-Returns tuples that appear in both relations. It can be expressed as: r ∩ s = r − (r − s).
+Returns tuples that appear in both relations. It can be expressed as: $r \cap s = r - (r - s)$.
 
-∏_{name}(Instructor) ∩ ∏_{name}(Student)
+$\Pi_{\text{name}}(\text{Instructor}) \cap \Pi_{\text{name}}(\text{Student})$
 
 ```sql
 SELECT name FROM Instructor
@@ -192,21 +151,21 @@ INTERSECT
 SELECT name FROM Student;
 ```
 
-**Natural Join (⋈):**
+**Natural Join ($\bowtie$):**
 
 Combines two relations by automatically matching on all attributes with the same name, and eliminates duplicate columns. It is equivalent to a Cartesian product followed by a selection on equal common attributes, followed by a projection to remove duplicate columns.
 
-Notation: r ⋈ s
+Notation: $r \bowtie s$
 
 Example: Find instructors along with the courses they teach.
 
-Instructor ⋈ Teaches
+$\text{Instructor} \bowtie \text{Teaches}$
 
 ```sql
 SELECT * FROM Instructor NATURAL JOIN Teaches;
 ```
 
-**Division (÷):**
+**Division ($\div$):**
 
 Used to answer queries involving "for all" conditions (e.g., find students who have taken all courses offered by the Biology department). It is defined using the fundamental operations.
 
@@ -216,7 +175,7 @@ Given: Employee(eid, emp_name, address, supervisor_id), Department(did, dep_name
 
 (i) List names of all employees in the computer department along with their supervisor name:
 
-∏_{E.emp_name, S.emp_name}(σ_{dep_name="Computer"}(Employee E ⋈_{E.eid = W.eid} Workson W ⋈_{W.pid = P.pid} Project P ⋈_{P.did = D.did} Department D) ⋈_{E.supervisor_id = S.eid} ρ_S(Employee))
+$\Pi_{E.\text{emp\_name},\, S.\text{emp\_name}}\big(\sigma_{\text{dep\_name}=\text{"Computer"}}(\text{Employee } E \bowtie_{E.\text{eid} = W.\text{eid}} \text{Workson } W \bowtie_{W.\text{pid} = P.\text{pid}} \text{Project } P \bowtie_{P.\text{did} = D.\text{did}} \text{Department } D) \bowtie_{E.\text{supervisor\_id} = S.\text{eid}} \rho_S(\text{Employee})\big)$
 
 ```sql
 SELECT E.emp_name, S.emp_name AS supervisor_name
@@ -230,7 +189,7 @@ WHERE D.dep_name = 'Computer';
 
 (ii) Find total number of projects from each department along with department name:
 
-_{did} G _{COUNT(pid)}(Project) ⋈ Department
+${}_{\text{did}} \mathcal{G}_{\text{COUNT(pid)}}(\text{Project}) \bowtie \text{Department}$
 
 ```sql
 SELECT D.dep_name, COUNT(P.pid) AS total_projects
@@ -241,7 +200,7 @@ GROUP BY D.dep_name;
 
 (iii) Find names of employees who do not work on any project:
 
-∏_{emp_name}(Employee) − ∏_{emp_name}(Employee ⋈_{Employee.eid = Workson.eid} Workson)
+$\Pi_{\text{emp\_name}}(\text{Employee}) - \Pi_{\text{emp\_name}}(\text{Employee} \bowtie_{\text{Employee.eid} = \text{Workson.eid}} \text{Workson})$
 
 ```sql
 SELECT emp_name FROM Employee
@@ -250,7 +209,7 @@ WHERE eid NOT IN (SELECT eid FROM Workson);
 
 (iv) Find name of each project with more than 3 employees:
 
-∏_{prj_name}(σ_{count ≥ 3}(_{pid} G _{COUNT(eid) AS count}(Workson)) ⋈ Project)
+$\Pi_{\text{prj\_name}}\big(\sigma_{\text{count} \geq 3}({}_{\text{pid}} \mathcal{G}_{\text{COUNT(eid) AS count}}(\text{Workson})) \bowtie \text{Project}\big)$
 
 ```sql
 SELECT P.prj_name
@@ -317,7 +276,7 @@ FULL OUTER JOIN Department D ON E.dept_id = D.dept_id;
 
 **6. Cross Join (Cartesian Product):**
 
-Produces every possible combination of tuples from two relations. If relation A has m rows and relation B has n rows, the result has m × n rows. No join condition is specified.
+Produces every possible combination of tuples from two relations. If relation $A$ has $m$ rows and relation $B$ has $n$ rows, the result has $m \times n$ rows. No join condition is specified.
 
 ```sql
 SELECT *
@@ -342,7 +301,7 @@ JOIN Employee S ON E.supervisor_id = S.eid;
 
 **Cartesian Product vs. Join:**
 
-A Cartesian product combines every tuple of one relation with every tuple of another without any condition, producing a very large result set (m × n rows). A join is a Cartesian product followed by a selection that filters only the meaningful combinations based on a join condition. The join is therefore a more selective and useful operation.
+A Cartesian product combines every tuple of one relation with every tuple of another without any condition, producing a very large result set ($m \times n$ rows). A join is a Cartesian product followed by a selection that filters only the meaningful combinations based on a join condition. The join is therefore a more selective and useful operation.
 
 ---
 
@@ -436,7 +395,7 @@ FROM r1, r2, ..., rm
 WHERE P;
 ```
 
-This is equivalent to the relational algebra expression: ∏_{A1, A2, ..., An}(σ_P(r1 × r2 × ... × rm)).
+This is equivalent to the relational algebra expression: $\Pi_{A_1, A_2, \ldots, A_n}(\sigma_P(r_1 \times r_2 \times \ldots \times r_m))$.
 
 **Important SELECT Clauses:**
 
@@ -451,7 +410,7 @@ This is equivalent to the relational algebra expression: ∏_{A1, A2, ..., An}(�
 1. **Comparison:** =, <>, <, >, <=, >=
 2. **Logical:** AND, OR, NOT
 3. **Range:** BETWEEN ... AND ...
-4. **Pattern matching:** LIKE (with wildcards % for any string, _ for any single character)
+4. **Pattern matching:** LIKE (with wildcards % for any string, \_ for any single character)
 5. **Null check:** IS NULL, IS NOT NULL
 
 **INSERT:**
