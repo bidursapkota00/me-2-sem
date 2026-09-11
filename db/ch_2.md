@@ -61,7 +61,7 @@ Notation: $\sigma_p(r)$, where $p$ is the selection predicate and $r$ is the rel
 
 Example: Select all instructors from the Physics department.
 
-$\sigma_{\text{dept\_name} = \text{"Physics"}}(\text{Instructor})$
+$\sigma_{\text{dept}\_\text{name} = \text{"Physics"}}(\text{Instructor})$
 
 ```sql
 SELECT * FROM Instructor WHERE dept_name = 'Physics';
@@ -175,7 +175,7 @@ Given: Employee(eid, emp_name, address, supervisor_id), Department(did, dep_name
 
 (i) List names of all employees in the computer department along with their supervisor name:
 
-$\Pi_{E.\text{emp\_name},\, S.\text{emp\_name}}\big(\sigma_{\text{dep\_name}=\text{"Computer"}}(\text{Employee } E \bowtie_{E.\text{eid} = W.\text{eid}} \text{Workson } W \bowtie_{W.\text{pid} = P.\text{pid}} \text{Project } P \bowtie_{P.\text{did} = D.\text{did}} \text{Department } D) \bowtie_{E.\text{supervisor\_id} = S.\text{eid}} \rho_S(\text{Employee})\big)$
+$\Pi_{E.\text{emp}\_\text{name},\, S.\text{emp}\_\text{name}}\big(\sigma_{\text{dep}\_\text{name}=\text{"Computer"}}(\text{Employee } E \bowtie_{E.\text{eid} = W.\text{eid}} \text{Workson } W \bowtie_{W.\text{pid} = P.\text{pid}} \text{Project } P \bowtie_{P.\text{did} = D.\text{did}} \text{Department } D) \bowtie_{E.\text{supervisor}\_\text{id} = S.\text{eid}} \rho_S(\text{Employee})\big)$
 
 ```sql
 SELECT E.emp_name, S.emp_name AS supervisor_name
@@ -200,7 +200,7 @@ GROUP BY D.dep_name;
 
 (iii) Find names of employees who do not work on any project:
 
-$\Pi_{\text{emp\_name}}(\text{Employee}) - \Pi_{\text{emp\_name}}(\text{Employee} \bowtie_{\text{Employee.eid} = \text{Workson.eid}} \text{Workson})$
+$\Pi_{\text{emp}\_\text{name}}(\text{Employee}) - \Pi_{\text{emp}\_\text{name}}(\text{Employee} \bowtie_{\text{Employee.eid} = \text{Workson.eid}} \text{Workson})$
 
 ```sql
 SELECT emp_name FROM Employee
@@ -209,7 +209,7 @@ WHERE eid NOT IN (SELECT eid FROM Workson);
 
 (iv) Find name of each project with more than 3 employees:
 
-$\Pi_{\text{prj\_name}}\big(\sigma_{\text{count} \geq 3}({}_{\text{pid}} \mathcal{G}_{\text{COUNT(eid) AS count}}(\text{Workson})) \bowtie \text{Project}\big)$
+$\Pi_{\text{prj}\_\text{name}}\big(\sigma_{\text{count} \geq 3}({}_{\text{pid}} \mathcal{G}_{\text{COUNT(eid) AS count}}(\text{Workson})) \bowtie \text{Project}\big)$
 
 ```sql
 SELECT P.prj_name
