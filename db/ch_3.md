@@ -85,10 +85,18 @@ An index is an auxiliary data structure that speeds up data retrieval by providi
 
 A B+ tree is a balanced, multi-level tree index structure that is the most widely used indexing method in database systems. It maintains sorted data and allows searches, insertions, deletions, and range queries in O(log n) time.
 
-**Properties of a B+ Tree of Order n:**
+**Properties of a B-Tree of Order n:**
 
 1. Every node has at most n children (n-1 search keys).
 2. Every non-root internal node has at least ⌈n/2⌉ children.
+3. The root has at least 2 children if it is not a leaf.
+4. All leaf nodes are at the same depth (the tree is balanced).
+5. Every node (except the root) holds between ⌈n/2⌉ - 1 and n-1 search key values.
+
+**Properties of a B+ Tree of Order n:**
+
+1. Every node has at most n children (n-1 search keys).
+2. Every non-root internal node has at least ⌈n/2⌉ children (holds between ⌈n/2⌉ - 1 and n-1 search keys).
 3. The root has at least 2 children if it is not a leaf.
 4. All leaf nodes are at the same depth (the tree is balanced).
 5. A leaf node holds between ⌈(n-1)/2⌉ and n-1 search key values.
@@ -418,10 +426,9 @@ A trigger is a special database object that automatically executes (fires) a spe
 **Components of a Trigger:**
 
 1. **Event:** The database operation that activates the trigger (INSERT, UPDATE, DELETE).
-2. **Condition:** An optional boolean condition that must be true for the trigger body to execute (specified using a WHEN clause).
-3. **Action:** The block of SQL or procedural code that is executed when the trigger fires.
-4. **Timing:** Specifies whether the trigger fires BEFORE or AFTER the triggering event.
-5. **Granularity:** FOR EACH ROW (fires once per affected row) or FOR EACH STATEMENT (fires once per SQL statement, regardless of how many rows are affected).
+2. **Action:** The block of SQL or procedural code that is executed when the trigger fires.
+3. **Timing:** Specifies whether the trigger fires BEFORE or AFTER the triggering event.
+4. **Granularity:** FOR EACH ROW (fires once per affected row) or FOR EACH STATEMENT (fires once per SQL statement, regardless of how many rows are affected).
 
 **OLD and NEW References:**
 
@@ -435,7 +442,6 @@ CREATE TRIGGER trigger_name
 {BEFORE | AFTER} {INSERT | UPDATE | DELETE}
 ON table_name
 FOR EACH ROW
-[WHEN (condition)]
 BEGIN
     -- trigger body
 END;
@@ -446,31 +452,29 @@ END;
 Given a Reviews(reviewer_id, paper_id) table:
 
 ```sql
-CREATE OR REPLACE FUNCTION check_review_limit()
-RETURNS TRIGGER AS $$
-DECLARE
-    review_count INT;
+-- MySQL
+DELIMITER $$
+
+CREATE TRIGGER enforce_review_limit
+BEFORE INSERT ON Reviews
+FOR EACH ROW
 BEGIN
+    DECLARE review_count INT;
+
     SELECT COUNT(*) INTO review_count
     FROM Reviews
     WHERE reviewer_id = NEW.reviewer_id;
 
     IF review_count >= 5 THEN
-        RAISE EXCEPTION 'Reviewer % has already reviewed 5 papers',
-            NEW.reviewer_id;
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Reviewer has already reviewed 5 papers';
     END IF;
+END$$
 
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER enforce_review_limit
-BEFORE INSERT ON Reviews
-FOR EACH ROW
-EXECUTE FUNCTION check_review_limit();
+DELIMITER ;
 ```
 
-When an INSERT on Reviews is attempted, the trigger fires before the insertion. It counts the number of existing reviews by the same reviewer. If the count is already 5, the trigger raises an exception and the insert is rejected. Otherwise, RETURN NEW allows the insert to proceed.
+When an INSERT on Reviews is attempted, the trigger fires before the insertion. It counts the number of existing reviews by the same reviewer. If the count is already 5, the trigger raises an exception and the insert is rejected.
 
 **Role of Triggers in Data Integrity:**
 
