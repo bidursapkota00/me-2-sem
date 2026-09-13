@@ -17,13 +17,15 @@
 **ACID vs. BASE:**
 
 **ACID (Relational Databases):**
+
 - **Atomicity:** A transaction either completes entirely or not at all.
 - **Consistency:** The database moves from one valid state to another valid state after every transaction.
 - **Isolation:** Concurrent transactions do not interfere with each other.
 - **Durability:** Once committed, data persists even after system failure.
 
 **BASE (NoSQL Databases):**
-- **Basically Available:** The system guarantees availability — every request receives a response (success or failure).
+
+- **Basically Available:** The system guarantees availability — every request receives a responses.
 - **Soft State:** The state of the system may change over time, even without input, due to eventual consistency propagation.
 - **Eventually Consistent:** The system will become consistent over time, but reads may return stale data temporarily.
 
@@ -39,7 +41,7 @@
 
 ## 5.1.2 Aggregate Orientation
 
-A central concept in NoSQL (introduced by Sadalage and Fowler in *NoSQL Distilled*) is the **aggregate** — a collection of related objects treated as a unit for data manipulation. In relational databases, data is normalized across multiple tables. In aggregate-oriented NoSQL databases, related data is grouped into a single unit (document, row with column families, or key-value pair) that can be stored, retrieved, and replicated atomically.
+A central concept in NoSQL (introduced by Sadalage and Fowler in _NoSQL Distilled_) is the **aggregate** — a collection of related objects treated as a unit for data manipulation. In relational databases, data is normalized across multiple tables. In aggregate-oriented NoSQL databases, related data is grouped into a single unit (document, row with column families, or key-value pair) that can be stored, retrieved, and replicated atomically.
 
 Aggregate orientation makes it easy to distribute data across clusters because the aggregate is the natural unit of replication and sharding. However, it makes cross-aggregate queries more difficult.
 
@@ -55,16 +57,19 @@ Key: "session:abc"  →  Value: {token: "xyz", expires: "2026-09-01"}
 ```
 
 **Characteristics:**
+
 - Extremely fast lookups by key (O(1) hash-based access).
 - The database treats the value as an opaque object — no querying by value content.
 - Horizontally scalable — keys are easily partitioned across nodes using consistent hashing.
 
 **Advantages:**
+
 - Very high performance for simple read/write operations.
 - Easy to scale horizontally.
 - Simple API: GET, PUT, DELETE.
 
 **Disadvantages:**
+
 - No support for complex queries, joins, or filtering by value attributes.
 - No built-in relationships between data items.
 - Application must manage data structure within values.
@@ -83,8 +88,8 @@ Key: "session:abc"  →  Value: {token: "xyz", expires: "2026-09-01"}
   "name": "Sita Sharma",
   "department": "Computer Science",
   "courses": [
-    {"code": "CMP553", "title": "Database Engineering", "credits": 3},
-    {"code": "CMP551", "title": "Machine Learning", "credits": 3}
+    { "code": "CMP553", "title": "Database Engineering", "credits": 3 },
+    { "code": "CMP551", "title": "Machine Learning", "credits": 3 }
   ],
   "address": {
     "city": "Pokhara",
@@ -94,18 +99,21 @@ Key: "session:abc"  →  Value: {token: "xyz", expires: "2026-09-01"}
 ```
 
 **Characteristics:**
+
 - Documents in the same collection can have different structures (flexible schema).
 - Supports nested documents and arrays, allowing hierarchical data to be stored in a single document.
 - Rich query language — can query by any field, including nested fields.
 - Documents are the unit of atomicity — operations on a single document are atomic.
 
 **Advantages:**
+
 - Flexible schema accommodates evolving data requirements without migration.
 - Natural mapping to objects in application code (reduces impedance mismatch).
 - Supports indexing on any field for efficient queries.
 - Related data can be embedded in a single document, reducing the need for joins.
 
 **Disadvantages:**
+
 - Cross-document queries (equivalent to joins) are less efficient than in relational databases.
 - Data denormalization can lead to data duplication and update anomalies.
 - Large, deeply nested documents can become unwieldy.
@@ -128,19 +136,24 @@ Row Key: "student:1002"
   Column Family "grades":  {CMP553: "B"}
 ```
 
+![alt text](image-1.png)
+
 **Characteristics:**
+
 - Columns are grouped into column families, which are the unit of storage and access.
 - Each row can have a different number of columns within a column family (sparse storage).
 - Optimized for read/write operations on large datasets across distributed clusters.
 - Data is stored column-wise on disk, making column-based queries (aggregations, analytics) efficient.
 
 **Advantages:**
+
 - Excellent horizontal scalability for very large datasets (petabyte scale).
 - High write throughput — designed for write-heavy workloads.
 - Tunable consistency (e.g., Cassandra allows per-query consistency levels).
 - Efficient for queries that access specific column families.
 
 **Disadvantages:**
+
 - No support for joins or complex relational queries.
 - Data modeling is query-driven — the schema must be designed around the expected queries.
 - Limited support for ad-hoc queries.
@@ -159,16 +172,19 @@ Row Key: "student:1002"
 ```
 
 **Characteristics:**
+
 - Relationships are first-class citizens — they are stored explicitly, not computed at query time via joins.
 - Traversal of relationships is O(1) per hop (follows direct pointers), unlike relational databases where joins require index lookups.
 - Schema-flexible — new types of nodes and relationships can be added without altering existing data.
 
 **Advantages:**
+
 - Extremely efficient for relationship-heavy queries (social networks, recommendation engines, fraud detection).
 - Intuitive data modeling — the graph model closely mirrors real-world networks.
 - Variable-length path traversal (e.g., friends-of-friends at arbitrary depth) is natural and fast.
 
 **Disadvantages:**
+
 - Not optimized for aggregate operations (sums, counts across large datasets).
 - Horizontal scaling is more challenging than aggregate-oriented NoSQL databases.
 - Less mature tooling and ecosystem compared to relational and document databases.
@@ -186,6 +202,12 @@ In a graph database, each node stores direct pointers to its adjacent nodes. Tra
 ---
 
 # 5.2 NoSQL Data Models
+
+key-value, document, column-family, graph model
+
+---
+
+# 5.3 CRUD, Aggregation, Sharding Operation and Its Implementation Using NoSQL Database Tools
 
 > **Write the key features of NoSQL systems. Describe how CRUD operations are performed using any NoSQL database tool of your choice. [7 marks] (2081)**
 
@@ -213,13 +235,13 @@ db.students.insertOne({
   department: "Computer Science",
   semester: 2,
   courses: ["CMP553", "CMP551"],
-  gpa: 3.7
+  gpa: 3.7,
 });
 
 // Insert multiple documents
 db.students.insertMany([
   { name: "Sita Kumari", department: "IT", semester: 3, gpa: 3.5 },
-  { name: "Ram Prasad", department: "Computer Science", semester: 2, gpa: 3.9 }
+  { name: "Ram Prasad", department: "Computer Science", semester: 2, gpa: 3.9 },
 ]);
 ```
 
@@ -236,10 +258,7 @@ db.students.find({ department: "Computer Science" });
 db.students.find({ gpa: { $gt: 3.6 } });
 
 // Find one student by name, return only name and gpa fields
-db.students.findOne(
-  { name: "Hari Bahadur" },
-  { name: 1, gpa: 1, _id: 0 }
-);
+db.students.findOne({ name: "Hari Bahadur" }, { name: 1, gpa: 1, _id: 0 });
 ```
 
 **Update:**
@@ -248,19 +267,19 @@ db.students.findOne(
 // Update a single document
 db.students.updateOne(
   { name: "Hari Bahadur" },
-  { $set: { gpa: 3.8, semester: 3 } }
+  { $set: { gpa: 3.8, semester: 3 } },
 );
 
 // Update multiple documents
 db.students.updateMany(
   { department: "Computer Science" },
-  { $inc: { semester: 1 } }   // increment semester by 1
+  { $inc: { semester: 1 } }, // increment semester by 1
 );
 
 // Replace an entire document
 db.students.replaceOne(
   { name: "Ram Prasad" },
-  { name: "Ram Prasad", department: "CS", semester: 3, gpa: 3.95 }
+  { name: "Ram Prasad", department: "CS", semester: 3, gpa: 3.95 },
 );
 ```
 
@@ -276,8 +295,6 @@ db.students.deleteMany({ gpa: { $lt: 3.0 } });
 
 ---
 
-# 5.3 CRUD, Aggregation, Sharding Operation and Its Implementation Using NoSQL Database Tools
-
 > **What is Sharding? Explain Sharding operation and its implementation using any NoSQL database tools. [8 marks] (2080)**
 
 ## 5.3.1 Aggregation in MongoDB
@@ -291,8 +308,7 @@ The aggregation pipeline processes documents through a series of stages, where t
 3. **$project:** Reshapes documents — include, exclude, or compute new fields.
 4. **$sort:** Orders documents by specified fields.
 5. **$limit:** Restricts the number of documents passed to the next stage.
-6. **$unwind:** Deconstructs an array field, creating one document per array element.
-7. **$lookup:** Performs a left outer join with another collection (similar to JOIN in SQL).
+6. **$lookup:** Performs a left outer join with another collection (similar to JOIN in SQL).
 
 **Example: Find the average GPA and student count per department**
 
@@ -307,8 +323,8 @@ db.students.aggregate([
       _id: "$department",
       avgGPA: { $avg: "$gpa" },
       totalStudents: { $sum: 1 },
-      maxGPA: { $max: "$gpa" }
-    }
+      maxGPA: { $max: "$gpa" },
+    },
   },
 
   // Stage 3: Sort by average GPA descending
@@ -321,9 +337,9 @@ db.students.aggregate([
       avgGPA: { $round: ["$avgGPA", 2] },
       totalStudents: 1,
       maxGPA: 1,
-      _id: 0
-    }
-  }
+      _id: 0,
+    },
+  },
 ]);
 ```
 
@@ -331,25 +347,14 @@ db.students.aggregate([
 
 ```json
 [
-  { "department": "Computer Science", "avgGPA": 3.75, "totalStudents": 45, "maxGPA": 4.0 },
+  {
+    "department": "Computer Science",
+    "avgGPA": 3.75,
+    "totalStudents": 45,
+    "maxGPA": 4.0
+  },
   { "department": "IT", "avgGPA": 3.62, "totalStudents": 38, "maxGPA": 3.95 }
 ]
-```
-
-**Example: Aggregation with $unwind (nested array)**
-
-```javascript
-// Each student has a "courses" array. Count enrollments per course.
-db.students.aggregate([
-  { $unwind: "$courses" },
-  {
-    $group: {
-      _id: "$courses",
-      enrollmentCount: { $sum: 1 }
-    }
-  },
-  { $sort: { enrollmentCount: -1 } }
-]);
 ```
 
 ## 5.3.2 Sharding in MongoDB
@@ -382,6 +387,7 @@ A sharded cluster consists of three components:
 The shard key is a field (or compound field) chosen from the documents in a collection. It determines how data is partitioned across shards. The shard key value is used to divide the collection into chunks, and each chunk is assigned to a shard.
 
 **Choosing a Good Shard Key:**
+
 - **High Cardinality:** Many distinct values allow fine-grained distribution.
 - **Even Distribution:** Values should be uniformly distributed to avoid hotspots (one shard receiving disproportionate traffic).
 - **Query Isolation:** Queries that include the shard key can be routed to a single shard (targeted query). Queries without the shard key must be broadcast to all shards (scatter-gather), which is less efficient.
@@ -432,6 +438,7 @@ db.students.find({ name: "Hari Bahadur" });            // scatter-gather query
 Apache Cassandra is a column-family NoSQL database designed for high availability and massive scalability with no single point of failure.
 
 **Data Model:**
+
 - **Keyspace:** The top-level container (equivalent to a database in RDBMS). Defines the replication strategy.
 - **Table:** A collection of rows, where each row is identified by a primary key.
 - **Primary Key:** Consists of a **partition key** (determines which node stores the data) and optional **clustering columns** (determines the sort order within a partition).
@@ -472,6 +479,7 @@ DELETE FROM students WHERE student_id = some_uuid;
 **Tunable Consistency in Cassandra:**
 
 Cassandra allows setting the consistency level per query, balancing between consistency and availability:
+
 - **ONE:** Only one replica must respond. Fastest but weakest consistency.
 - **QUORUM:** A majority (⌊N/2⌋ + 1, where N = replication factor) must respond. Provides strong consistency when used for both reads and writes (R + W > N).
 - **ALL:** All replicas must respond. Strongest consistency but lowest availability.
@@ -498,6 +506,7 @@ A graph database stores data as a property graph consisting of:
 Neo4j is the most widely used graph database. It uses Cypher as its declarative query language. Cypher uses an ASCII-art pattern syntax to describe graph patterns.
 
 **Basic Syntax:**
+
 - `(n:Label {property: value})` — a node with a label and property.
 - `-[:RELATIONSHIP_TYPE]->` — a directed relationship.
 - `MATCH` — finds patterns in the graph.
@@ -530,6 +539,8 @@ Ram --FRIEND--> Sita --FRIEND--> Gita --FRIEND--> Shyam
  +---FRIEND---> Hari ----------FRIEND--------------+
 ```
 
+![alt text](image-2.png)
+
 **Query: Find All Friends of Ram**
 
 ```cypher
@@ -550,14 +561,6 @@ RETURN DISTINCT fof.name AS FriendOfFriend;
 Result: Gita, Shyam
 
 **Explanation:** The pattern `(ram)-[:FRIEND]->()-[:FRIEND]->(fof)` traverses exactly two FRIEND hops from Ram. The `WHERE NOT (ram)-[:FRIEND]->(fof)` clause excludes direct friends of Ram (to return only 2nd-degree connections). `ram <> fof` ensures Ram himself is excluded. `DISTINCT` removes duplicates (Shyam is reachable via both Sita→Gita→Shyam and Hari→Shyam).
-
-**Query: Variable-Length Traversal (Friends within 1-3 hops)**
-
-```cypher
-MATCH (ram:Person {name: 'Ram'})-[:FRIEND*1..3]-(person:Person)
-WHERE ram <> person
-RETURN DISTINCT person.name, length(shortestPath((ram)-[:FRIEND*]-(person))) AS distance;
-```
 
 ## 5.4.3 How Graph Traversal Works
 
