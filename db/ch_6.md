@@ -360,7 +360,7 @@ TSDBs provide built-in mechanisms to automatically aggregate older high-resoluti
 
 **5. Write-Optimized Ingestion:**
 
-TSDBs use append-only write paths optimized for sequential writes. Many use Log-Structured Merge Trees (LSM trees) or similar structures that batch writes in memory and flush to disk sequentially, achieving very high write throughput. A relational DBMS with B-tree indexes incurs random I/O on every insert and must maintain index consistency.
+**TSDBs use** append-only write paths optimized for sequential writes. Many use Log-Structured Merge Trees (LSM trees) or similar structures that **batch writes in memory and flush to disk** sequentially, achieving very high write throughput. A **relational DBMS** with B-tree indexes incurs random I/O on every insert and **must maintain** index **consistency.**
 
 **Example Implementation with InfluxDB:**
 
