@@ -23,6 +23,7 @@ HDFS follows a master-slave architecture designed for storing very large files (
 **Components:**
 
 **NameNode (Master):**
+
 - Manages the file system namespace — the directory tree, file permissions, and file-to-block mapping.
 - Stores metadata only, not actual file data.
 - Maintains a record of which blocks belong to which file and which DataNodes store each block.
@@ -30,6 +31,7 @@ HDFS follows a master-slave architecture designed for storing very large files (
 - The NameNode is a single point of failure. In production, a Secondary NameNode or Standby NameNode (HA mode) is configured for fault tolerance.
 
 **DataNode (Slave):**
+
 - Stores actual data blocks on local disk.
 - Serves read and write requests directly from clients.
 - Sends periodic heartbeats and block reports to the NameNode.
@@ -40,28 +42,16 @@ HDFS follows a master-slave architecture designed for storing very large files (
 Files in HDFS are split into fixed-size blocks (default: 128 MB). Each block is replicated across multiple DataNodes for fault tolerance. The default replication factor is 3.
 
 **Rack-Aware Replica Placement Policy:**
+
 - First replica: on the same node as the writer (or a random node if the writer is not a DataNode).
 - Second replica: on a different rack.
 - Third replica: on a different node in the same rack as the second replica.
 
 This balances reliability (data survives a rack failure) with network bandwidth (intra-rack copies are fast).
 
-**HDFS Read Operation:**
+![alt text](image-3.png)
 
-```
-Client                  NameNode                DataNodes
-  |                        |                       |
-  |--- Open file --------->|                       |
-  |<-- Block locations ----|                       |
-  |                        |                       |
-  |--- Read Block 1 ------------------------------>| (nearest DataNode)
-  |<-- Data stream --------------------------------|
-  |                        |                       |
-  |--- Read Block 2 ------------------------------>| (nearest DataNode)
-  |<-- Data stream --------------------------------|
-  |                        |                       |
-  |--- Close file -------->|                       |
-```
+**HDFS Read Operation:**
 
 1. The client contacts the NameNode with the filename.
 2. The NameNode returns the list of DataNodes that store each block of the file, sorted by proximity to the client.
@@ -69,22 +59,9 @@ Client                  NameNode                DataNodes
 4. After reading the first block, the client moves to the next block (which may be on a different DataNode) and repeats.
 5. The client closes the connection when all blocks have been read. The NameNode is not involved in data transfer.
 
-**HDFS Write Operation:**
+![alt text](image-4.png)
 
-```
-Client                  NameNode                DataNodes
-  |                        |                       |
-  |--- Create file ------->|                       |
-  |<-- OK + DN list -------|                       |
-  |                        |                       |
-  |--- Write Block 1 (pipeline) ------------------>| DN1
-  |                        |                  DN1 ->| DN2
-  |                        |             DN2 ----->| DN3
-  |<-- ACK from pipeline -------------------------------|
-  |                        |                       |
-  |--- Close file -------->|                       |
-  |                (NameNode commits metadata)      |
-```
+**HDFS Write Operation:**
 
 1. The client asks the NameNode to create a new file. The NameNode checks permissions and verifies the file does not already exist.
 2. The client receives a list of DataNodes for the replication pipeline.
@@ -93,6 +70,8 @@ Client                  NameNode                DataNodes
 5. Acknowledgments (ACKs) flow back through the pipeline: DN3 → DN2 → DN1 → Client.
 6. After all blocks are written, the client closes the file. The NameNode commits the file's metadata (block locations) to its persistent log.
 
+![alt text](image-5.png)
+
 ## 6.1.3 MapReduce
 
 MapReduce is a programming model and processing framework for parallel computation on large datasets distributed across a Hadoop cluster. It divides work into two phases — Map and Reduce — that execute in parallel across the cluster.
@@ -100,16 +79,19 @@ MapReduce is a programming model and processing framework for parallel computati
 **How MapReduce Works:**
 
 **Phase 1: Map**
+
 - The input data is split into fixed-size chunks called input splits. Each split is assigned to a mapper task.
 - The Map function processes each input split and produces intermediate key-value pairs.
 - Mappers run independently and in parallel across different nodes.
 
 **Phase 2: Shuffle and Sort**
+
 - The framework automatically collects all intermediate key-value pairs from all mappers.
 - It sorts and groups them by key so that all values associated with the same key are collected together.
 - The grouped data is sent to the appropriate reducer.
 
 **Phase 3: Reduce**
+
 - The Reduce function receives a key and the list of all values associated with that key.
 - It aggregates, summarizes, or transforms the values and produces the final output key-value pairs.
 - The output is written to HDFS.
@@ -182,6 +164,7 @@ function reduce(key: word, values: list of counts):
 **Real-World Use Case: Log Analysis**
 
 A web company has terabytes of server log files distributed across its cluster. Using MapReduce:
+
 - **Map:** Each mapper processes one log file. For each log line, it extracts the URL and emits (URL, 1).
 - **Shuffle:** The framework groups all counts by URL.
 - **Reduce:** Each reducer sums the counts per URL, producing the total number of hits per page.
@@ -189,11 +172,13 @@ A web company has terabytes of server log files distributed across its cluster. 
 This computation runs in parallel across hundreds of nodes, processing terabytes of logs in minutes.
 
 **Advantages of MapReduce:**
+
 - Automatically parallelizes across the cluster.
 - Handles fault tolerance — if a mapper or reducer fails, the task is re-executed on another node.
 - Scalable — adding more nodes increases processing capacity linearly.
 
 **Limitations of MapReduce:**
+
 - High disk I/O — intermediate results are written to disk between Map and Reduce phases.
 - Not suitable for iterative algorithms (e.g., machine learning) that require multiple passes over the data.
 - Higher latency compared to in-memory frameworks like Apache Spark.
@@ -209,18 +194,21 @@ Apache Spark is a unified analytics engine for large-scale distributed data proc
 Spark follows a driver-executor architecture:
 
 **Driver Program:**
+
 - The process where the main application (SparkSession) runs.
 - Converts user code into a Directed Acyclic Graph (DAG) of tasks.
 - Schedules tasks across executors on the cluster.
 - Collects results and returns them to the user.
 
 **Executors:**
+
 - Worker processes running on cluster nodes.
 - Execute the tasks assigned by the driver.
 - Store data in memory or disk for caching.
 - Report results back to the driver.
 
 **Cluster Manager:**
+
 - An external service that allocates resources (CPU, memory) to the Spark application.
 - Supported cluster managers: YARN, Kubernetes, Mesos, Spark Standalone.
 
@@ -313,6 +301,7 @@ word_counts.saveAsTextFile("hdfs:///output/counts")
 A DataFrame is a higher-level, structured API built on top of RDDs. It organizes data into named columns, similar to a table in a relational database. DataFrames use the Catalyst optimizer and Tungsten execution engine for automatic query optimization.
 
 **Advantages over RDDs:**
+
 - Higher-level API — more concise and readable code.
 - Automatic optimization via the Catalyst query optimizer.
 - Support for SQL queries via Spark SQL.
@@ -427,6 +416,7 @@ TSDBs store data in columnar format rather than row-based format. Since time-ser
 **2. Time-Based Partitioning:**
 
 TSDBs automatically partition data into time-based chunks (e.g., one chunk per hour or per day). This provides several benefits:
+
 - Range queries on time windows only scan the relevant chunks, not the entire table.
 - Dropping expired data is instantaneous — simply delete the entire chunk instead of scanning and deleting individual rows.
 - In a relational DBMS, deleting old data requires expensive DELETE operations with full table scans.
@@ -434,6 +424,7 @@ TSDBs automatically partition data into time-based chunks (e.g., one chunk per h
 **3. Specialized Compression:**
 
 Time-series data has high redundancy — timestamps are sequential, and values often change slowly. TSDBs exploit these patterns:
+
 - **Delta-of-delta encoding for timestamps:** Instead of storing absolute timestamps, store the difference between consecutive differences. Sequential timestamps (e.g., every 10s) compress to near-zero storage.
 - **XOR encoding for values:** Float values that change slowly are XOR-encoded, storing only the bits that differ between consecutive values.
 - **Run-length encoding:** Repeated identical values are stored as (value, count).
@@ -549,6 +540,7 @@ The signed transaction is broadcast to all nodes in the peer-to-peer network.
 
 **Step 3: Validation.**
 Each node independently validates the transaction:
+
 - Verifies the digital signature using the sender's public key.
 - Checks that the sender has sufficient balance (no double-spending).
 - Checks that the transaction format is correct.
