@@ -27,11 +27,13 @@ In a client/server architecture, the system is divided into two distinct roles:
 **How it works:** The client sends a request (query) over the network to the server. The server processes the request, accesses the database, and returns the result to the client. In a multi-server setup, multiple servers handle different portions of the database, and the client may need to contact the appropriate server.
 
 **Advantages:**
+
 - Centralized data management simplifies consistency and security enforcement.
 - Server hardware can be powerful and optimized for database workloads.
 - Clear separation of concerns between presentation and data management.
 
 **Disadvantages:**
+
 - The server is a single point of failure (unless replicated).
 - As the number of clients grows, the server can become a performance bottleneck.
 - Scaling requires upgrading server hardware (vertical scaling) or distributing data across multiple servers.
@@ -43,11 +45,13 @@ In a peer-to-peer architecture, there is no distinction between client and serve
 **How it works:** When a peer needs data that it does not have locally, it sends requests to other peers in the network. Any peer can initiate or respond to queries. Data is distributed across peers, and each peer manages its local data autonomously.
 
 **Advantages:**
+
 - No single point of failure; the system is inherently fault-tolerant.
 - Scales horizontally by adding more peers.
 - Each peer operates independently, supporting high autonomy.
 
 **Disadvantages:**
+
 - Maintaining global data consistency is complex because there is no central coordinator.
 - Query routing and data discovery overhead increases with network size.
 - Security enforcement is more difficult without a central authority.
@@ -70,6 +74,7 @@ A multidatabase system (MDBS) integrates multiple pre-existing, autonomous datab
 2. **Loosely Coupled Multidatabase:** No global schema exists. Users must be aware of the individual databases and construct multi-database queries manually. The system provides only basic facilities for accessing remote data.
 
 **Challenges:**
+
 - Schema integration across heterogeneous systems (resolving naming conflicts, structural differences).
 - Query translation between different query languages.
 - Managing distributed transactions across autonomous systems.
@@ -118,7 +123,7 @@ Employee_PKR = σ(city='Pokhara')(Employee)
 
 Queries originating from the Kathmandu office mostly access local employees, avoiding cross-site network transfer.
 
-**Derived Horizontal Fragmentation:** A relation is fragmented based on the predicate of another (related) relation. For example, fragmenting the Projects table based on the department's location fragment.
+<!-- **Derived Horizontal Fragmentation:** A relation is fragmented based on the predicate of another (related) relation. For example, fragmenting the Projects table based on the department's location fragment. -->
 
 **Vertical Fragmentation:**
 
@@ -143,11 +148,13 @@ Employee_Med = π(eid, medical_record)(Employee)
 The HR site accesses name, department, and salary frequently, while the medical department accesses medical records. Each site gets only the columns it needs.
 
 **Advantages of Vertical Fragmentation:**
+
 - Reduces data transfer by sending only relevant columns to each site.
 - Improves query performance when queries access only a subset of attributes.
 - Enhances security by isolating sensitive attributes at specific sites.
 
 **Disadvantages of Vertical Fragmentation:**
+
 - Reconstruction requires expensive JOIN operations.
 - If queries frequently need attributes from multiple fragments, performance degrades.
 - The primary key must be replicated in every fragment.
@@ -181,11 +188,13 @@ Replication involves maintaining multiple copies (replicas) of a relation or fra
 3. **No Replication:** Each fragment exists at exactly one site. Minimizes update cost but reduces availability and may increase query latency for remote data access.
 
 **Advantages of Replication:**
+
 - **Availability:** If one site fails, the data is still accessible from other sites.
 - **Read Performance:** Queries can be served from the nearest replica, reducing network latency.
 - **Parallelism:** Multiple sites can process read queries concurrently.
 
 **Disadvantages of Replication:**
+
 - **Update Overhead:** Every write must be propagated to all replicas, increasing network traffic and requiring synchronization protocols.
 - **Consistency Complexity:** Keeping all replicas consistent requires distributed commit protocols (e.g., 2PC) or conflict resolution mechanisms.
 - **Storage Cost:** Multiple copies consume more storage.
@@ -196,6 +205,7 @@ Replication involves maintaining multiple copies (replicas) of a relation or fra
 2. In practice, fragmentation and replication are used together. A relation is first fragmented, and then critical fragments are replicated at sites where they are frequently accessed.
 
 **Design Decision for a Globally Distributed Application:**
+
 - **Fragment** attributes that are accessed by specific regional sites to reduce network latency for local queries.
 - **Replicate** small, frequently read, and rarely updated reference data (e.g., lookup tables, configuration) to all sites.
 - For write-heavy attributes, minimize replication to reduce synchronization overhead.
@@ -209,7 +219,7 @@ Replication involves maintaining multiple copies (replicas) of a relation or fra
 
 ## 4.3.1 CAP Theorem
 
-The CAP theorem (also called Brewer's theorem, proposed by Eric Brewer in 2000 and proved by Gilbert and Lynch in 2002) states that a distributed data system can provide at most two out of the following three guarantees simultaneously:
+The CAP theorem states that a distributed data system can provide at most two out of the following three guarantees simultaneously:
 
 1. **Consistency (C):** Every read receives the most recent write or an error. All nodes see the same data at the same time (this refers to linearizability, not ACID consistency).
 2. **Availability (A):** Every request (read or write) receives a non-error response, even if some nodes are down. The system continues to operate and serve requests.
@@ -233,6 +243,7 @@ No. According to the CAP theorem, during a network partition, a system must choo
 The PACELC theorem (proposed by Daniel Abadi, 2012) extends CAP by addressing system behavior during normal operations (when there is no partition).
 
 **PACELC stands for:**
+
 - **P**artition → choose between **A**vailability and **C**onsistency.
 - **E**lse (no partition) → choose between **L**atency and **C**onsistency.
 
@@ -288,6 +299,7 @@ Causal consistency preserves the causal ordering (happens-before relationship) b
 **Formally:** If process P1 writes value v1, and process P2 reads v1 and then writes v2 (which depends on v1), all other processes must see v1 before v2. However, two independent writes by unrelated processes may be seen in any order.
 
 **Example:** In a social media comment thread:
+
 - User A posts a question: "What time is the meeting?"
 - User B reads the question and replies: "3 PM."
 
@@ -316,6 +328,7 @@ A distributed transaction spans multiple nodes (sites), and all nodes must agree
 2PC is the most widely used atomic commit protocol in distributed databases. It uses a designated coordinator node to manage the commit process across participant nodes.
 
 **Roles:**
+
 - **Coordinator:** The node that initiates and manages the commit protocol.
 - **Participants:** The nodes that execute parts of the distributed transaction.
 
@@ -337,6 +350,8 @@ A distributed transaction spans multiple nodes (sites), and all nodes must agree
 5. Each participant receives the decision, executes commit or abort, writes the outcome to its log, and sends an `ACKNOWLEDGMENT` to the coordinator.
 6. The coordinator collects all acknowledgments and writes an `END` record to its log, completing the protocol.
 
+![alt text](image.png)
+
 **The Blocking Problem of 2PC:**
 
 2PC is a blocking protocol. A participant can become blocked (stuck in an uncertain state, holding locks indefinitely) under the following failure conditions:
@@ -356,11 +371,13 @@ A distributed transaction spans multiple nodes (sites), and all nodes must agree
 **Phase 2: Pre-Commit**
 
 If all participants voted YES:
+
 - The coordinator sends a `PRE-COMMIT` message to all participants.
 - Participants acknowledge the pre-commit. This phase ensures that all participants know the decision will be COMMIT (they are no longer uncertain).
 - If any participant or the coordinator fails at this point, the remaining participants know that the decision was to commit and can safely proceed.
 
 If any participant voted NO:
+
 - The coordinator sends `ABORT` to all participants. The protocol terminates.
 
 **Phase 3: Commit (Do-Commit)**
@@ -408,18 +425,21 @@ Paxos (proposed by Leslie Lamport, 1989) is a family of consensus protocols used
 **Basic Paxos Protocol (Two Phases):**
 
 **Phase 1: Prepare**
+
 1. A proposer selects a unique proposal number n (higher than any it has used before) and sends a `PREPARE(n)` message to a majority (quorum) of acceptors.
 2. Each acceptor receives `PREPARE(n)`. If n is greater than any proposal number it has already responded to, it promises not to accept any proposal with a number less than n and replies with `PROMISE(n)` along with any value it has already accepted (if any).
 
-**Phase 2: Accept**
-3. If the proposer receives `PROMISE` responses from a majority of acceptors:
-   - If any acceptor reported a previously accepted value, the proposer must propose that value (the value with the highest accepted proposal number).
-   - Otherwise, the proposer can propose its own value.
-   - It sends `ACCEPT(n, value)` to the acceptors.
+**Phase 2: Accept** 3. If the proposer receives `PROMISE` responses from a majority of acceptors:
+
+- If any acceptor reported a previously accepted value, the proposer must propose that value (the value with the highest accepted proposal number).
+- Otherwise, the proposer can propose its own value.
+- It sends `ACCEPT(n, value)` to the acceptors.
+
 4. Each acceptor receives `ACCEPT(n, value)`. If it has not promised to a higher-numbered proposal, it accepts the value and notifies the learners.
 5. Once a majority of acceptors have accepted the same proposal, consensus is reached.
 
 **Key Properties:**
+
 - **Safety:** Only a single value is chosen, and a node never learns a value unless it has been chosen.
 - **Fault Tolerance:** The protocol works as long as a majority of acceptors are alive and can communicate. It tolerates minority failures.
 - **Liveness:** The protocol may not terminate if multiple proposers continuously compete (dueling proposers). Multi-Paxos addresses this by electing a stable leader.
@@ -439,6 +459,7 @@ Raft (proposed by Diego Ongaro and John Ousterhout, 2014) was designed as an und
 **Three Sub-problems Raft Solves:**
 
 **1. Leader Election:**
+
 - Each node starts as a follower. If a follower does not receive a heartbeat from the leader within a random timeout period, it becomes a candidate.
 - The candidate increments its term number and sends `RequestVote` RPCs to all other nodes.
 - A node grants its vote to the first candidate it hears from in a given term (first-come-first-served).
@@ -446,12 +467,14 @@ Raft (proposed by Diego Ongaro and John Ousterhout, 2014) was designed as an und
 - If no majority is achieved (split vote), a new election begins with incremented term numbers after random timeouts.
 
 **2. Log Replication:**
+
 - The leader receives client commands and appends them to its log.
 - It sends `AppendEntries` RPCs to all followers to replicate the log entry.
 - Once a majority of followers have stored the entry, the leader commits it and applies it to its state machine.
 - The leader notifies followers of committed entries in subsequent heartbeat/AppendEntries messages.
 
 **3. Safety:**
+
 - Raft guarantees that if a log entry is committed, it will be present in the logs of all future leaders. This is enforced through the election restriction: a candidate cannot win an election unless its log is at least as up-to-date as a majority of the cluster.
 
 **Practical Usage:** Raft is used in etcd (Kubernetes), Consul (HashiCorp), CockroachDB, and TiKV.
@@ -547,6 +570,7 @@ Data stored on disk at each site must be protected against physical theft or una
 Integrity ensures that data remains accurate, consistent, and unaltered throughout its lifecycle — during storage, processing, and transmission. It answers the question: "Has the data been tampered with?"
 
 **Threats to Integrity:**
+
 - Unauthorized modification of data during network transmission.
 - Corruption of data at rest due to hardware failure or malicious activity.
 - Inconsistency between replicas due to failed synchronization.
@@ -559,11 +583,3 @@ Integrity ensures that data remains accurate, consistent, and unaltered througho
 4. **Distributed Commit Protocols:** Protocols like 2PC ensure that distributed transactions either fully commit or fully abort, maintaining transactional integrity across sites.
 5. **Consensus Protocols:** Paxos and Raft ensure that all replicas agree on the same sequence of operations, maintaining consistency and integrity across the distributed system.
 6. **Audit Trails:** Logging all data modifications (who changed what, when, and from where) allows detection of unauthorized changes and supports forensic investigation.
-
-**Best Practices for Distributed Database Security:**
-
-1. **Defense in Depth:** Combine authentication, authorization, encryption, and integrity mechanisms in layers. No single mechanism is sufficient.
-2. **Least Privilege Principle:** Grant users and applications only the minimum privileges necessary for their tasks.
-3. **Consistent Policy Enforcement:** Ensure security policies are applied uniformly across all nodes in the distributed system to prevent weak-link attacks.
-4. **Regular Auditing:** Monitor and log access patterns, failed authentication attempts, and privilege escalations.
-5. **Encryption Everywhere:** Encrypt data both in transit and at rest. Use mutual TLS for inter-node communication.
