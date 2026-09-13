@@ -225,12 +225,6 @@ evens = rdd.filter(lambda x: x % 2 == 0)
 
 # map: square each number
 squares = rdd.map(lambda x: x ** 2)
-
-# flatMap: split lines into words
-words = lines_rdd.flatMap(lambda line: line.split(" "))
-
-# reduceByKey: aggregate values by key
-word_counts = pairs_rdd.reduceByKey(lambda a, b: a + b)
 ```
 
 **Actions (Eager):**
@@ -244,24 +238,8 @@ result = evens.collect()          # [2, 4]
 # count: return the number of elements
 n = rdd.count()                   # 5
 
-# reduce: aggregate all elements
-total = rdd.reduce(lambda a, b: a + b)  # 15
-
 # saveAsTextFile: write to HDFS
 rdd.saveAsTextFile("hdfs:///output/result")
-```
-
-**Word Count in Spark (RDD):**
-
-```python
-text_rdd = sc.textFile("hdfs:///data/books.txt")
-
-word_counts = (text_rdd
-    .flatMap(lambda line: line.split(" "))
-    .map(lambda word: (word, 1))
-    .reduceByKey(lambda a, b: a + b))
-
-word_counts.saveAsTextFile("hdfs:///output/counts")
 ```
 
 ## 6.2.3 DataFrames
@@ -303,15 +281,6 @@ df.select("name", "department").show()
 
 # Filter rows
 df.filter(df.age > 23).show()
-
-# Group by and aggregate
-df.groupBy("department").count().show()
-
-# Add a new column
-df.withColumn("senior", df.age > 25).show()
-
-# Order by
-df.orderBy(df.age.desc()).show()
 ```
 
 ## 6.2.4 Spark SQL
