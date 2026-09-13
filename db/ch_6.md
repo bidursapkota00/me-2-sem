@@ -189,16 +189,7 @@ Spark follows a driver-executor architecture:
 - An external service that allocates resources (CPU, memory) to the Spark application.
 - Supported cluster managers: YARN, Kubernetes, Mesos, Spark Standalone.
 
-```
-                  [Driver Program]
-                 (SparkSession, DAG)
-                   /      |      \
-          [Executor 1] [Executor 2] [Executor 3]
-          (Worker Node) (Worker Node) (Worker Node)
-                        |
-                 [Cluster Manager]
-              (YARN / Kubernetes / Mesos)
-```
+![alt text](image-8.png)
 
 ## 6.2.2 RDD (Resilient Distributed Dataset)
 
