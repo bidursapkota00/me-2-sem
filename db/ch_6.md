@@ -96,18 +96,9 @@ MapReduce is a programming model and processing framework for parallel computati
 - It aggregates, summarizes, or transforms the values and produces the final output key-value pairs.
 - The output is written to HDFS.
 
-**MapReduce Execution Flow:**
+![alt text](image-7.png)
 
-```
-Input Data → [Split 1] → Mapper 1 → (key, value) pairs ─┐
-             [Split 2] → Mapper 2 → (key, value) pairs ──┤ Shuffle
-             [Split 3] → Mapper 3 → (key, value) pairs ──┘ & Sort
-                                                            │
-                                    ┌───────────────────────┘
-                                    ↓
-                          (key, [values]) → Reducer 1 → Output 1
-                          (key, [values]) → Reducer 2 → Output 2
-```
+![alt text](image-6.png)
 
 **Real-World Example: Word Count**
 
@@ -145,20 +136,6 @@ Each reducer sums the values for its assigned keys:
 
 ```
 Reducer output: (hadoop, 1), (hello, 3), (world, 2)
-```
-
-**Word Count Pseudocode:**
-
-```
-// Map Function
-function map(key: docId, value: document):
-    for each word in document:
-        emit(word, 1)
-
-// Reduce Function
-function reduce(key: word, values: list of counts):
-    total = sum(values)
-    emit(word, total)
 ```
 
 **Real-World Use Case: Log Analysis**
