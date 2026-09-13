@@ -324,25 +324,10 @@ df.createOrReplaceTempView("students")
 
 # Run SQL queries
 result = spark.sql("""
-    SELECT department, AVG(age) AS avg_age, COUNT(*) AS total
-    FROM students
-    WHERE age > 20
-    GROUP BY department
-    ORDER BY avg_age DESC
+    SELECT * FROM students WHERE age > 20
 """)
 
 result.show()
-```
-
-**Spark SQL can also read from external databases:**
-
-```python
-jdbc_df = spark.read.format("jdbc") \
-    .option("url", "jdbc:postgresql://host:5432/mydb") \
-    .option("dbtable", "employees") \
-    .option("user", "admin") \
-    .option("password", "pass") \
-    .load()
 ```
 
 **MapReduce vs. Spark:**
