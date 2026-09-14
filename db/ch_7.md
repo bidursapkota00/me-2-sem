@@ -82,6 +82,7 @@ Disadvantage: Requires manual maintenance of value lists; uneven distribution if
 Vertical partitioning divides a table by columns. The original table is split into two or more tables, each containing a subset of columns. A common key column (usually the primary key) is included in all resulting tables so that the full row can be reconstructed via a join.
 
 Example: A `Products` table with columns (`product_id`, `name`, `price`, `description`, `image_blob`) is split into:
+
 - `Products_Core(product_id, name, price)` — frequently accessed, lightweight columns.
 - `Products_Detail(product_id, description, image_blob)` — rarely accessed, large columns.
 
@@ -92,6 +93,7 @@ Disadvantage: Queries needing all columns require a join across the split tables
 **E-commerce Scenario — Partitioning the Orders Table:**
 
 For a large e-commerce system, horizontal partitioning by range on `order_date` is typically the best strategy for the `Orders` table. Reasons:
+
 - Most queries are time-bound (recent orders, monthly reports), benefiting from partition pruning.
 - Old partitions can be archived or dropped without affecting active data.
 - Each partition remains manageable in size.
@@ -142,6 +144,7 @@ Disadvantage: Risk of data loss if the cache fails before the data is flushed to
 **Eviction Policies:**
 
 When the cache reaches its memory limit, an eviction policy determines which entries to remove:
+
 - **LRU (Least Recently Used):** Evicts the entry that has not been accessed for the longest time. Most commonly used.
 - **LFU (Least Frequently Used):** Evicts the entry with the fewest access counts.
 - **TTL (Time-To-Live):** Each entry has an expiration time. Expired entries are automatically removed.
@@ -152,6 +155,7 @@ When the cache reaches its memory limit, an eviction policy determines which ent
 Redis (Remote Dictionary Server) is an open-source, in-memory data structure store. It can function as a cache, a database, a message broker, and a streaming engine. Redis stores data as key-value pairs, but the values can be rich data structures.
 
 Key Features:
+
 - **Rich Data Types:** Supports strings, hashes, lists, sets, sorted sets, bitmaps, HyperLogLogs, and streams — not just simple strings.
 - **Persistence:** Supports two persistence mechanisms: RDB (point-in-time snapshots) and AOF (Append-Only File that logs every write operation). This means cached data can survive restarts.
 - **Single-Threaded Execution:** Uses a single-threaded event loop for command execution, which avoids locking overhead and ensures atomicity of individual commands.
@@ -164,6 +168,7 @@ Key Features:
 Memcached is an open-source, high-performance, distributed memory caching system designed for simplicity and speed. It stores data as simple key-value pairs where both keys and values are strings.
 
 Key Features:
+
 - **Simple Key-Value Store:** Supports only string data. All data manipulation must be done by the application.
 - **Multi-Threaded Architecture:** Uses multiple threads to handle concurrent requests, scaling well across multiple CPU cores.
 - **No Persistence:** Data exists only in memory. A restart or failure clears the entire cache.
@@ -172,17 +177,17 @@ Key Features:
 
 **Redis vs. Memcached:**
 
-| Feature | Redis | Memcached |
-|---|---|---|
-| Data Types | Strings, hashes, lists, sets, sorted sets, streams | Strings only |
-| Threading | Single-threaded (core) | Multi-threaded |
-| Persistence | RDB snapshots + AOF | None |
-| Max Value Size | 512 MB | 1 MB (default) |
-| Eviction Policies | Multiple (LRU, LFU, TTL, etc.) | LRU only |
-| Pub/Sub | Yes | No |
-| Replication | Master-replica | None (client-side distribution) |
-| Scripting | Lua scripting | No |
-| Use Case | Complex caching, sessions, queues, leaderboards | Simple, high-throughput key-value caching |
+| Feature           | Redis                                              | Memcached                                 |
+| ----------------- | -------------------------------------------------- | ----------------------------------------- |
+| Data Types        | Strings, hashes, lists, sets, sorted sets, streams | Strings only                              |
+| Threading         | Single-threaded (core)                             | Multi-threaded                            |
+| Persistence       | RDB snapshots + AOF                                | None                                      |
+| Max Value Size    | 512 MB                                             | 1 MB (default)                            |
+| Eviction Policies | Multiple (LRU, LFU, TTL, etc.)                     | LRU only                                  |
+| Pub/Sub           | Yes                                                | No                                        |
+| Replication       | Master-replica                                     | None (client-side distribution)           |
+| Scripting         | Lua scripting                                      | No                                        |
+| Use Case          | Complex caching, sessions, queues, leaderboards    | Simple, high-throughput key-value caching |
 
 **When to Use Redis:** When the application requires rich data structures, persistence, pub/sub messaging, or atomic operations beyond simple get/set.
 
@@ -237,12 +242,6 @@ Failover is the process of automatically switching to a standby server when the 
 
 Load balancers and cluster managers continuously monitor database servers by sending periodic heartbeat signals (small health-check queries). If a server fails to respond within a timeout period, it is marked as unhealthy and removed from the pool. Once it recovers, it is automatically added back.
 
-**Achieving HA in Practice:**
-
-- Deploy database replicas across different physical machines and ideally across different data centers or availability zones.
-- Use automatic failover tools (e.g., PostgreSQL Patroni, MySQL Group Replication, Redis Sentinel).
-- Combine replication with load balancing so that if one replica fails, traffic is automatically redistributed to healthy replicas.
-
 ---
 
 # 7.4 Indexing Strategies (Local, Global, Secondary)
@@ -251,7 +250,9 @@ Load balancers and cluster managers continuously monitor database servers by sen
 
 An index is a data structure that provides fast access to rows in a table based on the values of one or more columns. Without an index, a query must scan the entire table (full table scan). With an index, the database can locate the relevant rows directly, similar to a book index that points to page numbers.
 
-In partitioned databases, indexing becomes more complex because data is spread across multiple partitions. The way an index is structured relative to the table's partitions determines its query performance and maintenance characteristics.
+In partitioned databases, indexing becomes more complex because data is spread across multiple partitions.
+
+<!-- The way an index is structured relative to the table's partitions determines its query performance and maintenance characteristics. -->
 
 ## 7.4.1 Secondary Index
 
@@ -283,10 +284,12 @@ Query: SELECT * FROM users WHERE email = 'x@y.com'
 ```
 
 **Advantages:**
+
 - Writes are fast because only the local partition's index is updated.
 - Partition maintenance (drop, archive) is simple because the index is co-located with the data.
 
 **Disadvantages:**
+
 - Cross-partition queries require scatter-gather, which increases latency.
 
 ## 7.4.3 Global Index (Term-Partitioned Index)
@@ -304,22 +307,24 @@ Query: SELECT * FROM users WHERE email = 'x@y.com'
 ```
 
 **Advantages:**
+
 - Reads on the indexed column are efficient; no scatter-gather needed.
 
 **Disadvantages:**
+
 - Writes are slower and more complex because inserting or updating a row may require updating index entries on a different node (the one holding the relevant portion of the global index).
 - Partition maintenance (e.g., dropping a table partition) can invalidate global index entries, requiring an index rebuild.
 
 **Local vs. Global Index Comparison:**
 
-| Aspect | Local Index | Global Index |
-|---|---|---|
-| Scope | Per-partition | Across all partitions |
-| Write Performance | Fast (local update only) | Slower (may update remote index partition) |
-| Read (with partition key) | Fast | Fast |
-| Read (without partition key) | Slow (scatter-gather) | Fast (direct lookup) |
-| Partition Maintenance | Simple (co-located) | Complex (may need rebuild) |
-| Best For | Partition-key queries, high write workloads | Cross-partition queries, read-heavy workloads |
+| Aspect                       | Local Index                                 | Global Index                                  |
+| ---------------------------- | ------------------------------------------- | --------------------------------------------- |
+| Scope                        | Per-partition                               | Across all partitions                         |
+| Write Performance            | Fast (local update only)                    | Slower (may update remote index partition)    |
+| Read (with partition key)    | Fast                                        | Fast                                          |
+| Read (without partition key) | Slow (scatter-gather)                       | Fast (direct lookup)                          |
+| Partition Maintenance        | Simple (co-located)                         | Complex (may need rebuild)                    |
+| Best For                     | Partition-key queries, high write workloads | Cross-partition queries, read-heavy workloads |
 
 **Design Decision (per Kleppmann, DDIA Ch. 6):** If the application's queries mostly include the partition key, local indexes are preferred because they keep writes fast. If the application frequently queries by non-partition-key columns, a global index avoids expensive scatter-gather at the cost of slower writes.
 
@@ -357,8 +362,8 @@ Database monitoring is the continuous, real-time observation of a database syste
 **Monitoring Tools:**
 
 - **Built-in Tools:** PostgreSQL's `pg_stat_statements` and `pg_stat_activity`, MySQL's Performance Schema and slow query log.
-- **Observability Platforms:** Datadog, New Relic, Grafana (with Prometheus) for dashboards, alerts, and historical analysis.
-- **Database-Specific:** pgAdmin (PostgreSQL), MySQL Workbench, SolarWinds DPA.
+- **Observability Platforms:** **Datadog**, New Relic, **Grafana (with Prometheus)** for dashboards, alerts, and historical analysis.
+- **Database-Specific:** **pgAdmin (PostgreSQL)**, **MySQL Workbench**, SolarWinds DPA.
 
 ## 7.5.2 Performance Testing
 
