@@ -10,7 +10,7 @@ A cloud database is a database that is deployed, delivered, and accessed through
 
 1. **Virtual Machine-Based:** The user provisions a virtual machine on a cloud platform (e.g., AWS EC2, Azure VM) and installs and manages the database software manually. The user retains full control over configuration but is responsible for maintenance, patching, and backups.
 
-2. **Database-as-a-Service (DBaaS):** The cloud provider fully manages the database engine. The user only interacts with the database through queries and a management interface. The provider handles provisioning, scaling, replication, backups, and failover automatically. This is the dominant model in modern cloud computing.
+2. **Database-as-a-Service (DBaaS):** The cloud provider fully manages the database engine. The user only interacts with the database through queries and a management interface. The provider **handles provisioning, scaling, replication, backups, and failover automatically**. This is the dominant model in modern cloud computing.
 
 **Types of Cloud Databases:**
 
@@ -34,15 +34,15 @@ A cloud database is a database that is deployed, delivered, and accessed through
 
 **Cloud Database vs. On-Premises Database:**
 
-| Aspect | On-Premises | Cloud Database |
-|---|---|---|
-| Infrastructure | Self-managed hardware | Provider-managed |
-| Scaling | Manual (buy and install hardware) | Elastic (on-demand) |
-| Cost Model | High upfront CapEx | Pay-as-you-go OpEx |
-| Maintenance | DBA handles patching, backups | Automated by provider |
-| Availability | Requires custom HA setup | Built-in multi-AZ replication |
-| Latency | Low for co-located apps | Depends on region; can be optimized |
-| Control | Full control | Limited to provider's options |
+| Aspect         | On-Premises                       | Cloud Database                      |
+| -------------- | --------------------------------- | ----------------------------------- |
+| Infrastructure | Self-managed hardware             | Provider-managed                    |
+| Scaling        | Manual (buy and install hardware) | Elastic (on-demand)                 |
+| Cost Model     | High upfront CapEx                | Pay-as-you-go OpEx                  |
+| Maintenance    | DBA handles patching, backups     | Automated by provider               |
+| Availability   | Requires custom HA setup          | Built-in multi-AZ replication       |
+| Latency        | Low for co-located apps           | Depends on region; can be optimized |
+| Control        | Full control                      | Limited to provider's options       |
 
 ---
 
@@ -60,11 +60,7 @@ In a traditional managed database (e.g., Amazon RDS), the user must choose an in
 
 Serverless databases decouple compute from storage. Storage is typically provisioned independently and persists regardless of compute activity. When a query arrives, the serverless layer spins up the necessary compute resources, executes the query, and then scales down. This decoupling allows compute and storage to scale independently.
 
-```
-Client Request → API Gateway / Endpoint
-    → Serverless Compute Layer (auto-scales)
-        → Persistent Storage Layer (independent)
-```
+![alt text](image-9.png)
 
 **Examples:**
 
@@ -92,13 +88,13 @@ Client Request → API Gateway / Endpoint
 
 **Serverless vs. Traditional Database:**
 
-| Aspect | Traditional (Provisioned) | Serverless |
-|---|---|---|
-| Capacity Planning | Manual (choose instance size) | Automatic |
-| Scaling | Manual or auto-scaling with rules | Instant, automatic |
-| Idle Cost | Pays for idle capacity | Zero or minimal |
-| Cold Start | None (always running) | Possible latency |
-| Best For | Steady, predictable workloads | Variable, bursty workloads |
+| Aspect            | Traditional (Provisioned)         | Serverless                 |
+| ----------------- | --------------------------------- | -------------------------- |
+| Capacity Planning | Manual (choose instance size)     | Automatic                  |
+| Scaling           | Manual or auto-scaling with rules | Instant, automatic         |
+| Idle Cost         | Pays for idle capacity            | Zero or minimal            |
+| Cold Start        | None (always running)             | Possible latency           |
+| Best For          | Steady, predictable workloads     | Variable, bursty workloads |
 
 ---
 
@@ -122,6 +118,8 @@ Example: The sentences "The cat sat on the mat" and "A kitten rested on the rug"
 "Stock prices rose sharply"    → [0.91, 0.04, 0.78, ..., 0.12]  (far)
 ```
 
+![alt text](image-10.png)
+
 **Similarity Search and Distance Metrics:**
 
 Vector databases find the k most similar vectors to a given query vector using distance metrics:
@@ -134,21 +132,10 @@ Vector databases find the k most similar vectors to a given query vector using d
 
 Computing exact distances between a query vector and every vector in a database of millions or billions of vectors is computationally infeasible. Vector databases use ANN algorithms that trade a small amount of accuracy for orders-of-magnitude speed improvement.
 
-**Indexing Algorithms:**
-
-1. **HNSW (Hierarchical Navigable Small World):** A graph-based algorithm that organizes vectors into a multi-layer graph. Higher layers contain fewer, widely-spaced nodes for fast coarse navigation; lower layers contain more nodes for fine-grained search. Provides very fast query times with high recall. Memory-intensive because the entire graph must reside in memory.
-
-2. **IVF (Inverted File Index):** A clustering-based algorithm that partitions the vector space into clusters (Voronoi cells) using k-means. At query time, only the nearest clusters are searched instead of the entire dataset. Memory-efficient and effective for very large datasets, but requires a training step to build clusters.
-
-3. **Product Quantization (PQ):** Compresses vectors by splitting them into sub-vectors and quantizing each independently. Dramatically reduces memory usage at the cost of some accuracy. Often combined with IVF (IVF-PQ) for large-scale deployments.
-
 **Popular Vector Databases:**
 
 1. **Pinecone:** Fully managed, serverless vector database. Easiest to deploy (no infrastructure management). Suitable for teams wanting rapid integration.
-2. **Milvus:** Open-source, distributed vector database designed for billion-scale datasets. Kubernetes-native, highly modular. Suitable for large-scale production deployments.
-3. **Weaviate:** Open-source, supports hybrid search (combining vector similarity with keyword filtering). Includes built-in vectorization modules.
-4. **Qdrant:** Open-source, written in Rust, optimized for performance. Supports filtering and payload-based search alongside vector similarity.
-5. **ChromaDB:** Lightweight, open-source, designed for AI application prototyping and development.
+2. **ChromaDB:** Lightweight, open-source, designed for AI application prototyping and development.
 
 **Use Cases in AI/ML:**
 
@@ -160,13 +147,13 @@ Computing exact distances between a query vector and every vector in a database 
 
 **Vector Database vs. Traditional Database:**
 
-| Aspect | Traditional (Relational/NoSQL) | Vector Database |
-|---|---|---|
-| Data Type | Structured rows/columns, documents | High-dimensional vectors |
-| Query Type | Exact match, range, join | Similarity search (nearest neighbors) |
-| Indexing | B-tree, hash, bitmap | HNSW, IVF, PQ |
-| Primary Use | Transactional (OLTP), analytical (OLAP) | AI/ML, semantic search, recommendations |
-| Search Basis | Keyword or value matching | Semantic meaning (distance in vector space) |
+| Aspect       | Traditional (Relational/NoSQL)          | Vector Database                             |
+| ------------ | --------------------------------------- | ------------------------------------------- |
+| Data Type    | Structured rows/columns, documents      | High-dimensional vectors                    |
+| Query Type   | Exact match, range, join                | Similarity search (nearest neighbors)       |
+| Indexing     | B-tree, hash, bitmap                    | HNSW, IVF, PQ                               |
+| Primary Use  | Transactional (OLTP), analytical (OLAP) | AI/ML, semantic search, recommendations     |
+| Search Basis | Keyword or value matching               | Semantic meaning (distance in vector space) |
 
 ---
 
@@ -202,20 +189,15 @@ Edge databases typically operate within a three-tier architecture:
   collected         & immediate action        & filtering    & global analytics
 ```
 
+![alt text](image-11.png)
+
 **Characteristics of Edge Databases:**
 
-1. **Lightweight Footprint:** Designed to run on resource-constrained hardware (limited CPU, memory, and storage). Examples include SQLite (embedded relational), LiteDB (embedded document store), and CouchDB Lite (mobile/edge sync).
+1. **Lightweight Footprint:** Designed to run on resource-constrained hardware (limited CPU, memory, and storage). Examples include **SQLite (embedded relational), LiteDB (embedded document store), and CouchDB Lite (mobile/edge sync).**
 2. **Offline-First Operation:** The database operates independently even without a network connection. Data is stored locally and synchronized with the cloud when connectivity is restored.
 3. **Data Synchronization:** Edge databases support bidirectional sync with a central cloud database. Conflict resolution strategies (last-write-wins, merge, or custom rules) handle concurrent updates from multiple edge nodes.
 4. **Low Latency:** Queries execute locally against data stored on the device itself, eliminating network round-trip time. Response times are typically sub-millisecond.
 5. **Data Filtering and Reduction:** Only relevant, aggregated, or anomalous data is transmitted to the cloud, reducing bandwidth consumption by orders of magnitude.
-
-**Edge Database Technologies:**
-
-1. **SQLite:** The most widely deployed embedded relational database. Zero-configuration, serverless, single-file storage. Used in mobile devices, IoT gateways, and embedded systems.
-2. **CouchDB Lite / PouchDB:** Document-oriented edge databases with built-in sync capabilities to a central CouchDB or Cloudant instance.
-3. **InfluxDB Edge:** A time-series database optimized for IoT sensor data at the edge.
-4. **Azure SQL Edge:** A containerized SQL engine optimized for IoT and edge deployments, with built-in streaming and time-series capabilities.
 
 **Use Cases:**
 
@@ -226,15 +208,15 @@ Edge databases typically operate within a three-tier architecture:
 
 **Edge Database vs. Cloud Database:**
 
-| Aspect | Cloud Database | Edge Database |
-|---|---|---|
-| Location | Centralized data center | Near data source (device/gateway) |
-| Latency | Higher (network round-trip) | Very low (local access) |
-| Connectivity | Requires stable internet | Works offline |
-| Compute Resources | Abundant | Constrained |
-| Data Volume | Full dataset | Subset / recent data |
-| Analytics | Complex, global | Simple, real-time, local |
-| Sync | N/A | Syncs with cloud periodically |
+| Aspect            | Cloud Database              | Edge Database                     |
+| ----------------- | --------------------------- | --------------------------------- |
+| Location          | Centralized data center     | Near data source (device/gateway) |
+| Latency           | Higher (network round-trip) | Very low (local access)           |
+| Connectivity      | Requires stable internet    | Works offline                     |
+| Compute Resources | Abundant                    | Constrained                       |
+| Data Volume       | Full dataset                | Subset / recent data              |
+| Analytics         | Complex, global             | Simple, real-time, local          |
+| Sync              | N/A                         | Syncs with cloud periodically     |
 
 ---
 
@@ -257,7 +239,7 @@ Data privacy is the right of individuals to control how their personal informati
 1. **Encryption:** Data must be encrypted both at rest (stored on disk) and in transit (transmitted over a network). This prevents unauthorized access even if physical storage or network traffic is intercepted.
 2. **Anonymization:** Removing or obfuscating personally identifiable information (PII) so that individuals cannot be re-identified from the data. Used for analytics and research datasets.
 3. **Pseudonymization:** Replacing direct identifiers (name, ID) with artificial identifiers (pseudonyms). The mapping between pseudonyms and real identities is stored separately and protected. Unlike anonymization, pseudonymization is reversible with the mapping key.
-4. **Access Control:** Implementing role-based access control (RBAC) to ensure that users can only access the data they are authorized to see. The principle of least privilege grants users the minimum permissions necessary for their role.
+4. **Access Control:** Implementing role-based access control (RBAC) to ensure that users can only access the data they are authorized to see. The **principle of least privilege** grants users the minimum permissions necessary for their role.
 5. **Audit Logging:** Maintaining detailed logs of who accessed what data, when, and why. Audit trails support accountability and regulatory compliance.
 
 **GDPR (General Data Protection Regulation):**
@@ -277,17 +259,10 @@ Databases that feed into machine learning models or automated decision-making sy
 
 1. **Historical Bias:** The data reflects past discriminatory practices. For example, a hiring database that underrepresents women in engineering roles can train a model that penalizes female applicants.
 2. **Sampling Bias:** The data collection process systematically excludes certain groups. For example, a health database built primarily from urban hospitals may not represent rural populations.
-3. **Measurement Bias:** The way data is recorded differs across groups. For example, certain medical conditions may be under-diagnosed in specific demographics.
-
-**Mitigation Strategies:**
-
-1. **Representative Data Collection:** Ensuring that training datasets include proportional representation of all relevant demographic groups.
-2. **Bias Auditing:** Regularly analyzing database contents and query results for disparate impact on protected attributes (race, gender, age, disability).
-3. **Fairness Constraints:** Incorporating fairness metrics into systems that use the data for automated decisions, ensuring that outcomes do not disproportionately disadvantage any group.
 
 ## 8.5.3 Data Sovereignty
 
-Data sovereignty is the principle that data is subject to the laws and governance structures of the country or region where it is physically stored or processed. This is a critical concern for globally distributed database systems.
+Data sovereignty means, the country where data is physically stored or processed can apply its own laws and regulations to that data. This is a critical concern for globally distributed database systems.
 
 **Challenges:**
 
