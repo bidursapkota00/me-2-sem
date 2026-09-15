@@ -320,11 +320,11 @@ Description Logic underlies the **Web Ontology Language (OWL)**, the standard fo
 - **TBox (Terminological Box):** Contains concept definitions and axioms — the schema or vocabulary. Example: Mother ≡ Person ⊓ Female ⊓ ∃hasChild.Person (a mother is a female person who has at least one child who is a person).
 - **ABox (Assertional Box):** Contains assertions about specific individuals. Example: Person(John), hasChild(Mary, Tom).
 
-**Key Reasoning Tasks:**
+**\*\*Key Reasoning Tasks:**
 
 - **Subsumption:** Is concept C a subset of concept D? (e.g., Is Mother subsumed by Person?)
 - **Consistency:** Is the knowledge base free of contradictions?
-- **Classification:** Determine the most specific concept an individual belongs to.
+- **\*\*Classification:** Determine the most specific concept an individual belongs to.
 - **Instance Checking:** Does individual a belong to concept C?
 
 **Advantages over Semantic Networks:** Formal semantics, decidable reasoning, support for complex concept construction, and standardized inference algorithms.
@@ -339,11 +339,19 @@ Description Logic underlies the **Web Ontology Language (OWL)**, the standard fo
 >
 > **Illustrate the Sugeno Fuzzy Inference System with a suitable example. How does it differ from Mamdani? (7) (Spring 2025)**
 
-Classical (Boolean) logic deals with only two truth values: 0 (false) and 1 (true). **Fuzzy logic**, introduced by Lotfi Zadeh in 1965, extends this by allowing **partial truth** — a degree of membership between 0 and 1. This is useful for modeling vague, imprecise, or uncertain concepts that are common in human reasoning (e.g., "tall," "warm," "fast").
+Classical (Boolean) logic deals with only two truth values: 0 (false) and 1 (true). **Fuzzy logic** extends this by allowing **partial truth** — a degree of membership between 0 and 1. This is useful for modeling vague, imprecise, or uncertain concepts that are common in human reasoning (e.g., "tall," "warm," "fast").
 
 **Fuzzy Set:** A set where each element has a **degree of membership** $\mu(x) \in [0, 1]$, rather than simply belonging or not. For example, in the fuzzy set "Tall": a person of height 6'2" might have $\mu = 0.9$, while a person of 5'6" might have $\mu = 0.4$.
 
-**Membership Functions:** Define the degree of membership for each value. Common shapes: triangular, trapezoidal, Gaussian, bell-shaped.
+**Membership Functions:** A membership function is the rule/formula that tells us how much an input belongs to a fuzzy set. Define the degree of membership for each value.
+
+| Height | Membership μ(x) | Meaning             |
+| ------ | --------------: | ------------------- |
+| 5'2"   |             0.0 | Definitely not tall |
+| 5'6"   |             0.4 | Somewhat tall       |
+| 5'10"  |             0.7 | Fairly tall         |
+| 6'2"   |             0.9 | Very tall           |
+| 6'6"   |             1.0 | Definitely tall     |
 
 **Fuzzy Operations:**
 
