@@ -343,7 +343,7 @@ Classical (Boolean) logic deals with only two truth values: 0 (false) and 1 (tru
 
 **Fuzzy Set:** A set where each element has a **degree of membership** $\mu(x) \in [0, 1]$, rather than simply belonging or not. For example, in the fuzzy set "Tall": a person of height 6'2" might have $\mu = 0.9$, while a person of 5'6" might have $\mu = 0.4$.
 
-**Membership Functions:** A membership function is the rule/formula that tells us how much an input belongs to a fuzzy set. Define the degree of membership for each value.
+**Membership Functions:** A membership function is the rule/formula that tells us how much an input belongs to a fuzzy set. Define the degree of membership for each value. Common shapes: triangular, trapezoidal, Gaussian, bell-shaped.
 
 | Height | Membership μ(x) | Meaning             |
 | ------ | --------------: | ------------------- |
