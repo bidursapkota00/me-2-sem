@@ -399,16 +399,19 @@ Suppose Traffic*Density = 70 vehicles → $\mu*{\text{High}} = 0.7$, $\mu_{\text
 Rule 1: Firing strength $= \min(0.7,\, 0.6) = 0.6$. Clip the "Long" output fuzzy set at 0.6.
 Rule 3: Firing strength $= 0.3$. Clip the "Medium" output fuzzy set at 0.3.
 
-Aggregate: Take the union (max) of all clipped output sets.
-Defuzzify: Apply centroid method to get a crisp Green_Duration value.
+Aggregate: Combine the clipped fuzzy sets using the max (union) operator to form a single output shape:
 
-**Defuzzification Techniques:**
+$$
+\mu_{\text{agg}}(y) = \max(\text{clipped-Long}(y),\, \text{clipped-Medium}(y))
+$$
 
-- **Centroid (Center of Gravity):** $x^* = \dfrac{\int \mu(x) \cdot x\, dx}{\int \mu(x)\, dx}$ — the most widely used method. Computes the center of mass of the aggregated fuzzy set.
-- **Bisector of Area (BOA):** The value that divides the area of the fuzzy set into two equal halves.
-- **Mean of Maximum (MOM):** The average of the values at which the membership function reaches its maximum.
-- **Smallest of Maximum (SOM):** The smallest value at which maximum membership occurs.
-- **Largest of Maximum (LOM):** The largest value at which maximum membership occurs.
+Defuzzify: Apply the centroid method to find the center of gravity of the aggregated area:
+
+$$
+\text{Green-Duration} = \frac{\int y \cdot \mu_{\text{agg}}(y) \, dy}{\int \mu_{\text{agg}}(y) \, dy}
+$$
+
+_(Since the "Long" rule fired with a higher strength of 0.6 compared to the "Medium" rule at 0.3, the final crisp value will lean closer to a "Long" green duration)._
 
 ## 2.6.2 Sugeno Fuzzy Inference System (Takagi-Sugeno-Kang)
 
