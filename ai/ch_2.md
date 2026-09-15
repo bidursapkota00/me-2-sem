@@ -343,7 +343,7 @@ Classical (Boolean) logic deals with only two truth values: 0 (false) and 1 (tru
 
 **Fuzzy Set:** A set where each element has a **degree of membership** $\mu(x) \in [0, 1]$, rather than simply belonging or not. For example, in the fuzzy set "Tall": a person of height 6'2" might have $\mu = 0.9$, while a person of 5'6" might have $\mu = 0.4$.
 
-**Membership Functions:** A membership function is the rule/formula that tells us how much an input belongs to a fuzzy set. Define the degree of membership for each value. Common shapes: triangular, trapezoidal, Gaussian, bell-shaped.
+**Membership Functions:** A membership function is the rule/formula that tells us how much an input belongs to a fuzzy set. Define the degree of membership for each value.
 
 | Height | Membership μ(x) | Meaning             |
 | ------ | --------------: | ------------------- |
@@ -372,21 +372,21 @@ A Fuzzy Inference System maps crisp inputs to a crisp output using fuzzy logic. 
 
 ## 2.6.1 Mamdani Fuzzy Inference System
 
-The Mamdani FIS was created by Ebrahim Mamdani in 1975. It is the most popular type of fuzzy inference system. In this system, both the IF part (input) and the THEN part (output) of every rule use **fuzzy sets** (words like "Low", "High", "Medium", etc.).
+The Mamdani FIS (proposed by Ebrahim Mamdani, 1975) is the most commonly used fuzzy inference system. Both the antecedent and consequent of the rules use **fuzzy sets**.
 
-**How it works (Steps):**
+**Steps:**
 
-1. **Fuzzification:** Take the exact input number and find out how much it belongs to each fuzzy group. For example, if traffic = 70 cars, how much is it "High"? How much is it "Medium"?
-2. **Rule Evaluation:** Look at each rule and figure out how strongly it fires. If a rule says "A AND B", pick the smaller membership value (min). If it says "A OR B", pick the bigger one (max). Then cut (clip) the output fuzzy shape to match this strength.
-3. **Aggregation:** Take all the clipped output shapes from every rule and combine them into one big shape by overlapping them (using max/union).
-4. **Defuzzification:** Turn that combined fuzzy shape into one exact number — the final answer.
+1. **Fuzzification:** Determine the degree of membership of each crisp input in all relevant fuzzy sets.
+2. **Rule Evaluation:** For each rule, compute the firing strength by applying AND (min) or OR (max) to the antecedent membership values. The consequent fuzzy set is then "clipped" (using min) or "scaled" to the firing strength.
+3. **Aggregation:** Combine all clipped/scaled consequent fuzzy sets into a single output fuzzy set using max (union).
+4. **Defuzzification:** Convert the aggregated fuzzy set into a crisp output value.
 
 **Example — Traffic Light Control System:**
 
 Inputs: Traffic_Density (Low, Medium, High), Waiting_Time (Short, Medium, Long).
 Output: Green_Duration (Short, Medium, Long).
 
-Membership functions: Triangle-shaped graphs are used for each fuzzy word.
+Membership functions: Triangular functions defined for each linguistic variable.
 
 Rules:
 
@@ -394,34 +394,34 @@ Rules:
 - IF Traffic_Density is Low AND Waiting_Time is Short THEN Green_Duration is Short.
 - IF Traffic_Density is Medium THEN Green_Duration is Medium.
 
-Let's say Traffic*Density = 70 vehicles → it belongs 0.7 to "High" ($\mu*{\text{High}} = 0.7$) and 0.3 to "Medium" ($\mu*{\text{Medium}} = 0.3$). Waiting_Time = 50 sec → it belongs 0.6 to "Long" ($\mu*{\text{Long}} = 0.6$).
+Suppose Traffic*Density = 70 vehicles → $\mu*{\text{High}} = 0.7$, $\mu_{\text{Medium}} = 0.3$. Waiting*Time = 50 sec → $\mu*{\text{Long}} = 0.6$.
 
-Rule 1 says "High AND Long" → pick the smaller value: $\min(0.7, 0.6) = 0.6$. So we clip the "Long" output shape at 0.6.
-Rule 3 says "Medium" → strength is 0.3. So we clip the "Medium" output shape at 0.3.
+Rule 1: Firing strength $= \min(0.7,\, 0.6) = 0.6$. Clip the "Long" output fuzzy set at 0.6.
+Rule 3: Firing strength $= 0.3$. Clip the "Medium" output fuzzy set at 0.3.
 
-Aggregate: Overlap all the clipped shapes together (take max where they overlap).
-Defuzzify: Find the balancing point (centroid) of the combined shape to get the final Green_Duration number.
+Aggregate: Take the union (max) of all clipped output sets.
+Defuzzify: Apply centroid method to get a crisp Green_Duration value.
 
-**Defuzzification Techniques (ways to get the final number):**
+**Defuzzification Techniques:**
 
-- **Centroid (Center of Gravity):** $x^* = \dfrac{\int \mu(x) \cdot x\, dx}{\int \mu(x)\, dx}$ — This is the most common method. It finds the "balancing point" (center of mass) of the combined fuzzy shape. Think of it like finding where you would place your finger to balance a cardboard cutout of that shape.
-- **Bisector of Area (BOA):** Find the point that splits the shape into two equal halves by area — like cutting a pizza into two equal pieces with one straight vertical cut.
-- **Mean of Maximum (MOM):** Find all the points where the shape is at its tallest, then take their average.
-- **Smallest of Maximum (SOM):** Among the points where the shape is tallest, pick the smallest (leftmost) one.
-- **Largest of Maximum (LOM):** Among the points where the shape is tallest, pick the largest (rightmost) one.
+- **Centroid (Center of Gravity):** $x^* = \dfrac{\int \mu(x) \cdot x\, dx}{\int \mu(x)\, dx}$ — the most widely used method. Computes the center of mass of the aggregated fuzzy set.
+- **Bisector of Area (BOA):** The value that divides the area of the fuzzy set into two equal halves.
+- **Mean of Maximum (MOM):** The average of the values at which the membership function reaches its maximum.
+- **Smallest of Maximum (SOM):** The smallest value at which maximum membership occurs.
+- **Largest of Maximum (LOM):** The largest value at which maximum membership occurs.
 
 ## 2.6.2 Sugeno Fuzzy Inference System (Takagi-Sugeno-Kang)
 
-The Sugeno FIS is similar to Mamdani in the IF part — it still uses fuzzy sets like "High" or "Low". But the big difference is in the THEN part: instead of using a fuzzy word, it gives an **exact number or a simple math formula**. This number can be a constant (just a fixed value, called zero-order Sugeno) or a simple equation using the inputs (called first-order Sugeno).
+In the Sugeno FIS, the antecedent is a fuzzy set (same as Mamdani), but the **consequent is a crisp function** of the inputs — either a constant (zero-order Sugeno) or a linear function (first-order Sugeno).
 
-**Rule Format:** IF $x$ is $A$ AND $y$ is $B$ THEN $z = f(x, y)$, where $f$ is usually a constant number or a simple formula like $z = ax + by + c$.
+**Rule Format:** IF $x$ is $A$ AND $y$ is $B$ THEN $z = f(x, y)$, where $f$ is typically a constant or a linear polynomial (e.g., $z = ax + by + c$).
 
-**How it works (Steps):**
+**Steps:**
 
-1. **Fuzzification:** Same as Mamdani — turn exact input numbers into fuzzy membership values.
-2. **Rule Evaluation:** Find the firing strength $w_i$ for each rule (how strongly each rule applies), using min or product for AND.
-3. **Output Computation:** Each rule directly gives an exact output number $z_i$ using its formula.
-4. **Defuzzification:** Calculate the final answer using a **weighted average** — $z^* = \dfrac{\sum w_i \cdot z_i}{\sum w_i}$. This is much simpler than Mamdani because there are no shapes to deal with — just multiply and add numbers.
+1. **Fuzzification:** Same as Mamdani.
+2. **Rule Evaluation:** Compute the firing strength $w_i$ for each rule using AND (min or product).
+3. **Output Computation:** Each rule produces a crisp output $z_i = f_i(\text{inputs})$.
+4. **Defuzzification:** Use **weighted average** — $z^* = \dfrac{\sum w_i \cdot z_i}{\sum w_i}$. No complex area computation is needed.
 
 **Example — Tip Calculation:**
 
@@ -434,56 +434,31 @@ Rules:
 - IF Service is Good THEN Tip = 15%.
 - IF Service is Excellent OR Food is Delicious THEN Tip = 25%.
 
-Let's say Service = 7 → it belongs 0.6 to "Good" ($\mu_{\text{Good}} = 0.6$) and 0.3 to "Excellent" ($\mu_{\text{Excellent}} = 0.3$). Food = 8 → it belongs 0.7 to "Delicious" ($\mu_{\text{Delicious}} = 0.7$).
+Suppose Service = 7 → $\mu_{\text{Good}} = 0.6$, $\mu_{\text{Excellent}} = 0.3$. Food = 8 → $\mu_{\text{Delicious}} = 0.7$.
 
-Rule 2: Strength $w_2 = 0.6$, output $z_2 = 15$.
-Rule 3: It says "Excellent OR Delicious", so pick the bigger value: $w_3 = \max(0.3, 0.7) = 0.7$, output $z_3 = 25$.
+Rule 2: $w_2 = 0.6$, $z_2 = 15$.
+Rule 3: $w_3 = \max(0.3,\, 0.7) = 0.7$, $z_3 = 25$.
 
-Final answer: $z^* = \dfrac{0.6 \times 15 + 0.7 \times 25}{0.6 + 0.7} = \dfrac{9 + 17.5}{1.3} = \dfrac{26.5}{1.3} \approx 20.38\%$ tip.
+Output: $z^* = \dfrac{0.6 \times 15 + 0.7 \times 25}{0.6 + 0.7} = \dfrac{9 + 17.5}{1.3} = \dfrac{26.5}{1.3} \approx 20.38\%$.
 
 **Differences between Mamdani and Sugeno:**
 
-| Feature                          | Mamdani                                                              | Sugeno                                                         |
-| -------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------- |
-| **THEN part (Consequent)**       | Uses fuzzy words/shapes (e.g., "Long", "Short")                      | Uses exact numbers or simple formulas                          |
-| **How it gets the final answer** | Combines fuzzy shapes and finds the center (centroid) — more complex | Uses simple weighted average — much easier                     |
-| **Speed**                        | Slower (has to deal with shapes and areas)                           | Faster and better for computers                                |
-| **Easy to understand?**          | Yes — reads like plain English, very human-friendly                  | Less intuitive, but great for control systems and optimization |
+- **Consequent:** Mamdani uses fuzzy sets; Sugeno uses crisp functions (constant or linear).
+- **Aggregation and Defuzzification:** Mamdani requires area-based aggregation and defuzzification (e.g., centroid); Sugeno uses simple weighted average.
+- **Computational Efficiency:** Sugeno is more computationally efficient, better suited for mathematical analysis and optimization.
+- **Interpretability:** Mamdani is more intuitive and human-readable; Sugeno is more suitable for control systems and adaptive models.
 
 ## 2.6.3 Tsukamoto Fuzzy Inference System
 
-In the Tsukamoto FIS, the THEN part of each rule uses a fuzzy set, but with a special rule: the membership function must be **monotonic** — meaning it must always go up or always go down (never up-and-down like a triangle). Think of it like a ramp that only goes in one direction. This makes it easy to find one exact output number for each rule.
+In the Tsukamoto FIS, the consequent of each rule is a fuzzy set with a **monotonic membership function** (either strictly increasing or strictly decreasing). This ensures that each rule produces a unique crisp output for a given firing strength.
 
-**How it works:**
+**Working:**
 
-1. **Fuzzification:** Same as Mamdani and Sugeno — turn exact inputs into fuzzy membership values.
-2. **Rule Evaluation:** Find the firing strength $w_i$ for each rule (how strongly each rule fires).
-3. **Output Computation:** For each rule, look at the output membership function (the ramp shape) and find the exact value $z_i$ where the membership equals the firing strength. Since the ramp only goes one way, there is always exactly one answer. In math: find $z_i$ such that $\mu_{\text{output}}(z_i) = w_i$.
-4. **Defuzzification:** Use **weighted average** to get the final answer — $z^* = \dfrac{\sum w_i \cdot z_i}{\sum w_i}$.
+1. **Fuzzification:** Same as other FIS types.
+2. **Rule Evaluation:** Compute the firing strength $w_i$ for each rule.
+3. **Output Computation:** For each rule, find the crisp output $z_i$ such that $\mu_{\text{output}}(z_i) = w_i$ by inverting the monotonic membership function.
+4. **Defuzzification:** Use **weighted average** — $z^* = \dfrac{\sum w_i \cdot z_i}{\sum w_i}$.
 
-**Example — Room Temperature Control:**
+**Key Requirement:** The output membership functions must be monotonic (e.g., sigmoid-like, S-shaped, or Z-shaped functions).
 
-Inputs: Temperature (Cold, Warm, Hot).
-Output: Fan_Speed (ranging from 0 to 100).
-
-The output membership functions are monotonic (ramp-shaped):
-
-- "Low_Speed": a decreasing function — goes from 1 at speed=0 down to 0 at speed=50. (Like a downhill ramp: \)
-- "High_Speed": an increasing function — goes from 0 at speed=50 up to 1 at speed=100. (Like an uphill ramp: /)
-
-Rules:
-
-- Rule 1: IF Temperature is Cold THEN Fan_Speed is Low_Speed.
-- Rule 2: IF Temperature is Hot THEN Fan_Speed is High_Speed.
-
-Let's say Temperature = 30°C → it belongs 0.4 to "Cold" ($\mu_{\text{Cold}} = 0.4$) and 0.6 to "Hot" ($\mu_{\text{Hot}} = 0.6$).
-
-Rule 1: Firing strength $w_1 = 0.4$. Now look at the "Low_Speed" ramp and find where membership = 0.4. Since the ramp goes from 1 (at speed=0) to 0 (at speed=50), membership 0.4 happens at speed = 30. So $z_1 = 30$.
-
-Rule 2: Firing strength $w_2 = 0.6$. Now look at the "High_Speed" ramp and find where membership = 0.6. Since the ramp goes from 0 (at speed=50) to 1 (at speed=100), membership 0.6 happens at speed = 80. So $z_2 = 80$.
-
-Final answer: $z^* = \dfrac{w_1 \times z_1 + w_2 \times z_2}{w_1 + w_2} = \dfrac{0.4 \times 30 + 0.6 \times 80}{0.4 + 0.6} = \dfrac{12 + 48}{1.0} = \dfrac{60}{1.0} = 60$. So the fan runs at speed 60.
-
-**Key Requirement:** The output membership functions must be monotonic — always increasing (going up like /) or always decreasing (going down like \\). Examples include S-shaped or Z-shaped curves.
-
-**How does Tsukamoto compare?** It is a mix of both Mamdani and Sugeno. Like Mamdani, it uses fuzzy sets in the output. Like Sugeno, each rule gives one exact number and uses weighted average. It is simpler and faster than Mamdani, but it is not as popular as Mamdani or Sugeno because the monotonic requirement limits the kinds of shapes you can use.
+**Comparison:** Tsukamoto combines aspects of both Mamdani (uses fuzzy sets in the consequent) and Sugeno (produces crisp rule outputs and uses weighted average). It is computationally simpler than Mamdani but less commonly used than either Mamdani or Sugeno.
