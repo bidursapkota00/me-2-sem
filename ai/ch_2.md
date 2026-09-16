@@ -428,6 +428,8 @@ In the Sugeno FIS, the antecedent is a fuzzy set (same as Mamdani), but the **co
 3. **Output Computation:** Each rule produces a crisp output $z_i = f_i(\text{inputs})$.
 4. **Defuzzification:** Use **weighted average** — $z^* = \dfrac{\sum w_i \cdot z_i}{\sum w_i}$. No complex area computation is needed.
 
+![alt text](image-3.png)
+
 **Example — Tip Calculation:**
 
 Inputs: Service (Poor, Good, Excellent), Food (Rancid, Delicious).
@@ -463,6 +465,8 @@ In the Tsukamoto FIS, the consequent of each rule is a fuzzy set with a **monoto
 2. **Rule Evaluation:** Compute the firing strength $w_i$ for each rule.
 3. **Output Computation:** For each rule, find the crisp output $z_i$ such that $\mu_{\text{output}}(z_i) = w_i$ by inverting the monotonic membership function.
 4. **Defuzzification:** Use **weighted average** — $z^* = \dfrac{\sum w_i \cdot z_i}{\sum w_i}$.
+
+![alt text](image-4.png)
 
 **Example — Room Temperature Control:**
 
