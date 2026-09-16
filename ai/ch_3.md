@@ -4,11 +4,11 @@
 
 Classical planning deals with the problem of finding a sequence of actions that transforms an **initial state** into a **goal state**. It assumes the environment is fully observable, deterministic, static, and discrete.
 
-**Planning vs. Problem-Solving Search:** In basic search, states and actions are treated as atomic (black boxes). In planning, states are represented using a **factored representation** — a set of variables (predicates) — which allows the planner to exploit the structure of the problem, making it far more efficient for complex domains.
+**Planning vs. Problem-Solving Search:** In regular search, we treat each situation/states like a closed box — we don't look inside. In planning, we break down each situation into smaller facts (like "Robot is at location A" and "Block B has nothing on top"). This makes it much easier to find solutions.
 
 ## STRIPS (Stanford Research Institute Problem Solver)
 
-STRIPS (1971) is both a planning system and a **formal language** for representing planning problems. It became the foundation for most modern planning languages.
+STRIPS is one of the earliest planning systems (made in 1971). Think of it as a simple and formal language to describe planning problems.
 
 **A STRIPS problem is defined by:**
 
@@ -32,7 +32,7 @@ Action: Move(block, from, to)
 
 ## PDDL (Planning Domain Definition Language)
 
-PDDL is the **standard language** for expressing classical planning problems. It was introduced to provide a common input format for planning competitions and tools.
+PDDL is a newer, more powerful standard language for describing planning problems. Think of it as an upgraded version of STRIPS. It was introduced to provide a common input format for planning competitions and tools.
 
 **PDDL separates the problem into two files:**
 
@@ -41,11 +41,11 @@ PDDL is the **standard language** for expressing classical planning problems. It
 
 **Relationship to STRIPS:** PDDL includes the STRIPS representation as a subset but extends it with additional features such as typing, conditional effects (when), universal quantification in preconditions, negative preconditions, and derived predicates.
 
-**Planning Algorithms for Classical Planning:**
+**Planning Algorithms for Classical Planning: How do we actually find the plan? (Planning Methods)**
 
 - **Forward (Progression) State-Space Search:** Start from the initial state, apply applicable actions to generate successors, and search forward until the goal is reached. Uses heuristics derived from the problem structure.
 - **Backward (Regression) State-Space Search:** Start from the goal and work backward, finding actions whose effects match the goal, replacing them with their preconditions. Advantage: only considers relevant actions.
-- **Planning Graphs (Graphplan):** Build a layered graph of alternating state levels and action levels, then extract a solution by backward search through the graph. Provides useful heuristics and can detect unsolvability.
+- **Planning Graphs (Graphplan):** Build a special diagram that shows which actions and facts are possible at each step, then find a solution from the diagram.
 
 ---
 
@@ -57,8 +57,8 @@ PDDL is the **standard language** for expressing classical planning problems. It
 
 **Key Concepts:**
 
-- **Primitive Actions:** Low-level actions that can be directly executed (same as classical planning actions).
-- **High-Level Actions (HLAs):** Abstract tasks that need to be refined (decomposed) before execution.
+- **Primitive Actions:** Low-level actions that can be directly executed (like "pick up a glass").
+- **High-Level Actions (HLAs):** Abstract tasks that need to be refined (decomposed) before execution (like "make dinner").
 - **Methods (Refinements):** Domain-specific recipes that define how a high-level action can be decomposed into a sequence of subtasks (which may be further HLAs or primitives).
 
 **Algorithm:**
@@ -76,7 +76,7 @@ PDDL is the **standard language** for expressing classical planning problems. It
 HLA: Travel(Home, Office)
   Method 1: [Walk(Home, BusStop), RideBus(BusStop, Office)]
   Method 2: [Drive(Home, Office)]
-  
+
 HLA: Drive(Home, Office)
   Method: [GetInCar, StartEngine, Navigate(Home, Office), Park]
 ```
@@ -105,11 +105,14 @@ The standard framework for probabilistic planning is the **Markov Decision Proce
 - **Actions (A):** A finite set of actions available to the agent.
 - **Transition Model P(s' | s, a):** The probability of reaching state s' when taking action a in state s. This captures the stochasticity of the environment.
 - **Reward Function R(s):** The immediate reward (or cost) the agent receives in state s. Sometimes written as R(s, a) or R(s, a, s').
-- **Discount Factor (γ):** A value between 0 and 1 that determines the importance of future rewards. γ close to 0 makes the agent myopic; γ close to 1 makes it far-sighted.
+- **Discount Factor (γ):** A number between 0 and 1 that decides how much the agent cares about future rewards vs. immediate rewards. Close to 1 = thinks long-term. Close to 0 = only cares about right now.
 
-**Key Difference from Classical Planning:** Instead of finding a fixed **action sequence**, an MDP solution is a **policy** π: S → A — a mapping from every state to the best action to take in that state. A policy handles uncertainty because the agent can react to whichever state it actually ends up in.
+**Difference from Classical Planning:**
 
-**Optimal Policy:** The policy π* that maximizes the **expected cumulative discounted reward:** E[Σ γ^t R(s_t)].
+- Classical planning gives you a fixed list of steps: "Do A, then B, then C"
+- Probabilistic planning gives you a policy — a rule that says "if you're in THIS situation, do THIS action." It's like a strategy guide, not a recipe.
+
+**Optimal Policy:** The best possible policy — the one that earns the most reward on average over time. maximizes the **expected cumulative discounted reward.**
 
 **Differences between Hierarchical and Probabilistic Planning:**
 
@@ -129,7 +132,7 @@ The standard framework for probabilistic planning is the **Markov Decision Proce
 >
 > **Write a short note on Multi-agent planning in AI. (5) (Spring 2025)**
 
-**Multi-agent planning** extends single-agent planning to environments containing **multiple autonomous agents**, each with their own sensors, actuators, goals, and possibly different knowledge about the world. The agents must coordinate their actions to achieve individual or shared objectives.
+**Multi-agent planning** extends single-agent planning to environments containing **multiple autonomous agents**, each with their own sensors, actuators, goals, and possibly different knowledge about the world. The agents must coordinate their actions to achieve individual or shared objectives. Multi-agent planning is about how multiple agents work together or compete with each other.
 
 **Why Multi-Agent Planning is Required:**
 
@@ -160,7 +163,7 @@ In competitive settings, agents have conflicting goals — one agent's gain may 
 
 - **Game Theory:** Used to analyze strategic interactions. Agents reason about opponents' strategies.
 - **Nash Equilibrium:** A set of strategies where no agent can improve its outcome by unilaterally changing its strategy.
-- **Adversarial Search:** Minimax and related algorithms (from game playing) are used for zero-sum competitive scenarios.
+- **Adversarial Search:** Algorithms like Minimax — "I assume my opponent will play their best move, so I pick the move that's best for me even in that worst case"
 
 **Challenges of Coordination and Communication:**
 
@@ -184,7 +187,7 @@ In competitive settings, agents have conflicting goals — one agent's gain may 
 - **Utility Function U(s):** Maps each state to a real number representing its desirability. Higher utility = more preferred. If A ≻ B, then U(A) > U(B).
 - **Lotteries:** An uncertain outcome is modeled as a lottery [p, A; (1−p), B] — outcome A with probability p and outcome B with probability (1−p).
 
-**Axioms of Utility (Von Neumann–Morgenstern):**
+**\*\*Axioms of Utility (Von Neumann–Morgenstern):**
 
 1. **Orderability:** For any two states, either A ≻ B, B ≻ A, or A ~ B.
 2. **Transitivity:** If A ≻ B and B ≻ C, then A ≻ C.
@@ -199,9 +202,9 @@ If these axioms hold, there exists a utility function such that the agent's pref
 
 A utility function assigns numerical values to states, reflecting the agent's preferences. It encapsulates the agent's attitude toward risk:
 
-- **Risk-neutral:** Utility is a linear function of monetary value. U(x) = x.
-- **Risk-averse:** Utility is a concave function. The agent prefers a certain outcome over a gamble with the same expected value. U(x) = √x.
-- **Risk-seeking:** Utility is a convex function. The agent prefers the gamble. U(x) = x².
+- **Risk-neutral:** You only care about the average. Rs.100 for sure = 50% chance of Rs.200 (same average). U(x) = x.
+- **Risk-averse:** You prefer safety. You'd take Rs.100 for sure rather than a 50/50 shot at Rs.200 or nothing. U(x) = √x. (Most people are like this!)
+- **Risk-seeking:** You love gambling. You'd take the 50/50 chance over the safe Rs.100. U(x) = x².
 
 **Example:** An agent must choose between (A) receiving $100 for certain, or (B) a 50% chance of $200 and 50% chance of $0. Expected monetary value of both is $100. A risk-neutral agent is indifferent. A risk-averse agent prefers (A). A risk-seeking agent prefers (B).
 
@@ -212,13 +215,23 @@ Real-world decisions involve outcomes described by **multiple attributes** (e.g.
 **Dominance:**
 
 - **Strict Dominance:** Option A dominates option B if A is better than B on every attribute. Choose A.
-- **Stochastic Dominance:** Option A stochastically dominates B if, for every utility level, the probability of achieving at least that level is higher with A.
+- **Stochastic Dominance:** Option A gives you a better chance of a good outcome at every level, pick A.
 
 **Preference Independence:** Attribute X is **preferentially independent** of attribute Y if preferences over outcomes of X do not depend on the value of Y. If all attributes are mutually preferentially independent, the multi-attribute utility can be decomposed:
 
-**Additive Utility Function:** U(x₁, x₂, ..., x_n) = Σ w_i × U_i(x_i), where w_i are weights reflecting relative importance of each attribute. This is the simplest form and applies when attributes are additively independent.
+**Combining Factors:**
 
-**Multiplicative Utility Function:** Used when attributes are not fully additively independent but satisfy mutual utility independence. It introduces interaction terms between attributes.
+**Preference Independence:** If your preference for one factor doesn't depend on the others (e.g., you always prefer cheaper regardless of location), then you can use a simple formula:
+
+**Additive Utility Function:** Total Score = (Weight₁ × Score on Factor 1) + (Weight₂ × Score on Factor 2) + ...
+
+Example for choosing a college:
+
+- Total = 0.3 × (cost score) + 0.25 × (reputation score) + 0.2 × (location score) + 0.25 × (campus life score)
+
+The weights (0.3, 0.25, etc.) show how important each factor is to you.
+
+If factors affect each other (e.g., you only care about campus life if the cost is affordable), you need a **multiplicative utility function** which is more complex.
 
 ---
 
@@ -226,20 +239,20 @@ Real-world decisions involve outcomes described by **multiple attributes** (e.g.
 
 > **What is a decision network? Explain its components with an example. (8) (Spring 2025)**
 
-A **decision network** (also called an **influence diagram**) is a graphical representation that extends Bayesian networks to incorporate decision-making under uncertainty. It combines probability (uncertainty), actions (decisions), and preferences (utilities) into a single framework.
+A decision network (also called an influence diagram) is a diagram that helps an agent make decisions when things are uncertain. It combines probability (uncertainty), actions (decisions, choices), and preferences (utilities) into a single framework.
 
 **Components of a Decision Network:**
 
-**1. Chance Nodes (Ovals):** Represent random variables with uncertain values, exactly like nodes in a Bayesian network. Each chance node has a conditional probability table (CPT). Example: Weather (Sunny, Rainy), Oil_Amount (Large, Small, None).
+**1. Chance Nodes (Ovals):** Represent random variables with uncertain values, exactly like nodes in a Bayesian network. Each chance node has a conditional probability table (CPT). Example: Weather (60% Sunny, 40% Rainy), Oil Underground (20% Large, 30% Small, 50% None).
 
-**2. Decision Nodes (Rectangles):** Represent points where the agent must choose an action. The agent has full control over the value of decision nodes. Arrows pointing into a decision node indicate information available to the agent when making that decision. Example: Drill_Decision (Drill, Don't Drill).
+**2. Decision Nodes (Rectangles):** Represent points where the agent must choose an action. The agent has full control over the value of decision nodes. Arrows pointing into a decision node indicate information available to the agent when making that decision. Example: Drill_Decision (Drill, Don't Drill) Take umbrella or not.
 
-**3. Utility Nodes (Diamonds):** Represent the agent's utility (payoff) function. A utility node's parents are all the variables (chance and decision) that directly affect the agent's utility. The utility node contains a table mapping each combination of parent values to a utility value. Example: Profit depends on both Drill_Decision and Oil_Amount.
+**3. Utility Nodes (Diamonds):** Represent the agent's utility (payoff) function. The "payoff" — how good or bad each outcome is for you. It depends on both the uncertain events and your decisions. Example: Profit depends on both Drill_Decision and Oil_Amount.
 
 **Evaluating a Decision Network:**
 
 1. Set the evidence variables (observed values).
-2. For each possible value of the decision node, compute the expected utility by summing over all possible outcomes of the chance nodes, weighted by their probabilities.
+2. For each possible value of the decision node (choice), compute the expected utility by summing over all possible outcomes of the chance nodes, weighted by their probabilities.
 3. Choose the decision that maximizes expected utility.
 
 **Example — Oil Drilling Decision:**
@@ -259,39 +272,113 @@ The network can be extended with additional chance nodes (e.g., a Seismic Test r
 
 When an agent must make a **series of decisions over time**, each decision potentially affecting future states and future decisions, we have a **sequential decision problem**. The outcome depends on the entire sequence of decisions and the stochastic transitions between states.
 
-**Formalization using MDP:** A sequential decision problem is formalized as an MDP (defined in Section 3.3). The agent seeks a policy π* that maximizes the expected sum of discounted future rewards.
+**Formalization using MDP:** A sequential decision problem is formalized as an MDP (defined in Section 3.3). The agent seeks a policy π\* that maximizes the expected sum of discounted future rewards.
 
 **Bellman Equation:** Expresses the utility of a state recursively:
 
-U(s) = R(s) + γ × max_a Σ_{s'} P(s' | s, a) × U(s')
+$$
+U(s)=R(s)+\gamma \times \max_a \sum_{s'}P(s'|s,a)U(s')
+$$
 
 This states: the utility of a state equals the immediate reward plus the discounted expected utility of the best action's outcomes.
 
-**Example — Grid World:** An agent navigates a 4×3 grid with a reward of +1 at one terminal state and −1 at another. Each move has a 0.8 probability of going in the intended direction and 0.1 probability of going to each perpendicular direction. The optimal policy tells the agent which direction to move in each cell to maximize expected cumulative reward.
+**Example:**
+
+Current state: s = At(Home)
+
+Actions:
+a₁ = GoToCollege
+a₂ = GoToPark
+a₃ = StayHome
+
+```text
+s = At(Home)
+a = GoToCollege
+```
+
+Because the environment is uncertain:
+
+```text
+P(College | Home, GoToCollege) = 0.8
+P(Traffic | Home, GoToCollege)  = 0.2
+```
+
+So there is an **80% chance** of reaching College and a **20% chance** of ending up in Traffic.
+
+### 3. `U(s')` — utility of the next state
+
+`s'` means the **next state**.
+
+`U(s')` means:
+
+> How valuable/good is that next state?
+
+Suppose:
+
+```text
+U(College) = 100
+U(Traffic) = 20
+```
+
+Then:
+
+$$
+P(College|Home,GoToCollege)U(College)
+$$
+
+$$
+=0.8\times100=80
+$$
+
+and
+
+$$
+P(Traffic|Home,GoToCollege)U(Traffic)
+$$
+
+$$
+=0.2\times20=4
+$$
+
+Add them:
+
+$$
+80+4=84
+$$
+
+So **84 is the expected future utility** of choosing `GoToCollege`.
 
 ## 3.6.2 Algorithms for MDPs
 
-**1. Value Iteration:**
+**How do we actually find the best policy?**
 
-1. Initialize U(s) = 0 for all states (or arbitrary values).
-2. Repeat until convergence (max change < ε):
-   - For each state s: U_{i+1}(s) = R(s) + γ × max_a Σ_{s'} P(s' | s, a) × U_i(s')
-3. Extract the optimal policy: π*(s) = argmax_a Σ_{s'} P(s' | s, a) × U(s')
+**Method 1: Value Iteration**
 
-Value iteration is guaranteed to converge. The number of iterations depends on γ and the desired precision ε. Time complexity per iteration: O(|S|² × |A|).
+Think of it as a "guessing game" where you keep improving your guesses:
 
-**2. Policy Iteration:**
+1. Start by guessing that every state has a value of 0
+2. Update each state's value using the Bellman formula
+3. Keep repeating until the values barely change anymore
+4. Once you have the final values, the best action in each state is the one that leads to states with the highest value
 
-1. Initialize with an arbitrary policy π.
-2. **Policy Evaluation:** Compute the utility of each state under the current policy by solving a system of linear equations: U^π(s) = R(s) + γ × Σ_{s'} P(s' | s, π(s)) × U^π(s').
-3. **Policy Improvement:** For each state, check if there is an action that yields a higher expected utility than the current policy. If so, update the policy.
-4. Repeat steps 2–3 until the policy no longer changes (convergence).
+It's guaranteed to find the right answer eventually!
 
-Policy iteration often converges in fewer iterations than value iteration, but each iteration is more expensive (requires solving a linear system).
+**Method 2: Policy Iteration**
+
+Instead of guessing values, you guess a whole strategy and keep improving it:
+
+1. Start with any strategy (even a random one)
+2. **Evaluate:** Calculate how good each state is if you follow this strategy
+3. **Improve:** For each state, check if a different action would be better. If yes, update the strategy.
+4. Repeat steps 2-3 until the strategy stops changing
+
+This usually needs fewer rounds than Value Iteration, but each round takes more work.
 
 ## 3.6.3 Partially Observable MDP (POMDP)
 
 A **POMDP** extends the MDP framework to environments where the agent **cannot directly observe the current state**. Instead, the agent receives partial observations that provide incomplete information about the true state.
+
+A robot might not know exactly which room it's in — it can only see walls nearby and guess.
 
 **A POMDP is defined by:**
 
@@ -299,16 +386,20 @@ A **POMDP** extends the MDP framework to environments where the agent **cannot d
 - **Observations (O):** A finite set of possible observations.
 - **Observation Model P(o | s', a):** The probability of observing o after taking action a and arriving in state s'.
 
+Example: "If I'm in the kitchen, there's a 90% chance I see a stove, 10% chance I don't"
+
 **Belief State:** Since the agent cannot observe the true state, it maintains a **belief state** b — a probability distribution over all possible states. b(s) represents the agent's probability estimate that the current state is s.
 
-**Belief Update:** After taking action a and receiving observation o, the belief is updated using Bayes' rule:
+Example: "I think there's a 60% chance I'm in the kitchen and 40% chance I'm in the living room."
 
-b'(s') = α × P(o | s', a) × Σ_s P(s' | s, a) × b(s)
+**How does it update its beliefs?**
 
-where α is a normalizing constant.
+After taking an action and seeing an observation:
 
-**Solving POMDPs:** A POMDP can be converted into a **belief-state MDP** — an MDP where the states are belief states. The agent's policy maps belief states to actions: π: B → A. However, the belief space is continuous (a probability simplex), making exact solutions intractable for all but very small problems.
+1. "Given my previous belief, what action I took, and what I observed, where am I most likely now?"
+2. Use Bayes' rule (a probability formula) to update the belief
 
-**Approximate Methods:** Point-based value iteration, Monte Carlo methods, and online planning algorithms are used for practical POMDP solving.
+**The Challenge:** Solving POMDPs is VERY hard because the "belief state" is continuous (there are infinite possible beliefs). For big problems, we use approximate methods that find "good enough" answers. Point-based value iteration, Monte Carlo methods.
 
-**Example:** A robot in a building cannot directly see which room it is in (partial observability). It has a belief distribution over rooms. It takes actions (move left, move right) and receives observations (wall sensor readings). After each action and observation, it updates its belief state and selects the next action based on the updated belief.
+**Example:**
+A robot is in a building but doesn't know which room it's in. It has a rough idea (belief). It moves left and its wall sensors detect "wall on the right." Using this observation, it updates its belief — "Oh, there's a wall on my right, so I'm probably in the hallway, not the open hall." Then it chooses its next action based on this updated belief.
