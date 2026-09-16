@@ -62,6 +62,8 @@ Example: a chess-playing agent that starts with basic rules, plays games, learns
 
 **Limitations of A\*:** A\* stores all generated nodes in memory (both OPEN and CLOSED lists). Its space complexity is O(b^d), which makes it impractical for large state spaces — it often runs out of memory before running out of time.
 
+![alt text](image-5.png)
+
 ## 1.2.1 Bidirectional A\* Search
 
 Bidirectional A\* runs two simultaneous searches: one **forward** from the initial state and one **backward** from the goal state, until the two search frontiers meet. Each direction uses the A\* evaluation function.
@@ -78,6 +80,8 @@ Bidirectional A\* runs two simultaneous searches: one **forward** from the initi
 **Example:** Finding shortest path from city A to city Z in a road network. Forward search explores from A; backward search explores from Z. They meet at some intermediate city M, producing path A→...→M→...→Z. Instead of exploring the entire space from A to Z, each direction only explores roughly half the depth.
 
 **Challenges:** Requires a well-defined way to search backward (predecessor generation), and selecting which frontier to expand next is non-trivial.
+
+![alt text](image-9.png)
 
 ## 1.2.2 Iterative Deepening A\* (IDA\*)
 
