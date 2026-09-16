@@ -381,6 +381,8 @@ The Mamdani FIS (proposed by Ebrahim Mamdani, 1975) is the most commonly used fu
 3. **Aggregation:** Combine all clipped/scaled consequent fuzzy sets into a single output fuzzy set using max (union).
 4. **Defuzzification:** Convert the aggregated fuzzy set into a crisp output value.
 
+![alt text](image-2.png)
+
 **Example — Traffic Light Control System:**
 
 Inputs: Traffic_Density (Low, Medium, High), Waiting_Time (Short, Medium, Long).
@@ -462,6 +464,29 @@ In the Tsukamoto FIS, the consequent of each rule is a fuzzy set with a **monoto
 3. **Output Computation:** For each rule, find the crisp output $z_i$ such that $\mu_{\text{output}}(z_i) = w_i$ by inverting the monotonic membership function.
 4. **Defuzzification:** Use **weighted average** — $z^* = \dfrac{\sum w_i \cdot z_i}{\sum w_i}$.
 
-**Key Requirement:** The output membership functions must be monotonic (e.g., sigmoid-like, S-shaped, or Z-shaped functions).
+**Example — Room Temperature Control:**
 
-**Comparison:** Tsukamoto combines aspects of both Mamdani (uses fuzzy sets in the consequent) and Sugeno (produces crisp rule outputs and uses weighted average). It is computationally simpler than Mamdani but less commonly used than either Mamdani or Sugeno.
+Inputs: Temperature (Cold, Warm, Hot).
+Output: Fan_Speed (ranging from 0 to 100).
+
+The output membership functions are monotonic (ramp-shaped):
+
+- "Low_Speed": a decreasing function — goes from 1 at speed=0 down to 0 at speed=50. (Like a downhill ramp: \\)
+- "High_Speed": an increasing function — goes from 0 at speed=50 up to 1 at speed=100. (Like an uphill ramp: /)
+
+Rules:
+
+- Rule 1: IF Temperature is Cold THEN Fan_Speed is Low_Speed.
+- Rule 2: IF Temperature is Hot THEN Fan_Speed is High_Speed.
+
+Let's say Temperature = 30°C → it belongs 0.4 to "Cold" ($\mu_{\text{Cold}} = 0.4$) and 0.6 to "Hot" ($\mu_{\text{Hot}} = 0.6$).
+
+Rule 1: Firing strength $w_1 = 0.4$. Now look at the "Low_Speed" ramp and find where membership = 0.4. Since the ramp goes from 1 (at speed=0) to 0 (at speed=50), membership 0.4 happens at speed = 30. So $z_1 = 30$.
+
+Rule 2: Firing strength $w_2 = 0.6$. Now look at the "High_Speed" ramp and find where membership = 0.6. Since the ramp goes from 0 (at speed=50) to 1 (at speed=100), membership 0.6 happens at speed = 80. So $z_2 = 80$.
+
+Final answer: $z^* = \dfrac{w_1 \times z_1 + w_2 \times z_2}{w_1 + w_2} = \dfrac{0.4 \times 30 + 0.6 \times 80}{0.4 + 0.6} = \dfrac{12 + 48}{1.0} = \dfrac{60}{1.0} = 60$. So the fan runs at speed 60.
+
+**Key Requirement:** The output membership functions must be monotonic — always increasing (going up like /) or always decreasing (going down like \\). Examples include S-shaped or Z-shaped curves.
+
+**Comparison:** Tsukamoto combines aspects of both Mamdani (uses fuzzy sets in the consequent) and Sugeno (produces crisp rule outputs and uses weighted average). It is computationally simpler than Mamdani but less commonly used than either Mamdani or Sugeno because the monotonic requirement limits the kinds of shapes you can use.
