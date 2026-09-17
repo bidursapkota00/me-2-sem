@@ -217,6 +217,8 @@ Game playing is a classic AI problem because games are well-defined, have clear 
 
 In a two-player zero-sum game, one player's gain is the other's loss. The **minimax algorithm** determines the optimal strategy by assuming the opponent also plays optimally.
 
+![alt text](image-16.png)
+
 **Minimax Value:**
 
 - If the node is terminal: UTILITY(n).
@@ -226,6 +228,8 @@ In a two-player zero-sum game, one player's gain is the other's loss. The **mini
 **Algorithm:** Performs a complete depth-first exploration of the game tree. Time complexity: O(b^m), Space complexity: O(bm), where b is the branching factor and m is the maximum depth.
 
 **Alpha-Beta Pruning:** An optimization of minimax that eliminates branches that cannot influence the final decision. It maintains two values: α (best value MAX can guarantee) and β (best value MIN can guarantee). If α ≥ β at any node, prune the remaining children. With perfect move ordering, it reduces the effective branching factor from b to √b, allowing search to twice the depth in the same time.
+
+![alt text](image-17.png)
 
 **Imperfect real-time decisions:** In practice, the game tree is too large to search completely. The agent uses:
 
