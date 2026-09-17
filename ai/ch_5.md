@@ -171,6 +171,8 @@ where h*v is the feature of node v, N(v) is its neighbors, c*{vu} is a normaliza
 
 A **Recurrent Neural Network** is a neural network designed for processing **sequential data** (time series, text, speech) where the order of inputs matters. Unlike feedforward networks, RNNs have **recurrent connections** — the output at each time step is fed back as input to the next step, giving the network a form of memory.
 
+![alt text](image-11.png)
+
 **How it works:**
 
 At each time step t:
@@ -203,6 +205,8 @@ The same set of weights is used at every time step — this is called **paramete
 
 **LSTM** (Hochreiter & Schmidhuber, 1997) solves the vanishing gradient problem by introducing a **cell state** (a highway for information flow) and three **gating mechanisms** that control what information is stored, forgotten, and output.
 
+![alt text](image-12.png)
+
 **Gates (all use sigmoid activation, outputting values in [0, 1]):**
 
 **The Three Gates:**
@@ -221,6 +225,8 @@ It decides what part of the cell state to use as the output for this step.
 ## GRU (Gated Recurrent Unit)
 
 **GRU** (Cho et al., 2014) is a simplified variant of LSTM with **two gates** instead of three, merging the cell state and hidden state into a single state.
+
+![alt text](image-13.png)
 
 **Gates:**
 
@@ -257,6 +263,8 @@ In standard sequence-to-sequence models (encoder-decoder RNNs), the entire input
 
 **Self-attention** is when a sequence pays attention to **itself**. Each word in a sentence looks at every other word in the **same** sentence to understand context. This helps capture relationships between words regardless of how far apart they are.
 
+![alt text](image-14.png)
+
 For each word/token, three vectors are created:
 
 - **Query (Q):** What this word/token is looking for.
@@ -280,6 +288,8 @@ The results from all heads are combined together, giving a much richer understan
 > **Describe transformer with its architectures. (Internal 2025)**
 
 The Transformer was introduced in 2017 in the famous paper "Attention Is All You Need." It's a revolutionary architecture that relies entirely on attention — no RNNs, no CNNs. It processes all positions/words in parallel, enabling much faster training and superior performance on sequence tasks.
+
+![alt text](image-15.png)
 
 **Architecture — Encoder-Decoder:**
 

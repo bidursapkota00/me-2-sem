@@ -1,19 +1,14 @@
 # 6. Natural Language Processing
 
-**Natural Language Processing (NLP)** is the subfield of AI concerned with giving computers the ability to understand, interpret, and generate human language. NLP bridges the gap between human communication and computer understanding. It involves techniques from linguistics, computer science, and machine learning to process text and speech data.
+**Natural Language Processing (NLP)** is the subfield of AI concerned with giving computers the ability to understand, interpret, and generate human language.
 
-**Steps involved in NLP:**
+**\*\*Steps involved in NLP:**
 
 1. **Lexical Analysis:** Tokenizing raw text into words, punctuation, and other meaningful units (tokens). Involves identifying word boundaries and normalizing text.
 2. **Syntactic Analysis (Parsing):** Analyzing the grammatical structure of sentences using grammar rules to produce parse trees. Checks whether the sentence is well-formed.
 3. **Semantic Analysis:** Extracting the meaning from syntactic structures. Maps syntactic structures to meaningful representations. Checks for meaningfulness (e.g., "colorless green ideas sleep furiously" is syntactically correct but semantically odd).
 4. **Discourse Integration:** Understanding meaning in context — how a sentence relates to the sentences before and after it. Resolves references (e.g., "He" in "John went home. He was tired." refers to John).
 5. **Pragmatic Analysis:** Understanding the intended effect or purpose of the language in a given context. Goes beyond literal meaning to interpret speaker intent, irony, or implication.
-
-**Two main approaches to NLP:**
-
-- **Rule-Based NLP:** Uses hand-crafted linguistic rules and grammars. Rules are written by domain experts. Example: a rule that says "a determiner followed by an adjective followed by a noun forms a noun phrase." Advantage: transparent, interpretable. Disadvantage: brittle, expensive to build, poor generalization.
-- **Statistical NLP:** Learns patterns from large corpora of text using probabilistic and machine learning models. Example: a language model that learns P("cat" | "the") from counting co-occurrences in a corpus. Advantage: scalable, handles ambiguity better. Disadvantage: requires large data, less interpretable.
 
 ---
 
@@ -115,6 +110,7 @@ PRP → "I"
 ```
 
 Parsing "The dog chased a cat":
+
 - S → NP VP → (DT NN)(VB NP) → ("the" "dog")("chased" DT NN) → "the dog chased a cat"
 
 ## Types of Parsing
@@ -138,6 +134,8 @@ Parsing "The dog chased a cat":
 > **Write a short note on Complications of Real Natural Language. (5) (Fall 2025)**
 
 Real natural language is far more complex than formal languages. The major complications include:
+
+**iLAMP: Idioms, Language Variability, Ambiguity, Anaphora, Metaphor, Metonymy and Pragmatics**
 
 **1. Ambiguity:** The single greatest challenge in NLP. A word, phrase, or sentence can have multiple valid interpretations.
 
@@ -263,12 +261,14 @@ Each LSTM unit has a **cell state** (Cₜ) — a long-term memory that runs thro
 **fₜ = σ(W_f · [hₜ₋₁, xₜ] + b_f)**
 
 **2. Input Gate (iₜ):** Decides what new information to **store** in the cell state. Two parts:
+
 - The input gate layer decides which values to update: **iₜ = σ(W_i · [hₜ₋₁, xₜ] + b_i)**
 - A tanh layer creates a vector of candidate values: **C̃ₜ = tanh(W_C · [hₜ₋₁, xₜ] + b_C)**
 
 **3. Cell State Update:** The old cell state Cₜ₋₁ is updated by forgetting some old information and adding some new: **Cₜ = fₜ ⊙ Cₜ₋₁ + iₜ ⊙ C̃ₜ** (where ⊙ denotes element-wise multiplication).
 
 **4. Output Gate (oₜ):** Decides what part of the cell state to **output** as the hidden state.
+
 - **oₜ = σ(W_o · [hₜ₋₁, xₜ] + b_o)**
 - **hₜ = oₜ ⊙ tanh(Cₜ)**
 
@@ -380,12 +380,14 @@ This allows the model to learn to attend to relative positions.
 The full Transformer consists of an **Encoder** and a **Decoder**, each composed of stacked identical layers (typically 6):
 
 **Encoder Layer:**
+
 1. **Multi-Head Self-Attention:** Each token attends to all tokens in the input.
 2. **Add & Norm:** Residual connection + Layer Normalization.
 3. **Feed-Forward Network (FFN):** Two linear transformations with a ReLU activation: FFN(x) = max(0, xW₁ + b₁)W₂ + b₂. Applied independently to each position.
 4. **Add & Norm:** Another residual connection + Layer Normalization.
 
 **Decoder Layer:**
+
 1. **Masked Multi-Head Self-Attention:** Each token attends only to previous tokens (masking future positions to prevent "cheating" during generation).
 2. **Add & Norm.**
 3. **Multi-Head Cross-Attention:** The decoder attends to the encoder's output (queries from decoder, keys and values from encoder).
