@@ -259,7 +259,7 @@ In standard sequence-to-sequence models (encoder-decoder RNNs), the entire input
 
 **Example:** When translating "The cat is black" to Nepali, while generating the word for "cat", the attention mechanism would focus most on the word "cat" in the input.
 
-## Self-Attention
+## Self-Attention (Scaled Dot-Product Attention)
 
 **Self-attention** is when a sequence pays attention to **itself**. Each word in a sentence looks at every other word in the **same** sentence to understand context. This helps capture relationships between words regardless of how far apart they are.
 
