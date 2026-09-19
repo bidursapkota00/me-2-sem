@@ -6,7 +6,7 @@
 >
 > **Discuss advanced concepts of Modular Design and Separation of Concerns in embedded software with relevant industry examples. [7 marks] (2024)**
 
-Embedded software differs fundamentally from general-purpose application software. It runs on resource-constrained hardware, interacts directly with physical peripherals, must often meet real-time deadlines, and is expected to operate reliably for years or decades with minimal maintenance intervention. These constraints demand disciplined software practices that go beyond simply making the code work. The quality of embedded software is determined not only by its functional correctness but also by its readability, maintainability, testability, and portability. As Elecia White emphasizes in *Making Embedded Systems*, good architecture and disciplined practices are what separate professional firmware from fragile, unmaintainable code.
+Embedded software differs fundamentally from general-purpose application software. It runs on resource-constrained hardware, interacts directly with physical peripherals, must often meet real-time deadlines, and is expected to operate reliably for years or decades with minimal maintenance intervention. These constraints demand disciplined software practices that go beyond simply making the code work. The quality of embedded software is determined not only by its functional correctness but also by its readability, maintainability, testability, and portability. As Elecia White emphasizes in _Making Embedded Systems_, good architecture and disciplined practices are what separate professional firmware from fragile, unmaintainable code.
 
 ## 5.1.1 Code Readability, Commenting, and Documentation
 
@@ -68,9 +68,9 @@ Effective version control practices include committing small, logical changes wi
 
 Coding standards are a set of rules and guidelines that govern how code is written within a project or organization. They ensure consistency across the codebase, reduce ambiguity, and prevent the use of error-prone language features.
 
-Industry-standard coding guidelines for embedded C include MISRA C (Motor Industry Software Reliability Association), which defines a subset of the C language that avoids constructs known to cause undefined behavior, security vulnerabilities, or portability issues. MISRA C is mandatory in safety-critical domains such as automotive (ISO 26262), medical devices, and aerospace. CERT C provides guidelines focused on security and preventing common programming errors such as buffer overflows and integer overflows.
+Industry-standard coding guidelines for embedded C include MISRA C (Motor Industry Software Reliability Association), which defines a subset of the C language that **avoids constructs known to cause undefined behavior, security vulnerabilities, or portability issues**. MISRA C is mandatory in **safety-critical** domains such as automotive (ISO 26262), medical devices, and aerospace. **CERT C provides guidelines focused on security and preventing common programming errors such as buffer overflows and integer overflows.**
 
-Coding standards also cover formatting conventions (indentation, brace placement, line length), naming conventions, file organization, and the use of language features (e.g., prohibiting `goto`, limiting pointer arithmetic, requiring explicit type casting). Automated tools such as `clang-format` enforce formatting rules, while static analysis tools check compliance with MISRA or CERT rules.
+Coding standards also cover formatting conventions (**indentation, brace placement, line length), naming conventions, file organization, and the use of language features (e.g., prohibiting `goto`, limiting pointer arithmetic, requiring explicit type casting)**. Automated tools such as `clang-format` enforce formatting rules, while static analysis tools check compliance with MISRA or CERT rules.
 
 ---
 
@@ -119,6 +119,8 @@ Unlike general-purpose software, embedded refactoring must account for real-time
 
 A Finite State Machine (FSM) is a computational model and design pattern in which a system is modeled as existing in exactly one of a finite number of states at any given time. The system transitions from one state to another in response to specific events or inputs. FSMs are one of the most important and widely used design patterns in embedded systems.
 
+![alt text](image-1.png)
+
 **1. Components of an FSM:**
 
 Every FSM consists of a finite set of states (e.g., IDLE, RUNNING, ERROR, SHUTDOWN), a set of events or inputs that trigger transitions (e.g., button_press, timeout, sensor_threshold_exceeded), a transition function that defines which state to move to given the current state and an event, entry and exit actions that execute when a state is entered or exited, and an initial state.
@@ -131,11 +133,13 @@ An FSM replaces this tangled logic with a clear, structured model. Each state en
 
 **3. Implementation Approaches:**
 
-The simplest FSM implementation uses a switch-case statement on the current state, with nested switch-case on the event inside each state case. A more flexible approach uses a state-transition table, which is a data structure (often an array of structs) that maps (current_state, event) pairs to (next_state, action) entries. The table-driven approach separates the FSM logic from the execution engine, making it easier to add new states or transitions without modifying the dispatch code.
+The simplest FSM implementation uses a **switch-case statement** on the current state, with nested switch-case on the event inside each state case. A more flexible approach uses a **state-transition table,** which is a data structure (often an array of structs) that maps (current_state, event) pairs to (next_state, action) entries. The table-driven approach separates the FSM logic from the execution engine, making it easier to add new states or transitions without modifying the dispatch code.
 
 **4. Example — Traffic Light Controller:**
 
 A traffic light controller can be modeled as an FSM with states RED, GREEN, and YELLOW. The event is a timer expiry. In the RED state, the green light is off and the red light is on; when the timer expires, the system transitions to GREEN. In the GREEN state, when the timer expires, the system transitions to YELLOW. In the YELLOW state, when the timer expires, the system transitions back to RED. Each state has clearly defined entry actions (turn on the appropriate light) and exit actions (turn off the previous light).
+
+![alt text](image-2.png)
 
 **5. Hierarchical State Machines (HSMs):**
 
@@ -165,7 +169,7 @@ A hardware abstraction layer (HAL) uses encapsulation to isolate application cod
 
 **3. Benefits of Encapsulation in Embedded Systems:**
 
-Encapsulation improves maintainability because internal changes to a module do not affect the rest of the system as long as the public API remains unchanged. It improves reliability because external code cannot corrupt internal state through direct access. It improves testability because hardware-dependent modules can be replaced with mock implementations during unit testing, enabling application logic to be tested on a desktop computer without target hardware. It improves portability because the same application code can run on different hardware platforms by swapping only the HAL modules.
+Encapsulation improves **maintainability** because internal changes to a module do not affect the rest of the system as long as the public API remains unchanged. It improves **reliability** because external code cannot corrupt internal state through direct access. It improves **testability** because hardware-dependent modules can be replaced with mock implementations during unit testing, enabling application logic to be tested on a desktop computer without target hardware. It improves **portability** because the same application code can run on different hardware platforms by swapping only the HAL modules.
 
 **4. Real-World Example:**
 
@@ -216,7 +220,7 @@ In a typical implementation, an ISR detects an external event (e.g., a button pr
 
 The event queue pattern provides several important benefits. It keeps ISRs short and fast, because the ISR only enqueues an event rather than performing lengthy processing. It serializes concurrent events, eliminating the need for complex mutual exclusion mechanisms in the consumer. It decouples producers from consumers, so the ISR does not need to know the current state of the application. It buffers events during peak load, preventing event loss when multiple events arrive in rapid succession.
 
-The combination of an event queue with a state machine is a particularly powerful architectural pattern known as the Active Object pattern. Each active object has its own event queue and processes events sequentially using an internal state machine. Communication between active objects occurs exclusively through asynchronous event posting, eliminating shared-state concurrency issues.
+<!-- The combination of an event queue with a state machine is a particularly powerful architectural pattern known as the Active Object pattern. Each active object has its own event queue and processes events sequentially using an internal state machine. Communication between active objects occurs exclusively through asynchronous event posting, eliminating shared-state concurrency issues. -->
 
 **2. Watchdog Timer Pattern:**
 
@@ -244,36 +248,7 @@ Unity provides a rich set of assertion macros for testing expected outcomes:
 
 ```c
 TEST_ASSERT_EQUAL(expected, actual);
-TEST_ASSERT_EQUAL_HEX8(0xFF, register_value);
-TEST_ASSERT_TRUE(is_initialized);
-TEST_ASSERT_FLOAT_WITHIN(0.01, expected_temp, actual_temp);
 TEST_ASSERT_NULL(pointer);
-```
-
-A Unity test file follows a standard structure:
-
-```c
-#include "unity.h"
-#include "temperature_sensor.h"
-
-void setUp(void) {
-    sensor_init();
-}
-
-void tearDown(void) {
-    sensor_deinit();
-}
-
-void test_sensor_returns_valid_range(void) {
-    float temp = sensor_read_temperature();
-    TEST_ASSERT_FLOAT_WITHIN(100.0, 25.0, temp);
-}
-
-int main(void) {
-    UNITY_BEGIN();
-    RUN_TEST(test_sensor_returns_valid_range);
-    return UNITY_END();
-}
 ```
 
 **3. Testing Strategies:**
