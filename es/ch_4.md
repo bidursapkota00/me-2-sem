@@ -44,9 +44,15 @@ A sporadic task arrives at irregular intervals but is constrained by a minimum i
 
 Every real-time task has an associated deadline by which it must complete execution. Deadline analysis determines whether a given set of tasks can meet all their deadlines under a specified scheduling policy. The key metric is the worst-case response time (WCRT), which is the longest time from the release of a task to its completion. A task is schedulable if its WCRT does not exceed its deadline. For fixed-priority systems, the WCRT of a task i is computed iteratively as:
 
-R_i = C_i + B_i + Σ ⌈R_i / T_j⌉ × C_j (for all higher-priority tasks j)
+$$
+R_i^{(k+1)}
+=
+C_i+B_i+
+\sum_j
+\left\lceil\frac{R_i^{(k)}}{T_j}\right\rceil C_j
+$$
 
-Here, C_i is the execution time, B_i is the maximum blocking time from lower-priority tasks holding shared resources, and the summation accounts for interference from all higher-priority tasks.
+Here, $C_i$ is the execution time, $B_i$ is the maximum blocking time from lower-priority tasks holding shared resources, and the summation accounts for interference from all higher-priority tasks. Number of times task $j$ can execute during $R_i$ is $\lceil R_i / T_j \rceil$.
 
 **Jitter:**
 
@@ -74,7 +80,14 @@ Rate Monotonic Scheduling is a fixed-priority, preemptive scheduling algorithm f
 
 A set of n independent, preemptible, periodic tasks with deadlines equal to their periods is guaranteed to be schedulable under RMS if:
 
-U = Σ (C_i / T_i) ≤ n(2^(1/n) − 1)
+$
+U = Σ (C_i / T_i) ≤ n(2^{(1/n)} − 1)
+$
+
+- **U**: Total CPU Utilization.
+- **$C_i$**: Worst-case computation time (execution time) of task $i$.
+- **$T_i$**: Time period (or relative deadline) of task $i$.
+- **`n`**: Total number of tasks in the system.
 
 The bound values for small n are:
 
@@ -105,7 +118,9 @@ Earliest Deadline First is a dynamic-priority, preemptive scheduling algorithm. 
 
 A set of independent, preemptible, periodic tasks is schedulable under EDF if and only if:
 
+$
 U = Σ (C_i / T_i) ≤ 1
+$
 
 This is both a necessary and sufficient condition. EDF can achieve 100% CPU utilization, making it theoretically optimal among all uniprocessor scheduling algorithms. If any scheduling algorithm can schedule a task set without missing deadlines, EDF can too.
 
