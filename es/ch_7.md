@@ -8,7 +8,7 @@
 >
 > **Write short notes on: IoT security basics [5 marks] (2025)**
 
-The Internet of Things (IoT) refers to the network of physical objects ("things") embedded with sensors, software, processing capability, and network connectivity that enables them to collect, exchange, and act upon data. IoT transforms ordinary devices into intelligent, connected systems by combining embedded systems technology with internet connectivity. The embedded system within each IoT device serves as its core — handling data acquisition from sensors, local processing, communication protocol management, actuation of physical outputs, and power management. As Wolf explains in *Computers as Components*, IoT extends the traditional embedded system model by adding network connectivity as a fundamental design requirement rather than an optional feature.
+The Internet of Things (IoT) refers to the network of physical objects ("things") embedded with sensors, software, processing capability, and network connectivity that enables them to collect, exchange, and act upon data. IoT transforms ordinary devices into intelligent, connected systems by combining embedded systems technology with internet connectivity. The embedded system within each IoT device serves as its core — handling data acquisition from sensors, local processing, communication protocol management, actuation of physical outputs, and power management. As Wolf explains in _Computers as Components_, IoT extends the traditional embedded system model by adding network connectivity as a fundamental design requirement rather than an optional feature.
 
 **1. Smart Home and Building Automation:**
 
@@ -45,6 +45,8 @@ The four-layer model provides a comprehensive framework for understanding how Io
 - **Processing Layer (Middleware/Data Processing Layer):** This layer receives, stores, analyzes, filters, and interprets the raw data collected from the network layer. Processing may occur at the edge (on gateway devices or local servers) or in the cloud. Edge processing reduces latency and bandwidth consumption by performing time-critical analysis locally, while cloud processing provides the computational resources for large-scale analytics, machine learning model training, and historical data storage. This layer implements data cleaning, aggregation, pattern recognition, anomaly detection, and decision logic.
 - **Application Layer:** This is the topmost layer and the only one typically visible to end users. It delivers processed information in meaningful formats through dashboards, mobile applications, web portals, automated reports, and alerts. The application layer implements domain-specific business logic — for example, generating irrigation schedules in agriculture, triggering maintenance work orders in industry, or adjusting HVAC setpoints in building management. It provides user interfaces for configuration, monitoring, and manual override of automated systems.
 
+![alt text](image-3.png)
+
 ## 7.2.1 Edge Devices, Gateways, and Cloud Integration
 
 The Cloud–Edge–Device architecture is a practical three-tier model that maps directly to physical deployment.
@@ -79,7 +81,7 @@ IoT networking differs fundamentally from traditional IT networking. IoT devices
 
 IP (Internet Protocol) is the foundational network-layer protocol that enables devices to be addressed and reached across interconnected networks. IPv4, with its 32-bit address space (approximately 4.3 billion addresses), is insufficient for the projected tens of billions of IoT devices. IPv6, with its 128-bit address space (3.4 × 10³⁸ addresses), provides a practically unlimited number of unique addresses, enabling every IoT device to have a globally unique IP address.
 
-However, the standard IPv6 protocol stack is too resource-intensive for highly constrained devices (kilobytes of RAM, limited processing power). 6LoWPAN (IPv6 over Low-Power Wireless Personal Area Networks) is an adaptation layer that enables IPv6 packets to be transmitted over constrained IEEE 802.15.4 networks by performing header compression, packet fragmentation, and reassembly. This allows tiny, battery-powered embedded devices to be directly addressable via standard IP infrastructure, bridging the gap between constrained local sensor networks and the broader internet.
+However, the standard IPv6 protocol stack is too resource-intensive for highly constrained devices (kilobytes of RAM, limited processing power). **6LoWPAN** (IPv6 over Low-Power Wireless Personal Area Networks) is an adaptation layer that enables IPv6 packets to be transmitted over constrained IEEE 802.15.4 networks by performing header compression, packet fragmentation, and reassembly. This allows tiny, battery-powered embedded devices to be directly addressable via standard IP infrastructure, bridging the gap between constrained local sensor networks and the broader internet.
 
 **2. MQTT (Message Queuing Telemetry Transport):**
 
@@ -101,9 +103,9 @@ CoAP is preferred for deeply constrained devices with very limited RAM (as low a
 
 **1. Scalability:**
 
-IoT systems must support thousands to millions of devices. Scalability is addressed at multiple levels. At the network level, protocols like LoRaWAN and NB-IoT are designed to support massive numbers of devices on a single gateway or base station. At the application level, cloud platforms use horizontal scaling (adding more servers) to handle increasing data volumes. At the protocol level, the publish-subscribe model of MQTT inherently scales better than point-to-point connections because adding a new subscriber requires no changes to publishers.
+IoT systems must support thousands to millions of devices. Scalability is addressed at multiple levels. At the network level, protocols like **LoRaWAN and NB-IoT** are designed to support massive numbers of devices on a single gateway or base station. At the application level, cloud platforms use horizontal scaling (adding more servers) to handle increasing data volumes. At the protocol level, the publish-subscribe model of **MQTT** inherently scales better than point-to-point connections because adding a new subscriber requires no changes to publishers.
 
-Key scalability challenges include address management (IPv6 and 6LoWPAN solve the addressing problem), bandwidth constraints (data aggregation and compression at the edge reduce the data volume reaching the cloud), and device management (provisioning, monitoring, and updating thousands of devices requires automated tools and standardized protocols such as LwM2M — Lightweight Machine-to-Machine).
+Key scalability challenges include address management (IPv6 and **6LoWPAN** solve the addressing problem), **bandwidth constraints (data aggregation and compression** at the edge reduce the data volume reaching the cloud), and device management (provisioning, monitoring, and updating thousands of devices requires automated tools and standardized protocols such as LwM2M — Lightweight Machine-to-Machine).
 
 **2. Low-Power Networking Technologies:**
 
@@ -206,7 +208,7 @@ To schedule a timer that should fire after N ticks, the system calculates the ta
 
 A single timing wheel with a fixed number of slots can only represent timers within a limited time range (wheel_size × tick_duration). For example, a 256-slot wheel with 10 ms ticks covers a maximum duration of 2.56 seconds. To handle timers spanning much longer durations (minutes, hours, days), hierarchical timing wheels use multiple layers, analogous to the second, minute, and hour hands of an analog clock.
 
-A common configuration uses three wheels: a fine-grained wheel (e.g., 256 slots × 10 ms = 2.56 seconds), a medium wheel (e.g., 64 slots × 2.56 seconds ≈ 2.7 minutes), and a coarse wheel (e.g., 64 slots × 2.7 minutes ≈ 2.9 hours). When the fine wheel completes a full rotation, it advances the medium wheel by one slot, and the timers in that medium slot are redistributed into the fine wheel based on their remaining time. This cascading mechanism allows arbitrarily long timer durations while keeping insertion and expiration at O(1).
+A common configuration uses three wheels: a **fine-grained wheel** (e.g., 256 slots × 10 ms = 2.56 seconds), a **medium wheel** (e.g., 64 slots × 2.56 seconds ≈ 2.7 minutes), and a **coarse wheel** (e.g., 64 slots × 2.7 minutes ≈ 2.9 hours). When the fine wheel completes a full rotation, it advances the medium wheel by one slot, and the timers in that medium slot are redistributed into the fine wheel based on their remaining time. This cascading mechanism allows arbitrarily long timer durations while keeping insertion and expiration at O(1).
 
 **4. Why Timewheels are Ideal for IoT:**
 
