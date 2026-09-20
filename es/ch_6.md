@@ -12,11 +12,11 @@ In embedded systems, the microcontroller interacts with the external world throu
 
 **1. GPIO (General Purpose Input/Output):**
 
-GPIO is the most fundamental peripheral interface. It allows the microcontroller to read digital input signals (e.g., from switches, buttons, or digital sensors) and drive digital output signals (e.g., to LEDs, relays, or other logic devices). Each GPIO pin can be individually configured as input or output. Input pins can be configured with internal pull-up or pull-down resistors to define a default logic level when the pin is unconnected. Output pins can be configured as push-pull (actively drives both high and low) or open-drain (actively drives low, requires external pull-up for high). GPIO operations involve writing to Set/Clear registers to change output states and reading from Pin registers to detect input states. GPIO is the building block upon which higher-level peripheral interactions are constructed.
+GPIO is the most fundamental peripheral interface. It allows the microcontroller to read digital input signals (e.g., from switches, buttons, or digital sensors) and drive digital output signals (e.g., to LEDs, relays, or other logic devices). Each GPIO pin can be individually configured as input or output. Input pins can be configured with internal pull-up or pull-down resistors to define a default logic level when the pin is unconnected. Output pins can be configured as push-pull (actively drives both high and low) or open-drain (actively drives low, requires external pull-up for high). GPIO operations involve writing to **Set/Clear** registers to change output states and reading from **Pin** registers to detect input states. GPIO is the building block upon which higher-level peripheral interactions are constructed.
 
 **2. ADC (Analog-to-Digital Converter):**
 
-The ADC converts continuous analog voltage signals from sensors (temperature, pressure, light, etc.) into discrete digital values that the microcontroller can process. Key parameters include resolution (commonly 10-bit or 12-bit, determining the number of discrete levels — a 12-bit ADC provides 4096 levels), reference voltage (defines the input voltage range), sampling rate (how frequently conversions occur), and conversion time. The ADC workflow involves enabling the ADC clock, configuring the input pin for analog mode, setting the conversion parameters (channel, resolution, sampling time), starting the conversion, and reading the result from the data register when the conversion-complete flag is set. Multiple ADC channels can be multiplexed to read several analog inputs using a single ADC module. ADC conversions can be triggered by software commands, timer events, or external signals.
+The ADC converts continuous analog voltage signals from sensors (temperature, pressure, light, etc.) into discrete digital values that the microcontroller can process. Key parameters include resolution (commonly 10-bit or 12-bit, determining the number of discrete levels — a 12-bit ADC provides 4096 levels), reference voltage (defines the input voltage range), sampling rate (how frequently conversions occur), and conversion time. The ADC workflow involves enabling the ADC clock, configuring the input pin for analog mode, setting the conversion parameters (channel, resolution, sampling time), starting the conversion, and reading the result from the **data register** when the conversion-complete flag is set. Multiple ADC channels can be multiplexed to read several analog inputs using a single ADC module. ADC conversions can be triggered by software commands, timer events, or external signals.
 
 **3. DAC (Digital-to-Analog Converter):**
 
@@ -34,7 +34,9 @@ PWM is a technique for controlling the average power delivered to a load by rapi
 
 In hardware PWM generation, a timer counts from zero up to a value stored in the Auto-Reload Register (ARR), which defines the period (and thus the frequency) of the PWM signal. A Capture/Compare Register (CCR) stores the duty cycle threshold. While the timer count is less than the CCR value, the output pin is held high; when the count exceeds the CCR value, the output goes low. The timer automatically resets and repeats the cycle. A Prescaler (PSC) divides the system clock to achieve the desired timer frequency.
 
-PWM frequency = System Clock / ((PSC + 1) × (ARR + 1)). Duty Cycle (%) = (CCR / ARR) × 100.
+PWM frequency = System Clock / ((PSC + 1) × (ARR + 1)).
+
+Duty Cycle (%) = (CCR / ARR) × 100.
 
 PWM is used extensively in motor speed control, LED brightness dimming, servo motor positioning, power supply regulation, and audio signal generation. Hardware PWM runs entirely in the timer peripheral with no CPU overhead after initial configuration.
 
@@ -117,7 +119,7 @@ Each protocol has distinct timing requirements that must be respected for reliab
 
 - **UART:** Provides minimal error detection. Parity checking detects single-bit errors but cannot correct them. Framing errors occur when the stop bit is not detected at the expected position, typically indicating a baud rate mismatch or noise. Overrun errors occur when new data arrives before the previous data has been read from the receive register. Higher-level protocols (e.g., checksums, CRCs) must be implemented in software for robust error detection.
 - **SPI:** Has no built-in error detection or acknowledgment mechanism. The protocol provides no feedback on whether data was received correctly. Applications requiring reliability must implement software-level checksums or CRCs. Some SPI devices use a status register that can be read back to verify operation.
-- **I2C:** Provides hardware-level error detection through the ACK/NACK mechanism. The master can detect if no slave responds to the address (NACK on address), if the slave cannot accept further data (NACK on data byte), or if bus arbitration is lost in multi-master systems. Bus stuck conditions (SDA or SCL held low indefinitely) require timeout detection and bus recovery procedures (toggling SCL to release a stuck slave).
+- **I2C:** Provides hardware-level error detection through the ACK/NACK mechanism. The master can detect if no slave responds to the address (NACK on address), if the slave cannot accept further data (NACK on data byte).
 
 ---
 
@@ -138,20 +140,6 @@ The driver should be structured in layers. The lowest layer (Hardware Abstractio
 **2. Configuration Separation:**
 
 Hardware-specific parameters such as pin assignments, clock frequencies, baud rates, and buffer sizes should not be hardcoded inside the driver. Instead, they should be passed through configuration structures during initialization. This allows the same driver code to support multiple instances of a peripheral (e.g., UART1 and UART2) and to be reused across different boards with different pin mappings.
-
-```c
-typedef struct {
-    uint32_t baud_rate;
-    uint8_t  tx_pin;
-    uint8_t  rx_pin;
-    uint8_t  data_bits;
-    uint8_t  parity;
-} uart_config_t;
-
-void uart_init(uart_config_t *config);
-void uart_send(uint8_t *data, uint16_t length);
-uint16_t uart_receive(uint8_t *buffer, uint16_t max_length);
-```
 
 **3. Consistent API Design:**
 
@@ -175,15 +163,15 @@ In a polling approach, the CPU executes a tight loop that repeatedly reads a per
 
 **2. How ISRs Improve Power Consumption:**
 
-In battery-powered embedded systems, the CPU is the largest power consumer. With polling, the CPU must remain fully active at all times, continuously executing instructions even when no events are occurring. With interrupt-driven design, the CPU can enter a sleep mode (where the clock is stopped and power consumption drops dramatically) and wake up only when an interrupt occurs. The CPU processes the event, then returns to sleep. This sleep-wake-process pattern is the foundation of all low-power embedded system design. As Wolf notes in *Computers as Components*, the combination of interrupt-driven peripheral management with aggressive use of sleep modes can reduce system power consumption by orders of magnitude compared to polling.
+In battery-powered embedded systems, the CPU is the largest power consumer. With polling, the CPU must remain fully active at all times, continuously executing instructions even when no events are occurring. With interrupt-driven design, the CPU can enter a sleep mode (where the clock is stopped and power consumption drops dramatically) and wake up only when an interrupt occurs. The CPU processes the event, then returns to sleep. This sleep-wake-process pattern is the foundation of all low-power embedded system design. As Wolf notes in _Computers as Components_, the combination of interrupt-driven peripheral management with aggressive use of sleep modes can reduce system power consumption by orders of magnitude compared to polling.
 
 **3. Best Practices for Writing ISRs:**
 
 - **Keep ISRs short:** An ISR should do the absolute minimum — typically clearing the interrupt flag, reading or writing a data register, setting a flag or posting to a queue, and returning. Lengthy processing inside an ISR delays the servicing of other interrupts and can cause deadline violations.
 - **Defer complex processing:** The ISR should signal the main loop or an RTOS task to perform any complex data processing, calculations, or state machine transitions. This is the "top-half / bottom-half" pattern.
-- **Avoid blocking operations:** Never call functions that block or wait inside an ISR (e.g., `delay()`, `printf()`, `malloc()`). These can cause deadlocks or unbounded interrupt latency.
+<!-- - **Avoid blocking operations:** Never call functions that block or wait inside an ISR (e.g., `delay()`, `printf()`, `malloc()`). These can cause deadlocks or unbounded interrupt latency.
 - **Use `volatile` for shared variables:** Any variable shared between an ISR and the main code must be declared `volatile` to prevent the compiler from optimizing away reads/writes that appear redundant from a single-threaded perspective.
-- **Protect critical sections:** Multi-byte shared data structures accessed by both the ISR and main code must be protected. This is typically done by briefly disabling interrupts around the access in the main code to prevent the ISR from modifying the data mid-access.
+- **Protect critical sections:** Multi-byte shared data structures accessed by both the ISR and main code must be protected. This is typically done by briefly disabling interrupts around the access in the main code to prevent the ISR from modifying the data mid-access. -->
 - **Use callbacks for flexibility:** Rather than hardcoding application logic into the ISR, register function pointers (callbacks) that the ISR invokes. This keeps the ISR generic and reusable across projects.
 
 ## 6.3.3 Driver Testing and Validation
@@ -241,7 +229,7 @@ Timing is a critical and often underestimated challenge in sensor interfacing.
 
 > **Describe the data transmission sequence in I2C from start to stop condition. Explain common sleep modes in low power design. [7 marks] (2025)**
 
-Power consumption is a primary design constraint in battery-powered and energy-harvesting embedded systems. The goal of low-power design is to minimize energy consumption while maintaining the system's functional and real-time requirements. As Wolf explains in *Computers as Components*, power-aware design must be considered at every level — hardware selection, system architecture, peripheral management, and firmware design.
+Power consumption is a primary design constraint in battery-powered and energy-harvesting embedded systems. The goal of low-power design is to minimize energy consumption while maintaining the system's functional and real-time requirements. As Wolf explains in _Computers as Components_, power-aware design must be considered at every level — hardware selection, system architecture, peripheral management, and firmware design.
 
 ## 6.5.1 Sleep Modes and Power-Efficient Peripheral Use
 
@@ -261,6 +249,8 @@ ARM Cortex-M processors provide standardized low-power modes that progressively 
 **3. Power-Efficient Peripheral Use:**
 
 Minimizing peripheral power consumption requires a disciplined approach.
+
+**abcd pid rv:**
 
 - **Clock Gating:** Disable the clock to every peripheral that is not currently in use. A UART that is clocked but not transmitting still consumes significant dynamic power. Enable the peripheral clock only when a transaction is about to begin, and disable it immediately after the transaction completes.
 - **Interrupt-Driven Operation:** Replace polling loops with interrupt-driven or DMA-driven peripheral access. Polling keeps the CPU active and consuming power. Interrupt-driven design allows the CPU to sleep between events.
