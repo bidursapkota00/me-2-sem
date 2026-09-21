@@ -78,7 +78,7 @@ AHB is the high-speed system backbone of the AMBA hierarchy. It connects high-pe
 
 **APB (Advanced Peripheral Bus):**
 
-APB is a low-power, low-bandwidth bus optimized for connecting simple, low-speed peripherals such as UARTs, GPIO controllers, timers, I2C controllers, and SPI controllers. APB uses a simple, non-pipelined protocol with two phases: a setup phase (where the address and control signals are asserted) and an access phase (where data is transferred). It is a single-master bus, meaning only one master (typically a bridge from AHB) drives the APB. APB is designed for minimal power consumption and low gate count, making it ideal for peripherals that do not require high bandwidth.
+APB is a low-power, low-bandwidth bus optimized for connecting simple, low-speed peripherals such as UARTs, GPIO controllers, timers, I2C controllers, and SPI controllers. APB uses a simple, non-pipelined protocol with two phases: a **setup phase** (where the address and control signals are asserted) and an **access phase** (where data is transferred). It is a single-master bus, meaning only one master (typically a bridge from AHB) drives the APB. APB is designed for minimal power consumption and low gate count, making it ideal for peripherals that do not require high bandwidth.
 
 **AHB-to-APB Bridge:**
 
@@ -87,6 +87,8 @@ Since the high-speed AHB and the low-speed APB operate at different performance 
 **AXI (Advanced eXtensible Interface):**
 
 AXI is the highest-performance protocol in the AMBA family, introduced in AMBA 3.0 (AXI4 in AMBA 4.0). It provides separate read and write channels, supports out-of-order transaction completion, and allows multiple outstanding transactions. AXI is used for the most demanding interconnects in modern SoCs, such as connections between application processors and high-bandwidth memory controllers.
+
+![alt text](image-4.png)
 
 **Typical SoC Bus Hierarchy:**
 
