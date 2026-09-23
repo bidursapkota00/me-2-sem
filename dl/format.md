@@ -8,7 +8,7 @@
 
 An **intelligent agent** is anything that perceives its environment through **sensors** and acts upon it through **actuators**. A human agent has eyes, ears (sensors) and hands, legs, vocal tract (actuators). A robotic agent has cameras, infrared sensors and motors, grippers. A software agent receives keystrokes, file contents and displays output, writes files.
 
-<!-- The agent function maps a percept sequence to an action: **f: P* → A**. The agent program is the concrete implementation running on a physical architecture. Agent = Architecture + Program. -->
+The agent function maps a percept sequence to an action: **f: P\* → A**. The agent program is the concrete implementation running on a physical architecture. Agent = Architecture + Program.
 
 **Rationality:** A rational agent selects the action that maximizes its expected performance measure, given the percept sequence and built-in knowledge. Rationality **≠ omniscience (knowing everything) and ≠ perfection (always correct outcomes).** A rational agent should be **autonomous — it learns from experience rather than relying solely on prior knowledge.**
 
@@ -266,7 +266,7 @@ Stochastic games introduce **chance elements** (e.g., dice rolls, card deals). T
 
 **Implication:** Alpha-beta pruning is less effective in stochastic games because chance nodes prevent tight bounding.
 
-<!-- The evaluation function must be a positive linear transformation of the true utility (not just order-preserving) for correct expectiminimax behavior. -->
+The evaluation function must be a positive linear transformation of the true utility (not just order-preserving) for correct expectiminimax behavior.
 
 **Partially observable games:** Games where players have hidden information (e.g., card games like poker). The agent must reason about information sets — sets of states that are indistinguishable given the player's observations. Strategies may involve randomized actions to prevent exploitation.
 
