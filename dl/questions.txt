@@ -1,0 +1,31 @@
+Unit 1: Foundation of Deep Neural Networks
+Compare supervised, unsupervised, and self-supervised learning paradigms with suitable examples for each. Discuss how the choice of learning paradigm affects model design.
+Explain the role of activation functions in a neural network. Compare ReLU, Sigmoid, and Tanh in terms of their mathematical properties, advantages, and limitations.
+Describe the backpropagation algorithm in detail. Derive the weight update rule using chain rule and explain how vanishing gradient problems arise.
+Discuss the ethical concerns surrounding AI systems. How can principles of responsible AI be incorporated during the design and deployment of deep learning models?
+
+Unit 2: Data Analytics and System Optimization
+Explain the bias-variance trade-off in deep learning. How do overfitting and underfitting manifest, and what techniques can be used to address each?
+Design a complete data processing pipeline for an image classification task. Include steps for data collection, augmentation, normalization, and validation strategy.
+Compare at least four hyperparameter optimization strategies (e.g., grid search, random search, Bayesian optimization). Discuss which is most suitable for large-scale deep learning models and why.
+
+Unit 3: Sequence Processing Networks
+Explain the architecture of LSTM and how it solves the vanishing gradient problem present in vanilla RNNs. Use diagrams and equations to support your answer.
+Describe the Transformer architecture in detail. Explain the role of self-attention and multi-head attention mechanisms, and contrast them with RNN-based sequence modeling.
+Compare Vanilla RNN, GRU, LSTM, and Bi-directional RNN in terms of architecture, computational cost, and suitability for different sequential tasks.
+
+Unit 4: Computer Vision
+Explain the fundamental differences between CNNs and MLPs for image processing tasks. Why are CNNs preferred for visual data, and what properties make them effective?
+Describe five convolution variants — standard, transpose, dilated, separable, and deformable — and provide a real-world use case where each variant would be most appropriate.
+Trace the evolution of CNN architectures from AlexNet to DenseNet. Highlight the key architectural innovation introduced in each (VGG, GoogLeNet, ResNet, DenseNet).
+Explain transfer learning and fine-tuning in the context of CNNs. Describe a scenario where you would fine-tune only the last few layers versus retraining the entire network.
+Design an image captioning system by combining CNN and sequence modeling components. Explain the role of each component and how training is performed end-to-end.
+
+Unit 5: Video Processing
+Explain how optical flow is used for motion analysis in video sequences. Discuss at least two deep learning approaches that estimate optical flow and their comparative strengths.
+Describe how 3D convolution differs from standard 2D convolution and explain its role in video-based action recognition. What are the computational trade-offs involved?
+
+Unit 6: Acoustic Signal Processing
+Explain the pipeline for a music classification system using deep learning. What audio features are typically extracted, and which neural network architectures are best suited for this task?
+Describe the problem of music source separation. Compare at least two deep learning approaches used to solve it and evaluate their effectiveness.
+Explain sound event detection as a deep learning task. How is it different from audio classification, and what network architectures and training strategies are commonly used?

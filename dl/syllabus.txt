@@ -1,0 +1,74 @@
+1. Foundation of Deep Neural Networks (7 hrs)
+1.1. Concept of AI, ML, DL and Neural Networks
+1.2. Learning paradigms: supervised, unsupervised, semi-supervised,
+self-supervised learning, online, active, reinforcement
+1.3. Ethical concerns and responsible AI
+1.4. Perceptron and multi-layer perceptron
+1.5. Components of neural network
+• Activation functions
+• Weight initialization
+• Optimization algorithms
+• Backpropagation
+• Loss functions
+
+
+2. Data Analytics and System Optimization (8 hrs)
+2.1. Data analysis, importance and methods
+2.2. Data augmentation and normalization
+2.3. Data processing pipeline
+2.4. Data security and concerns
+2.5. Model evaluation and cross-validation
+2.6. Hyper-parameter optimization
+2.7. Overfitting, underfitting, and bias-variance trade-off
+
+3. Sequence Processing Networks (8 hrs)
+3.1. Fundamentals of sequence modeling
+3.2. RNN architecture and backpropagation
+3.3. Types of RNNs: Vanilla, LSTM, GRU, Bi-directional,
+recursive network
+3.4. Transformer and attention mechanism
+3.5. Applications of sequential networks
+
+
+4. Computer Vision (10 hrs)
+4.1. CNN fundamentals: properties of CNN, CNN vs MLP
+4.2. Convolution, pooling (max, average, global), padding,
+flattening, fully connected layer
+4.3. Convolution variants: standard, transpose, dilated,
+separable, grouped, deformable
+4.4. CNN architectures: AlexNet, VGG, GoogLeNet, ResNet,
+DenseNet
+4.5. CNN design, forward and backward propagation
+4.6. Transfer learning and fine-tuning applications
+4.7. Looking inside deep neural networks
+4.8. Neural style transfer
+4.9. Image captioning system
+
+5. Video Processing (6 hrs)
+5.1. Video sequence processing
+5.2. Motion analysis and optical flow
+5.3. 3D data and convolution
+5.4. Recurrent neural networks for video sequence
+5.5. Action recognition and object tracking
+
+6. Acoustic Signal Processing (6 hrs)
+6.1. Music and audio classification
+6.2. Music source separation
+6.3. Sound event detection
+6.4. Structural analysis of music
+
+6. Reference Books
+1. Sinha, P. K., & Sinha, P. (2015). Computer Fundamentals: Concepts, Systems &
+Applications (8th ed.). BPB Publications.
+2. Buduma N. et al. (2022). Fundamentals of Deep Learning Designing Next-Generation
+Machine Intelligence Algorithms, O’Reilly Media, Inc.
+3. Atienza R. (2020). Advanced Deep Learning with TensorFlow 2 and Keras, Packt
+Publishing Ltd.
+4. Benois-Pineau J. et al. (2023). Explainable Deep Learning AI: Methods and Challenges,
+Elsevier Inc.
+5. Michelucci U. (2022). Applied Deep Learning with TensorFlow 2: Learn to Implement
+Advanced Deep Learning Techniques with Python, Apress.
+6. Long L., and Zeng X.(2022). Beginning Deep Learning with TensorFlow: Work with
+Keras, MNIST Data Sets, and Advanced Neural Networks, Apress.
+7. Brownlee J. (2019). Deep Learning for Computer Vision: Image Classification, Object
+Detection, and Face Recognition in Python, Machine Learning Mastery.
