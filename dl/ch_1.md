@@ -14,13 +14,9 @@
 
 The relationship is hierarchical: AI ⊃ ML ⊃ DL, where DL is built upon neural network architectures.
 
-| Aspect                  | AI                                       | ML                                | DL                                                    |
-| :---------------------- | :--------------------------------------- | :-------------------------------- | :---------------------------------------------------- |
-| **Scope**               | Broadest — simulating human intelligence | Subset of AI — learning from data | Subset of ML — deep neural networks                   |
-| **Feature Engineering** | Rule-based / manual                      | Manual feature extraction         | Automatic feature learning                            |
-| **Data Requirement**    | Varies                                   | Moderate                          | Large datasets required                               |
-| **Compute**             | Low to moderate                          | Moderate                          | High (GPUs/TPUs)                                      |
-| **Example**             | Chess engine, expert system              | Spam filter (SVM, Naive Bayes)    | Image recognition (CNN), language model (Transformer) |
+| Aspect      | AI                          | ML                             | DL                                                    |
+| :---------- | :-------------------------- | :----------------------------- | :---------------------------------------------------- |
+| **Example** | Chess engine, expert system | Spam filter (SVM, Naive Bayes) | Image recognition (CNN), language model (Transformer) |
 
 ---
 
@@ -36,13 +32,13 @@ The relationship is hierarchical: AI ⊃ ML ⊃ DL, where DL is built upon neura
 
 **4. Self-Supervised Learning:** The model generates its own supervisory signals from the input data by creating pretext tasks — predicting missing parts, future elements, or transformations of the data. No manual labels are needed. Example: BERT (masked language model — predicts masked words in a sentence), contrastive learning in vision (SimCLR — learns representations by contrasting augmented views of the same image). Model design requires a pretext task definition and typically a large encoder architecture.
 
-**5. Reinforcement Learning (RL):** An agent learns by interacting with an environment, receiving rewards or penalties for actions, and optimizing cumulative long-term reward. There are no labeled input-output pairs; instead, the agent learns a policy π(s) → a that maps states to actions. Model design requires defining the state space, action space, and reward function. Example: AlphaGo learning to play Go by self-play; robotic arm learning to grasp objects.
+**5. Reinforcement Learning (RL):** An agent learns by interacting with an environment, receiving rewards or penalties for actions, and optimizing cumulative long-term reward. There are no labeled input-output pairs; instead, the agent learns a policy π(s) → a that maps states to actions. The policy is the agent's strategy for choosing an action based on the current state. Model design requires defining the state space, action space, and reward function. Example: AlphaGo learning to play Go by self-play; robotic arm learning to grasp objects.
 
 **6. Online Learning:** The model is updated incrementally as new data arrives, one sample (or mini-batch) at a time, rather than retraining on the entire dataset. Suitable for streaming data or when the dataset is too large to fit in memory. Example: recommendation systems updating user preferences in real-time.
 
 **7. Active Learning:** The model proactively selects the most informative unlabeled data points and queries a human oracle to label them. This minimizes the total labeling effort while maximizing model improvement. Example: a text classifier that identifies the most ambiguous documents and asks a human to label only those.
 
-**Impact on Model Design:** The choice of paradigm determines the loss function (label-based vs. reconstruction-based vs. reward-based), the output architecture (classification head vs. decoder vs. policy network), the data pipeline (labeled vs. unlabeled vs. environment interaction), and the training loop (single-pass vs. iterative interaction).
+**Impact on Model Design:** The choice of paradigm determines the loss function (label-based vs. reconstruction-based vs. reward-based), the output architecture (classification head vs. decoder vs. policy network), the data pipeline (labeled vs. unlabeled vs. environment interaction), and the training loop (single-pass vs. iterative interaction). _Example:_ A supervised classification model requires a discrete output head and cross-entropy loss over labeled data, whereas an RL agent requires a policy network outputting action probabilities and is trained via trial-and-error in a simulated environment using a reward signal.
 
 ---
 
@@ -52,7 +48,7 @@ The relationship is hierarchical: AI ⊃ ML ⊃ DL, where DL is built upon neura
 
 **1. Bias and Fairness:** AI models learn from historical data that often contains societal biases. If training data underrepresents certain demographics or reflects historical discrimination, the model inherits and amplifies these biases. Example: a hiring model trained on past recruitment data may systematically disadvantage women if historical hiring was biased. Mitigation: use diverse, representative training datasets; apply fairness-aware algorithms; conduct regular bias audits across protected groups (gender, race, age).
 
-**2. Transparency and the "Black Box" Problem:** Deep neural networks are complex nonlinear systems whose internal decision-making is difficult for humans to interpret. This lack of transparency makes it hard to explain, audit, or justify AI-driven decisions — especially critical in healthcare, criminal justice, and finance. Mitigation: use Explainable AI (XAI) techniques such as SHAP (SHapley Additive exPlanations), LIME (Local Interpretable Model-agnostic Explanations), Grad-CAM (for visual explanations in CNNs), and attention visualization in Transformers.
+**2. Transparency and the "Black Box" Problem:** Deep neural networks are complex nonlinear systems whose internal decision-making is difficult for humans to interpret. This lack of transparency makes it hard to explain, audit, or justify AI-driven decisions — especially critical in healthcare, criminal justice, and finance. Mitigation: **use Explainable AI (XAI) techniques** such as SHAP (SHapley Additive exPlanations), LIME (Local Interpretable Model-agnostic Explanations), Grad-CAM (for visual explanations in CNNs), and **attention visualization** in Transformers.
 
 **3. Privacy and Data Security:** DL requires vast amounts of data, raising concerns about informed consent, data ownership, unauthorized surveillance, and data breaches. Models can memorize sensitive training data and leak it during inference. Mitigation: use differential privacy (adding calibrated noise during training), federated learning (training on decentralized data without collecting it centrally), and data anonymization techniques.
 
@@ -69,6 +65,8 @@ The relationship is hierarchical: AI ⊃ ML ⊃ DL, where DL is built upon neura
 # 1.4 Perceptron and Multi-Layer Perceptron
 
 > **Explain the role of activation functions in a neural network. Compare ReLU, Sigmoid, and Tanh in terms of their mathematical properties, advantages, and limitations. (Fall 2025)**
+
+An Artificial Neural Network is a computational model inspired by the structure and functioning of biological neural networks in the brain. It consists of interconnected processing units (neurons) organized in layers that learn to map inputs to outputs by adjusting connection weights during training.
 
 ## 1.4.1 Perceptron (Single-Layer)
 
@@ -93,6 +91,9 @@ $
 $
 w_i \leftarrow w_i + \eta (t - y) x_i
 $
+$
+b \leftarrow b + \eta (t - y)
+$
 
 where $\eta$ is the learning rate. The weights are updated only when the prediction is incorrect ($t \neq y$).
 
@@ -100,13 +101,13 @@ where $\eta$ is the learning rate. The weights are updated only when the predict
 
 ## 1.4.2 Multi-Layer Perceptron (MLP)
 
-The **MLP** overcomes the limitation of the single-layer perceptron by introducing one or more hidden layers between the input and output layers.
+An MLP is a feedforward neural network with one or more hidden layers between the input and output layers. Each layer is fully connected to the next. MLPs can learn non-linear decision boundaries.
 
 **Architecture:** An MLP is a **feedforward** neural network with three types of layers:
 
-- **Input layer:** Receives raw input features. No computation occurs here.
-- **Hidden layer(s):** One or more layers where actual computation happens. Each neuron is connected to every neuron in the adjacent layers (fully connected / dense).
-- **Output layer:** Produces the final prediction. Its size and activation depend on the task.
+- **Input layer:** Receives raw input features. No computation occurs here. The number of neurons equals the number of input features.
+- **Hidden layer(s):** One or more layers where actual computation happens. Each neuron is connected to every neuron in the adjacent layers (fully connected / dense). Each neuron computes a weighted sum of inputs, adds a bias, and applies a non-linear activation function.
+- **Output layer:** Produces the final prediction. Its size and activation depend on the task. For binary classification, typically 1 neuron with sigmoid activation. For multi-class classification, n neurons (one per class) with softmax activation. For regression, 1 neuron with linear activation.
 
 **Computation in each neuron:**
 
@@ -142,64 +143,13 @@ where $\sigma$ is a non-linear activation function (ReLU, Sigmoid, Tanh, etc.).
 
 > **Explain the role of activation functions in a neural network. Compare ReLU, Sigmoid, and Tanh in terms of their mathematical properties, advantages, and limitations. (Fall 2025)**
 
-Activation functions introduce **non-linearity** into the network, enabling it to learn complex mappings from inputs to outputs.
+Activation functions introduce **non-linearity** into the network. Without them, any number of layers would collapse into a single linear transformation.
 
-**1. Sigmoid:**
-
-$
-\sigma(z) = \frac{1}{1 + e^{-z}}
-$
-
-- **Range:** (0, 1)
-- **Derivative:** $\sigma'(z) = \sigma(z)(1 - \sigma(z))$, maximum value = 0.25 at z = 0
-- **Advantages:** Smooth, differentiable; output interpretable as probability; suitable for binary classification output layer.
-- **Limitations:** Suffers from **vanishing gradient** — derivative is very small for large |z|, causing gradients to shrink to near zero in deep networks. Outputs are **not zero-centered**, which can cause zig-zag gradient updates. Computationally expensive due to exponential operation.
-
-**2. Tanh (Hyperbolic Tangent):**
-
-$
-\tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}
-$
-
-- **Range:** (−1, 1)
-- **Derivative:** $\tanh'(z) = 1 - \tanh^2(z)$, maximum value = 1.0 at z = 0
-- **Advantages:** **Zero-centered** output — makes optimization easier as gradients are not biased in one direction. Stronger gradients than sigmoid (derivative up to 1.0 vs. 0.25).
-- **Limitations:** Still suffers from **vanishing gradient** for large |z|. Computationally expensive.
-
-**3. ReLU (Rectified Linear Unit):**
-
-$
-f(z) = \max(0, z)
-$
-
-- **Range:** [0, ∞)
-- **Derivative:** $f'(z) = \begin{cases} 1 & \text{if } z > 0 \\ 0 & \text{if } z \leq 0 \end{cases}$
-- **Advantages:** Computationally very efficient (simple thresholding). Does **not suffer from vanishing gradient** for positive inputs (gradient is constant 1). Leads to sparse activations (many neurons output 0), which improves efficiency. Faster convergence in practice.
-- **Limitations:** **Dying ReLU problem** — neurons can get stuck outputting 0 for all inputs if weights update such that the input to ReLU is always negative. These neurons effectively "die" and stop learning. Not zero-centered.
-
-**4. Leaky ReLU:**
-
-$
-f(z) = \begin{cases} z & \text{if } z > 0 \\ \alpha z & \text{if } z \leq 0 \end{cases}
-$
-
-where $\alpha$ is a small constant (typically 0.01). Solves the dying ReLU problem by allowing a small gradient when z < 0.
-
-**5. Softmax (used in output layer for multi-class classification):**
-
-$
-\text{softmax}(z_i) = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}}
-$
-
-Converts a vector of raw scores (logits) into a probability distribution where all outputs sum to 1.
-
-| Activation     | Range   | Zero-Centered | Vanishing Gradient | Computation | Typical Use                  |
-| :------------- | :------ | :------------ | :----------------- | :---------- | :--------------------------- |
-| **Sigmoid**    | (0, 1)  | No            | Yes                | Expensive   | Binary classification output |
-| **Tanh**       | (−1, 1) | Yes           | Yes                | Expensive   | Hidden layers (RNNs)         |
-| **ReLU**       | [0, ∞)  | No            | No (for z > 0)     | Very fast   | Default for hidden layers    |
-| **Leaky ReLU** | (−∞, ∞) | No            | No                 | Fast        | Alternative to ReLU          |
-| **Softmax**    | (0, 1)  | N/A           | N/A                | Moderate    | Multi-class output           |
+- **Sigmoid:** σ(z) = 1 / (1 + e^(−z)). Output range: (0, 1). Used in output layers for binary classification. Problem: vanishing gradients for very large or small z.
+- **Tanh:** tanh(z) = (e^z − e^(−z)) / (e^z + e^(−z)). Output range: (−1, 1). Zero-centered, which can help optimization. Still suffers from vanishing gradients.
+- **ReLU (Rectified Linear Unit):** f(z) = max(0, z). Most popular for hidden layers. Computationally efficient. Mitigates vanishing gradient. Problem: "dying ReLU" — neurons can permanently output 0 if they enter the negative region.
+- **Leaky ReLU:** f(z) = z if z > 0, else αz (small α like 0.01). Fixes the dying ReLU problem by allowing a small gradient for negative inputs.
+- **Softmax:** Converts a vector of values into a probability distribution: softmax(z_i) = e^(z_i) / Σ e^(z_j). Used in the output layer for multi-class classification.
 
 ## 1.5.2 Weight Initialization
 
@@ -227,13 +177,6 @@ $
 
 He initialization is the standard for modern deep networks using ReLU.
 
-| Method              | Formula                                   | Best For                     |
-| :------------------ | :---------------------------------------- | :--------------------------- |
-| **Zero**            | $w = 0$                                   | Never use (symmetry problem) |
-| **Random Small**    | $w \sim \mathcal{N}(0, 0.01)$             | Shallow networks only        |
-| **Xavier (Glorot)** | $\text{Var} = \frac{2}{n_{in} + n_{out}}$ | Sigmoid, Tanh                |
-| **He (Kaiming)**    | $\text{Var} = \frac{2}{n_{in}}$           | ReLU and variants            |
-
 ## 1.5.3 Optimization Algorithms
 
 **Gradient Descent (GD):** The fundamental optimization algorithm. It updates weights in the direction that reduces the loss function:
@@ -244,68 +187,27 @@ $
 
 where $\eta$ is the learning rate and $\frac{\partial L}{\partial w}$ is the gradient of the loss with respect to weight $w$.
 
-**Variants by batch size:**
+**Variants by batch size / (Ways to adjust weights):**
 
 - **Batch GD:** Computes gradient using the entire training dataset per update. Stable but very slow for large datasets.
 - **Stochastic GD (SGD):** Computes gradient using a single training sample per update. Noisy but fast; the noise can help escape local minima.
 - **Mini-Batch GD:** Computes gradient using a small batch (e.g., 32, 64, 128 samples). Balances stability and speed. Most commonly used in practice.
-
-**SGD with Momentum:** Adds a fraction of the previous update to the current update, accelerating convergence in consistent gradient directions and dampening oscillations:
-
-$
-v_t = \beta v_{t-1} + \eta \nabla L(w)
-$
-
-$
-w \leftarrow w - v_t
-$
-
-where $\beta$ (typically 0.9) is the momentum coefficient. Analogous to a ball rolling downhill — it accumulates velocity.
-
-**RMSprop (Root Mean Square Propagation):** Adapts the learning rate for each parameter by dividing by a running average of recent gradient magnitudes:
-
-$
-s_t = \beta s_{t-1} + (1-\beta)(\nabla L)^2
-$
-
-$
-w \leftarrow w - \frac{\eta}{\sqrt{s_t + \epsilon}} \nabla L
-$
-
-This prevents the learning rate from being too large for parameters with large gradients and too small for parameters with small gradients.
-
-**Adam (Adaptive Moment Estimation):** Combines Momentum (first moment — mean of gradients) and RMSprop (second moment — variance of gradients) with bias correction:
-
-$
-m_t = \beta_1 m_{t-1} + (1-\beta_1) \nabla L \quad \text{(first moment)}
-$
-
-$
-v_t = \beta_2 v_{t-1} + (1-\beta_2) (\nabla L)^2 \quad \text{(second moment)}
-$
-
-$
-\hat{m}_t = \frac{m_t}{1-\beta_1^t}, \quad \hat{v}_t = \frac{v_t}{1-\beta_2^t} \quad \text{(bias correction)}
-$
-
-$
-w \leftarrow w - \frac{\eta}{\sqrt{\hat{v}_t} + \epsilon} \hat{m}_t
-$
-
-Default hyperparameters: $\beta_1 = 0.9$, $\beta_2 = 0.999$, $\epsilon = 10^{-8}$. Adam is the most widely used optimizer in modern deep learning due to its robust performance across architectures and minimal tuning requirements.
-
-| Optimizer    | Mechanism                                 | Strength                                 |
-| :----------- | :---------------------------------------- | :--------------------------------------- |
-| **SGD**      | Fixed learning rate, simple gradient step | Good generalization                      |
-| **Momentum** | Accumulates velocity from past gradients  | Faster convergence, smooths oscillations |
-| **RMSprop**  | Per-parameter adaptive learning rate      | Handles sparse gradients well            |
-| **Adam**     | Momentum + RMSprop + bias correction      | Fast, robust, default choice             |
+- **Adam:** A smart optimizer that adjusts the learning rate automatically for each weight. It's the most popular choice today because it works well in most cases.
 
 ## 1.5.4 Backpropagation
 
 > **Describe the backpropagation algorithm in detail. Derive the weight update rule using chain rule and explain how vanishing gradient problems arise. (Fall 2025)**
 
-Backpropagation (backprop) is the algorithm used to compute gradients of the loss function with respect to every weight in the network. It applies the **chain rule** of calculus to efficiently propagate error signals backward from the output layer to the input layer.
+**Backpropagation** is how the neural network actually learns. After making a prediction (forward propagation), the network checks how wrong it was (using the loss function) and then goes **backward** through the layers to adjust the weights so that next time, the prediction will be better.
+
+**How it works (step by step):**
+
+1. Do forward propagation and calculate the loss (error).
+2. Start from the output layer and calculate how much each weight contributed to the error.
+3. Move backward through each layer, calculating the same thing for every weight. This uses a math technique called the **chain rule** — it's like figuring out how a small change in one weight at the beginning affects the final error at the end.
+4. Adjust all the weights slightly to reduce the error: new weight = old weight − learning rate × gradient.
+
+The **learning rate** controls how big the adjustment steps are. Too big and you might overshoot; too small and learning will be very slow.
 
 **Forward Pass:** Input flows through the network layer by layer. At each neuron:
 
@@ -317,55 +219,7 @@ $
 a^{[l]} = \sigma(z^{[l]}) \quad \text{(activation)}
 $
 
-The final output $a^{[L]}$ is compared to the true label using the loss function $L$.
-
-**Backward Pass (Chain Rule Application):** To update weight $W^{[l]}$ connecting layer $l-1$ to layer $l$, we need $\frac{\partial L}{\partial W^{[l]}}$. By the chain rule:
-
-$
-\frac{\partial L}{\partial W^{[l]}} = \frac{\partial L}{\partial a^{[l]}} \cdot \frac{\partial a^{[l]}}{\partial z^{[l]}} \cdot \frac{\partial z^{[l]}}{\partial W^{[l]}}
-$
-
-Breaking this down:
-
-- $\frac{\partial L}{\partial a^{[l]}}$: how the loss changes with the neuron's output (computed from the layer above)
-- $\frac{\partial a^{[l]}}{\partial z^{[l]}} = \sigma'(z^{[l]})$: the derivative of the activation function
-- $\frac{\partial z^{[l]}}{\partial W^{[l]}} = a^{[l-1]}$: the input to this layer (activation from the previous layer)
-
-Define the **error signal** (delta) at layer $l$:
-
-$
-\delta^{[l]} = \frac{\partial L}{\partial z^{[l]}} = \frac{\partial L}{\partial a^{[l]}} \cdot \sigma'(z^{[l]})
-$
-
-Then the gradient and weight update become:
-
-$
-\frac{\partial L}{\partial W^{[l]}} = \delta^{[l]} \cdot (a^{[l-1]})^T
-$
-
-$
-W^{[l]} \leftarrow W^{[l]} - \eta \cdot \delta^{[l]} \cdot (a^{[l-1]})^T
-$
-
-The error propagates backward: $\delta^{[l-1]} = (W^{[l]})^T \delta^{[l]} \cdot \sigma'(z^{[l-1]})$
-
-**Backpropagation Algorithm (Step-by-Step):**
-
-1. **Initialize** all weights (Xavier/He initialization).
-2. **Forward pass:** Compute $z^{[l]}$ and $a^{[l]}$ for all layers $l = 1, 2, ..., L$.
-3. **Compute output error:** $\delta^{[L]} = \frac{\partial L}{\partial a^{[L]}} \cdot \sigma'(z^{[L]})$.
-4. **Backpropagate:** For $l = L-1, L-2, ..., 1$: compute $\delta^{[l]} = (W^{[l+1]})^T \delta^{[l+1]} \cdot \sigma'(z^{[l]})$.
-5. **Update weights:** For all layers: $W^{[l]} \leftarrow W^{[l]} - \eta \cdot \delta^{[l]} \cdot (a^{[l-1]})^T$.
-6. **Update biases:** $b^{[l]} \leftarrow b^{[l]} - \eta \cdot \delta^{[l]}$.
-7. **Repeat** steps 2–6 for each batch until convergence.
-
-**Vanishing Gradient Problem:** In a deep network with $L$ layers, the gradient at layer $l$ involves a product of $L - l$ activation derivatives:
-
-$
-\frac{\partial L}{\partial W^{[l]}} \propto \prod_{k=l}^{L} \sigma'(z^{[k]})
-$
-
-For **sigmoid** activation, $\sigma'(z) \leq 0.25$. In a 10-layer network, the gradient at the first layer is scaled by approximately $(0.25)^{10} \approx 10^{-6}$ — effectively zero. This means early layers receive negligible gradients and learn extremely slowly or not at all. Similarly for **tanh**, the derivative is at most 1.0 but is much smaller for large |z|.
+The final output $\hat{y}$ = $a^{[L]}$ is compared to the true label using the loss function $L$.
 
 **Solutions to Vanishing Gradient:**
 
@@ -412,19 +266,3 @@ L_{CCE} = -\sum_{i=1}^{K} y_i \log(\hat{y}_i)
 $
 
 where $K$ is the number of classes, $y_i$ is 1 for the correct class and 0 otherwise (one-hot encoding), and $\hat{y}_i$ is the predicted probability from softmax.
-
-**5. Hinge Loss — for SVM-style classification:**
-
-$
-L_{hinge} = \sum_{i=1}^{n} \max(0, 1 - y_i \cdot \hat{y}_i)
-$
-
-Encourages a margin of separation. Zero loss when prediction is correct and confident.
-
-| Loss Function      | Task                       | Output Activation | Sensitivity                 |
-| :----------------- | :------------------------- | :---------------- | :-------------------------- |
-| **MSE**            | Regression                 | Linear            | Sensitive to outliers       |
-| **MAE**            | Regression                 | Linear            | Robust to outliers          |
-| **Binary CE**      | Binary classification      | Sigmoid           | Penalizes wrong confidence  |
-| **Categorical CE** | Multi-class classification | Softmax           | Standard for classification |
-| **Hinge**          | Binary classification      | Linear / tanh     | Margin-based                |
