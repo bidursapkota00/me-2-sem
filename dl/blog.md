@@ -221,6 +221,32 @@ $
 
 The final output $\hat{y}$ = $a^{[L]}$ is compared to the true label using the loss function $L$.
 
+### Vanishing Gradient Problem
+
+The **vanishing gradient** problem happens during backpropagation when the gradients become **smaller and smaller as they are propagated toward the earlier layers** of a deep neural network.
+
+Think of a deep network:
+
+**Input → Layer 1 → Layer 2 → Layer 3 → ... → Output**
+
+During backpropagation, each layer receives its gradient from the layer after it. The gradient is calculated using the **chain rule**, so many derivatives are multiplied together.
+
+For example, imagine the gradient contains:
+
+**0.5 × 0.5 × 0.5 × 0.5 × 0.5**
+
+This becomes **0.03125**.
+
+With many more layers, the value can become extremely close to **0**.
+
+As a result:
+
+1. The output layer gets a useful gradient.
+2. The gradient becomes smaller as it moves backward.
+3. Early layers receive an extremely small gradient.
+4. Their weights barely change during training.
+5. These layers learn **very slowly or effectively stop learning**.
+
 **Solutions to Vanishing Gradient:**
 
 - **ReLU activation:** Derivative is 1 for positive inputs — gradients pass through without shrinking.
@@ -317,7 +343,6 @@ where $K$ is the number of classes, $y_i$ is 1 for the correct class and 0 other
 - **Geometric transformations:** Horizontal/vertical flipping, rotation (±15°, ±30°), random cropping, scaling (zoom in/out), shearing, translation (shifting image position).
 - **Color/Photometric transformations:** Brightness adjustment, contrast change, saturation modification, hue shift, adding Gaussian noise, color jittering.
 - **Spatial transformations:** Elastic deformation (locally distorts the image), cutout/random erasing (masks out random rectangular regions, forcing the model to learn from partial information).
-- **Advanced techniques:** Mixup (blends two images and their labels linearly: $x' = \lambda x_i + (1 - \lambda) x_j$, $y' = \lambda y_i + (1 - \lambda) y_j$), CutMix (replaces a patch of one image with a patch from another and mixes labels proportionally).
 
 **Text Augmentation:** Synonym replacement, random insertion/deletion/swap of words, back-translation (translate to another language and back).
 
@@ -345,17 +370,7 @@ $
 
 where $\mu$ is the mean and $\sigma$ is the standard deviation of the feature. This is the most commonly used method for neural network inputs.
 
-**3. Batch Normalization (BN):** Normalizes the activations within each mini-batch at each layer during training. For a mini-batch $B = \{x_1, ..., x_m\}$:
-
-$
-\hat{x}_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}
-$
-
-$
-y_i = \gamma \hat{x}_i + \beta
-$
-
-where $\mu_B$ and $\sigma_B^2$ are the batch mean and variance, $\gamma$ and $\beta$ are learnable parameters, and $\epsilon$ is a small constant for numerical stability. BN reduces internal covariate shift, allows higher learning rates, acts as a mild regularizer, and accelerates convergence.
+**3. Batch Normalization (BN):** Normalizes the activations within each mini-batch at each layer during training.
 
 **4. Layer Normalization:** Normalizes across all features within a single sample (not across the batch). Used in RNNs and Transformers where batch statistics are unreliable due to variable sequence lengths.
 
