@@ -1,0 +1,89 @@
+Unit 1: Overview of Systems Audit (8 Hrs.) 
+1.1 Information Systems Audit and Information Systems Auditor 
+1.2  Legal Requirements of an Information Systems Audit 
+1.3  Systems Environment and Information Systems Audit 
+1.4  Information Systems Assets and Classification of Controls 
+1.5  Information Systems Audit Coverage 
+1.6 Government and Regulatory Frameworks 
+1.7 IT Audit Framework, ISO 27001, NIST Cyber Security Framework, COBIT, CIS, MITRE, C2M2 
+
+
+Unit 2:  Hardware and Software Security Issues (8 Hrs.) 
+2.1 Hardware Security Objective 
+2.2 Peripheral Devices and Storage Media 
+2.3 Authentication Devices 
+2.4 Hardware Acquisition, Hardware Maintenance and Management of Obsolescence 
+2.5 Disposal of Equipment; Problem Management; Change Management 
+2.6 Network and Communication Issues.  
+2.7 Overview of Types of Software; Elements of Software Security 
+2.8 Control Issues during Installation and Maintenance 
+2.9 Licensing Issues, ICT Procurement Practices 
+
+
+Unit 3:  Information Systems Audit Requirements (8 Hrs.) 
+3.1 Information Systems Control Objectives; Information Systems Audit Objectives;  
+3.2 System Effectiveness and Efficiency 
+3.3 Information Systems Abuse 
+3.4 Asset Safeguarding Objective and Process 
+3.5 Evidence Collection and Evaluation 
+3.6 Logs and Audit Trails as Evidence 
+3.7 IT Audit Standard and Regulatory Requirements 
+
+
+Unit 4:  Conducting an Information Systems Audit (10 Hrs.) 
+4.1 Audit Program and Audit Plan 
+4.2 Audit Procedures and Approaches 
+4.3 System Understanding and Review 
+4.4 Compliance Reviews and Tests 
+4.5 Substantive Reviews and Tests 
+4.6 Audit Tools and Techniques 
+4.7 Sampling Techniques 
+4.8 Audit Questionnaire; Audit Documentation; Audit Report 
+4.9 Auditing Approaches; Sample Audit Work-Planning Memo 
+4.10 Sample Audit Work Process Flow 
+4.11 Conducting a Risk-Based Information Systems Audit 
+4.12 Risk Assessment and Risk Management Strategy. 
+
+Unit 5: Business Continuity and Disaster Recovery Plan (6 Hrs.) 
+5.1 Business Continuity and Disaster Recovery Process 
+5.2 Business Impact Analysis; Incident Response Plan 
+5.3 Disaster Recovery Plan 
+5.4 Types of Disaster Recovery Plans 
+5.5 Emergency Preparedness Audit Checklist 
+5.6 Business Continuity Strategies 
+5.7 Business Resumption Plan Audit Checklist 
+5.8 Recovery Procedures Testing Checklist; Plan Maintenance Checklist. 
+
+
+Unit 6: Security Testing and Cloud Computing Audit (5 Hrs.) 
+6.1 Cybersecurity 
+6.2 Vulnerability Assessment and Penetration Testing (VAPT) 
+6.3 Secured Software Development Testing,  
+6.4 Open Web Application Security Project 
+6.5 Security Testing Tools 
+6.6 Cloud Audit Considerations 
+6.7 Emerging Concepts in Information System Audit 
+
+5. Group Workshops  
+The Group workshop should cover the following works:  
+SN Group Workshops 
+1. Information Security Gap Assessment through ISO 27001 
+2. Cybersecurity Maturity Assessment through NIST Cybersecurity Framework 
+3. Develop IS Audit Terms of Reference 
+4. Develop the detailed Proposal for Conducting an Information System Audit 
+5. Conduct Information System Audit and Reporting 
+6. IT Governance Audit through Control Objectives for Related Technologies 
+7. Conducting Risk Assessment 
+
+References: 
+1. Hall, J. A. (2020). Information Technology Auditing and Assurance (5th ed.). Cengage Learning 
+2. Moeller, R. (2022). IT Audit, Control, and Security (3rd ed.). Wiley. 
+3. ISACA. (2024). CISA Review Manual. ISACA. 
+4. ISACA. (2022). COBIT 2019 Framework: Governance and Management of Enterprise IT. ISACA 
+5. Veena Hingarh and Arif Ahmed (2013), Understanding and Conducting Information Systems Auditing, Wiley 
+6. Jack J. Champlain (2003), Auditing Information Systems, 2nd Edition, Wiley 
+7. Richard Cascarino (2007), Auditor’s Guide to Information Systems Auditing, Wiley 
+8. ISACA Journals 
+9. ISACA IT Audit Frameworks 
+10. NIST Special Publications 
+11. COBIT, CIS Frameworks, MITRE, C2M2 

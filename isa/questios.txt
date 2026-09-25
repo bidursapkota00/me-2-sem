@@ -1,0 +1,93 @@
+NCIT
+
+1. As the Chief Compliance Officer of a leading organization, describe how you would leverage the 4P Framework to proactively identify and mitigate cybersecurity risks across the enterprise. [10]
+
+
+2. You are hired as a Chief Risk Officer (CRO) of a . Identify and list at least 5 Information assets of the Information Processing Facility. Perform the necessary and appropriate Risk Assessment of all the assets [10]
+
+
+3. You have been appointed as an external Information System Auditor for a well-known  with 100 sites, its own Data Center, and a Disaster Recovery Center. Your task is to conduct an IS Audit focusing on five controls of the ISO 27001:2022 Standard. Identify relevant audit metrics, compile a detailed IS Audit Report based on your findings, and provide recommendations to address the identified Information Security risks. [10]
+
+
+4. As the newly appointed Chief Information Security Officer (CISO) of , design an Information Security Policy framework aimed at effectively mitigating Information Security risks to an acceptable level for the organization. [10]
+
+
+5. To become a professional Information System Auditor, it is essential to possess a comprehensive understanding of the tasks and knowledge areas required for the role. Identify and elaborate on the critical tasks an Information System Auditor must perform and the key knowledge statements they must acquire to effectively audit, assess, and ensure the integrity, confidentiality, and availability of information systems. [10]
+
+
+6. Discuss the importance of conducting an Information System Audit within an organization, and illustrate its impact with a suitable example. [10]
+
+
+
+
+Spring
+
+1. a) Describe the key responsibilities an auditor must undertake and outline the core areas of expertise required to effectively assess, audit, and ensure the integrity, confidentiality, and availability of information systems. [8]
+
+
+2. b) Conduct a cybersecurity maturity assessment for a national organization with 100 remote locations, operating both an on-premises data center and a cloud-based disaster recovery site, using the NIST Cybersecurity Framework as the guiding reference. Select and evaluate at least five relevant subcategories, ensuring coverage across all core functions of the framework. [7]
+
+
+3. a) As the newly appointed Chief Information Security Officer (CISO) of NCell, you have been tasked with designing an Information Security Policy framework that effectively mitigates security risks to an acceptable level while ensuring compliance with regulatory requirements, adherence to industry best practices, and alignment with the organization's strategic objectives. How would you approach this task? [7]
+
+
+4. b) Explain the importance of Change Management in an audit and describe the key activities an Information System (IS) Auditor should perform to assess the effectiveness of the Change Management process. [8]
+
+
+5. In the role of Chief Compliance Officer at a leading insurance company, identify and list at least five critical information assets within the organization's information processing environment. For each asset, conduct a comprehensive risk assessment incorporating Confidentiality, Integrity, and Availability (CIA) considerations, along with an analysis of threat capabilities, identification of vulnerabilities, evaluation of existing controls, and assessment of potential impacts. [15]
+
+
+6. You have been appointed as an external Information System Auditor for a renowned company with 200 sites, its own Data Center, and a Disaster Recovery Center in Private Cloud. Your task is to perform an IS audit focusing on five controls from the ISO 27001:2022 Standard. Prepare a comprehensive report that includes the control, your observations, risk ratings, and key findings with recommendations. [15]
+
+
+7. a) You are assigned to evaluate the effectiveness of the Business Continuity Plan at Pokhara University. How would you conduct this audit? [8]
+
+
+8. b) Discuss the importance of Security by Design principles in software development. As an IT auditor, explain how you would audit the Secure Software Development Life Cycle (SecSDLC) process to ensure security is integrated throughout the development lifecycle. [7]
+
+
+9. A well-established organization with a network of over 100 sites, supported by its own data center (DC) and a private cloud-based disaster recovery center (DRC), plans to undertake a IS Audit, Vulnerability Assessment and Penetration Testing (VAPT) exercise. You are assigned to develop a comprehensive Terms of Reference (ToR) for this engagement. [15]
+
+
+10. Write Short Notes (ANY TWO) [5 x 2 = 10]
+a. Governance of Enterprise I & T (Unit 1 - Overview of System Audit)
+b. Change Management (Unit 2 - Hardware and Software Security Issues)
+c. Audit Sampling (Unit 4 - Conducting an Information System Audit)
+
+
+Fall
+
+
+1. a) Examine the primary responsibilities and foundational knowledge areas necessary to become a professional Information Systems Auditor. Describe the key duties an auditor is expected to perform, and outline the critical domains of expertise required to effectively assess, audit, and ensure the integrity, confidentiality, and availability of information systems. [8]
+
+
+2. b) Perform a cybersecurity assessment for a multinational organization that manages an on-premises data center and a cloud-based disaster recovery site, using the NIST v1.1 Cybersecurity Framework as a reference model. Identify and evaluate at least five relevant subcategories, ensuring representation across all five functions of the framework. [7]
+
+
+3. a) As the newly appointed Secretary of IT Management Committee of Global Bank, you have been tasked with designing an Information Security Policy framework that effectively mitigates security risks to an acceptable level while ensuring compliance with regulatory requirements, adherence to industry best practices, and alignment with the bank's strategic objectives. How would you approach this task? [7]
+
+
+4. b) Consider the IS Audit Activity in Vianet Communication Ltd. Explain the importance of License Management in an audit and describe the key activities an Information System (IS) Auditor should perform to assess the effectiveness of the Change Management process. [8]
+
+
+5. As the newly appointed Chief Technology Officer (CTO) of a leading Stock Broker company, identify and list at least five critical information assets within the organization's information processing facility. Conduct a thorough risk assessment for each asset, incorporating Confidentiality, Integrity, and Availability (CIA) considerations, threat capability analysis, vulnerability assessment, evaluation of existing controls, and impact analysis. [15]
+
+
+6. You have been appointed as an external Information System Auditor for a renowned company with 150 sites, its own Data Center, and a Disaster Recovery Center in Public Cloud. Your task is to perform an IS audit focusing on Six controls from the ISO 27001:2022 Standard. Prepare a comprehensive report that includes the control, your observations, risk ratings, and key findings with recommendations. [15]
+
+
+7. a) Assume you are assigned to evaluate the effectiveness of the Incident Response Plan at Pokhara University. How would you conduct this audit? Outline the steps you would follow to determine whether the plan is practical, aligned with industry best practices, and capable of effectively addressing potential risks, managing incidents, and supporting recovery and continuity efforts. [8]
+
+
+8. b) As an expert, outline your approach to conducting a Ransomware Readiness Assessment for a well-known company that has issued an RFP for this purpose. Describe in detail how you would plan, execute, and report on this assessment, and prepare a comprehensive proposal for carrying out the engagement. [7]
+
+
+9. A well-established company with a network spanning over 100 sites, supported by its own Data Center (DC) and a private Cloud-based Disaster Recovery Center (DRC), is planning to conduct a Vulnerability Assessment and Penetration Testing (VAPT) exercise. You have been assigned the task of developing a detailed Terms of Reference (ToR) for the VAPT activity. [15]
+
+
+10. Write Short Notes (ANY TWO) [5 x 2 = 10]
+a. Governance of Enterprise I & T
+b. Problem Management
+c. Audit Questionnaire
+
+
