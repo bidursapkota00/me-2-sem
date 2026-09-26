@@ -4,6 +4,8 @@
 
 ## 1. 4P Framework for Cybersecurity Risk Identification and Mitigation [10]
 
+> **Q.** As the Chief Compliance Officer of a leading organization, describe how you would leverage the 4P Framework to proactively identify and mitigate cybersecurity risks across the enterprise. [10]
+
 As the Chief Compliance Officer, I would leverage the **4P Framework — People, Process, Policy, and Technology (Platform)** — to proactively identify and mitigate cybersecurity risks across the enterprise.
 
 ### 1.1 People
@@ -48,6 +50,8 @@ By mapping identified cybersecurity risks against People, Process, Policy, and P
 ---
 
 ## 2. Risk Assessment of Information Assets of an Information Processing Facility [10]
+
+> **Q.** You are hired as a Chief Risk Officer (CRO) of a company. Identify and list at least 5 Information assets of the Information Processing Facility. Perform the necessary and appropriate Risk Assessment of all the assets. [10]
 
 As the Chief Risk Officer (CRO), I identify the following **5 Information Assets** of the Information Processing Facility and perform a Risk Assessment.
 
@@ -156,6 +160,8 @@ All identified assets require immediate risk treatment through implementation of
 
 ## 3. IS Audit Report Based on ISO 27001:2022 (5 Controls) [10]
 
+> **Q.** You have been appointed as an external Information System Auditor for a well-known organization with 100 sites, its own Data Center, and a Disaster Recovery Center. Your task is to conduct an IS Audit focusing on five controls of the ISO 27001:2022 Standard. Identify relevant audit metrics, compile a detailed IS Audit Report based on your findings, and provide recommendations to address the identified Information Security risks. [10]
+
 ### IS Audit Report
 
 **Organization:** A well-known organization with 100 sites, own Data Center (DC) and Disaster Recovery Center (DRC)
@@ -259,6 +265,8 @@ The organization's information security posture requires significant improvement
 
 ## 4. Information Security Policy Framework [10]
 
+> **Q.** As the newly appointed Chief Information Security Officer (CISO) of an organization, design an Information Security Policy framework aimed at effectively mitigating Information Security risks to an acceptable level for the organization. [10]
+
 As the newly appointed CISO, I would design the following Information Security Policy framework to mitigate information security risks to an acceptable level.
 
 ### 4.1 Policy Framework Structure
@@ -326,6 +334,8 @@ The framework follows a hierarchical structure:
 ---
 
 ## 5. Tasks and Knowledge Areas of a Professional Information System Auditor [10]
+
+> **Q.** To become a professional Information System Auditor, it is essential to possess a comprehensive understanding of the tasks and knowledge areas required for the role. Identify and elaborate on the critical tasks an Information System Auditor must perform and the key knowledge statements they must acquire to effectively audit, assess, and ensure the integrity, confidentiality, and availability of information systems. [10]
 
 ### 5.1 Critical Tasks of an IS Auditor
 
@@ -403,6 +413,8 @@ The framework follows a hierarchical structure:
 ---
 
 ## 6. Importance of IS Audit with Example [10]
+
+> **Q.** Discuss the importance of conducting an Information System Audit within an organization, and illustrate its impact with a suitable example. [10]
 
 ### 6.1 Importance of Information System Audit
 
