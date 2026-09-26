@@ -168,6 +168,10 @@ All identified assets require immediate risk treatment through implementation of
 **Audit Standard:** ISO 27001:2022
 **Audit Type:** External Information System Audit
 
+### Introduction
+
+Information and Communication Technologies (ICT) play a vital role for the organization to enable its entire business process across its 100 sites, Data Center (DC), and Disaster Recovery Center (DRC). An IS Audit enables the organization to identify existing risks exposed from ICT services. This report presents the detailed activities conducted based on the Information Security Management Framework (ISO 27001:2022). It aids in preserving the Confidentiality, Integrity and Availability (CIA) of information by applying a risk management process and gives confidence to interested stakeholders that risks are adequately managed.
+
 ### Objective
 
 To evaluate the effectiveness of the Information Security Management System (ISMS) by auditing 5 selected controls from ISO 27001:2022 Annex A, identify risks, and provide recommendations.
@@ -191,11 +195,15 @@ The audit covers the organization's Head Office, Data Center, Disaster Recovery 
 
 **Control:** Information security policy and topic-specific policies should be defined, approved by management, published, communicated to and acknowledged by relevant personnel, and reviewed at planned intervals.
 
+**Purpose:** To ensure continuing suitability, adequacy, effectiveness of management direction and support for information security in accordance with business, legal, statutory, regulatory and contractual requirements.
+
 **Observation:** The organization has an Information Security Policy (Version 1.0, 2022); however, it has not been reviewed or updated since initial release. No topic-specific policies (acceptable use, data classification, remote access) were formally documented. Staff awareness of the policy was limited at branch sites. No evidence of written acknowledgement by employees.
 
 **Risk Rating:** HIGH
 
 **Recommendation:** Review and update the Information Security Policy to align with ISO 27001:2022. Develop topic-specific policies. Communicate to all employees and obtain signed acknowledgement. Establish an annual review cycle with additional reviews triggered by significant organizational changes.
+
+**Management Response:** The Information Security Policy shall be reviewed and updated within the next fiscal quarter. A working committee will be formed to draft topic-specific policies covering acceptable use, data classification, and remote access.
 
 ---
 
@@ -203,17 +211,23 @@ The audit covers the organization's Head Office, Data Center, Disaster Recovery 
 
 **Control:** Personnel should receive appropriate information security awareness, education and training and regular updates of the organization's information security policy and procedures.
 
+**Purpose:** To ensure personnel and relevant interested parties are aware of and fulfill their information security responsibilities.
+
 **Observation:** No structured information security awareness and training program exists. Employees across branch sites were unaware of basic cybersecurity practices (phishing identification, password management). No training records were available. Shared login credentials were observed at multiple sites.
 
 **Risk Rating:** HIGH
 
 **Recommendation:** Establish a comprehensive security awareness training program conducted annually. Cover phishing, social engineering, password hygiene, data handling, and incident reporting. Maintain training records. Conduct periodic simulated phishing exercises to measure effectiveness.
 
+**Management Response:** A comprehensive information security awareness training program will be initiated in the upcoming quarter. Mandatory annual training sessions will be implemented for all employees, and records will be maintained by the HR department.
+
 ---
 
-### Control 3: Physical Security Perimeter (A.7.1) — Physical Control
+### Control 3: Physical Security Perimeters (A.7.1) — Physical Control
 
 **Control:** Security perimeters should be defined and used to protect areas that contain information and other associated assets.
+
+**Purpose:** To prevent unauthorized physical access, damage and interference to the organization's information and other associated assets.
 
 **Observation:** The Data Center uses a basic key-lock mechanism without electronic access control (biometric/card-based). No visitor log is maintained. The DRC has shared access corridors without a dedicated security perimeter. CCTV retention is limited to 15 days. Branch offices have minimal physical security for IT equipment.
 
@@ -221,11 +235,15 @@ The audit covers the organization's Head Office, Data Center, Disaster Recovery 
 
 **Recommendation:** Implement electronic access control (biometric or smart card) for DC and DRC. Deploy a visitor management system with logging. Enhance CCTV with minimum 90-day retention. Establish a dedicated security perimeter for DRC. Define minimum physical security standards for all branch sites.
 
+**Management Response:** Budget has been allocated for upgrading physical security measures. Electronic access control systems and enhanced CCTV coverage for the Data Center and Disaster Recovery Center will be deployed within six months.
+
 ---
 
 ### Control 4: Access Control (A.5.15) — Organizational Control
 
 **Control:** Access to information and other associated assets should be restricted in accordance with the established topic-specific policy on access control.
+
+**Purpose:** To ensure authorized access and to prevent unauthorized access to information and other associated assets.
 
 **Observation:** No formal access control policy documented. User account provisioning and de-provisioning is unstructured — terminated employees' accounts remain active. Shared accounts observed in critical systems. Password policy is weak (6-character minimum, no complexity, no expiry). No MFA implemented. Privileged access uses shared admin credentials.
 
@@ -233,17 +251,23 @@ The audit covers the organization's Head Office, Data Center, Disaster Recovery 
 
 **Recommendation:** Develop and implement a formal access control policy. Establish user lifecycle management with HR integration. Eliminate shared accounts. Enforce 12-character passwords with complexity and rotation. Implement MFA for all critical systems. Deploy a PAM solution. Conduct quarterly user access reviews.
 
+**Management Response:** An access control policy is currently being drafted. Stronger password policies will be enforced and shared accounts will be eliminated immediately. Implementation of PAM and MFA for critical systems is planned for the next fiscal year.
+
 ---
 
 ### Control 5: Information Backup (A.8.13) — Technological Control
 
 **Control:** Backup copies of information, software and systems should be maintained and regularly tested in accordance with the agreed topic-specific policy on backup.
 
+**Purpose:** To enable recovery of information and other associated assets following data loss or disruption.
+
 **Observation:** Daily backups of critical databases are performed; however, no formal backup policy exists defining scope, frequency, retention, and recovery procedures. Off-site replication to DRC is weekly, creating a 7-day data loss window. Backup restoration tests have not been conducted in over 12 months. RTO and RPO are not formally defined. Backup encryption is not implemented.
 
 **Risk Rating:** HIGH
 
 **Recommendation:** Develop a formal backup policy defining RTO, RPO, frequency, and retention. Increase DRC replication to daily. Conduct quarterly backup restoration tests. Encrypt all backup data at rest and in transit. Integrate backup strategy with the BCP.
+
+**Management Response:** The IT department will draft a formal backup policy defining RTO and RPO within three months. Backup infrastructure will be upgraded to support daily automated replication to the DRC and backup encryption will be implemented.
 
 ---
 
@@ -377,19 +401,19 @@ The framework follows a hierarchical structure:
 
 ### 5.2 Key Knowledge Statements
 
-**KS 1: IS Audit Standards and Frameworks**
+**KS 1: Information Systems Auditing Process**
 
 - Knowledge of ISACA IS Audit Standards, Guidelines, and Code of Ethics.
 - Understanding of ISO 27001, NIST CSF, COBIT, CIS Controls.
 - Knowledge of regulatory requirements (Electronic Transactions Act, Privacy Act, sector-specific regulations).
 
-**KS 2: IT Governance and Enterprise IT Management**
+**KS 2: Governance and Management of IT**
 
 - Understanding of IT governance frameworks (COBIT 2019).
 - Knowledge of IT strategy, policies, and organizational structures.
 - Understanding of IT risk management processes and risk assessment methodologies.
 
-**KS 3: Information Systems Acquisition, Development, and Implementation**
+**KS 3: Information Systems Acquisition, Development and Implementation**
 
 - Knowledge of SDLC and Secure SDLC (SecSDLC).
 - Understanding of change management and configuration management.
@@ -441,26 +465,72 @@ IS Audit provides recommendations and tracks corrective actions, fostering a cul
 
 ### 6.2 Example: IS Audit of Yeti Airlines Pvt. Ltd.
 
-Yeti Airlines Pvt. Ltd., a domestic airline operating across multiple sites in Nepal, underwent an IS Audit based on the ISO 27001:2022 framework. The audit evaluated 10 controls across Organizational, People, Physical, and Technological domains.
+Yeti Airlines Pvt. Ltd., a domestic airline operating across multiple sites in Nepal, underwent an IS Audit based on ISO 27001:2022. The audit evaluated **10 controls** across all 4 themes. The scope covered Head Office, Data Center (DC), Disaster Recovery Center (DRC), and branch sites.
 
-**Findings:**
+#### A.1. Organizational Controls
 
-- Information Security Policy existed but was outdated (not reviewed since 2021) and employees were unaware of it — **Risk: HIGH**.
-- No designated CISO; IT Manager handled security in an ad-hoc manner — **Risk: HIGH**.
-- No cybersecurity awareness training program; staff shared login credentials — **Risk: HIGH**.
-- Data Center used basic key-lock mechanism without electronic access control; CCTV retention was only 15 days — **Risk: HIGH**.
-- No MFA implemented; shared admin credentials used for privileged access; weak password policy (6-char, no complexity) — **Risk: HIGH**.
-- No formal vulnerability management or patch management program; customer-facing booking portal never assessed — **Risk: HIGH**.
-- Backup restoration not tested in 12+ months; RTO/RPO not defined; weekly DRC replication — **Risk: HIGH**.
-- No centralized logging or SIEM; logs reviewed only reactively — **Risk: HIGH**.
+**A.5.1 — Policies for Information Security**
+Information Security Policy (v1.0, 2021) exists but has not been reviewed or updated since release. No topic-specific policies (acceptable use, data classification, remote access) documented. Staff awareness limited at branch sites; no written acknowledgement obtained. **Risk: HIGH.**
 
-**Impact of IS Audit:**
-The audit revealed that 8 out of 10 controls were rated HIGH risk, exposing the airline to potential data breaches, regulatory non-compliance, and operational disruption. Based on audit recommendations, Yeti Airlines initiated:
+**A.5.2 — Information Security Roles and Responsibilities**
+No designated CISO or equivalent; IT Manager handles security in an ad-hoc manner with no clear role delineation. No security focal points at branch offices. No formal escalation matrix for security incidents. **Risk: HIGH.**
+
+#### A.2. People Controls
+
+**A.6.3 — Information Security Awareness, Education and Training**
+No structured cybersecurity awareness or training program. Staff unaware of phishing identification, password management. No training records available. Shared login credentials observed at multiple stations. **Risk: HIGH.**
+
+#### A.3. Physical Controls
+
+**A.7.1 — Physical Security Perimeters**
+DC uses basic key-lock mechanism; no electronic access control (biometric/card). No visitor log maintained. DRC has shared access corridors without a dedicated security perimeter. CCTV retention only 15 days. **Risk: HIGH.**
+
+**A.7.3 — Securing Offices, Rooms and Facilities**
+Server room lacks environmental monitoring sensors (temperature, humidity, water leak). Fire suppression relies on standard extinguishers, not gas-based system. UPS capacity and maintenance records unavailable. DRC has no diesel generator backup. **Risk: MEDIUM.**
+
+#### A.4. Technological Controls
+
+**A.8.2 — Privileged Access Rights**
+No formal access control policy. Terminated employees' accounts remain active. Shared accounts in booking system. Password policy: 6-char minimum, no complexity, no expiry. No MFA. Shared admin/root credentials for privileged access. **Risk: HIGH.**
+
+**A.8.7 — Protection Against Malware**
+Antivirus deployed but not centrally managed. Several branch workstations running outdated definitions (30+ days). No EDR. USB restrictions not enforced. No advanced email threat protection or sandboxing. **Risk: MEDIUM.**
+
+**A.8.8 — Management of Technical Vulnerabilities**
+No formal vulnerability management program. No periodic VAPT conducted. Customer-facing booking portal never security-assessed. Patch management is ad-hoc; servers running outdated OS with known vulnerabilities. No software inventory maintained. **Risk: HIGH.**
+
+**A.8.13 — Information Backup**
+Daily backups performed but no formal backup policy. Off-site DRC replication only weekly (7-day data loss window). Restoration not tested in 12+ months. RTO/RPO not defined. Backup encryption not implemented. **Risk: HIGH.**
+
+**A.8.15 — Logging**
+No centralized log management or SIEM. Log retention inconsistent (7–30 days). Logs reviewed only reactively. Admin activities not separately logged. No alerting for failed logins, privilege escalation, or after-hours access. Logs not tamper-protected. **Risk: HIGH.**
+
+#### Summary of Findings
+
+| #   | Control                                 | ISO Ref | Theme          | Risk   |
+| --- | --------------------------------------- | ------- | -------------- | ------ |
+| 1   | Policies for Information Security       | A.5.1   | Organizational | HIGH   |
+| 2   | IS Roles and Responsibilities           | A.5.2   | Organizational | HIGH   |
+| 3   | Security Awareness and Training         | A.6.3   | People         | HIGH   |
+| 4   | Physical Security Perimeters            | A.7.1   | Physical       | HIGH   |
+| 5   | Securing Offices, Rooms and Facilities  | A.7.3   | Physical       | MEDIUM |
+| 6   | Privileged Access Rights                | A.8.2   | Technological  | HIGH   |
+| 7   | Protection Against Malware              | A.8.7   | Technological  | MEDIUM |
+| 8   | Management of Technical Vulnerabilities | A.8.8   | Technological  | HIGH   |
+| 9   | Information Backup                      | A.8.13  | Technological  | HIGH   |
+| 10  | Logging                                 | A.8.15  | Technological  | HIGH   |
+
+**Overall:** 8 out of 10 controls rated HIGH risk, 2 rated MEDIUM.
+
+#### Impact of IS Audit
+
+The audit exposed critical gaps across all domains — lack of formal policies, absent access controls, no VAPT, untested backups, and no centralized logging. Based on recommendations, Yeti Airlines initiated:
 
 - Appointment of a dedicated Information Security Manager.
 - Implementation of MFA and elimination of shared accounts.
-- Engagement of a third-party firm for VAPT.
-- Upgrade of physical security with electronic access controls.
-- Development of a formal backup policy with defined RTO/RPO.
+- Engagement of a third-party firm for VAPT of booking portal.
+- Upgrade of DC/DRC physical security with biometric access controls.
+- Development of a formal backup policy with defined RTO/RPO and daily DRC replication.
+- Acquisition of a centralized SIEM solution.
 
 This demonstrates that IS Audit serves as a critical mechanism for identifying and addressing information security weaknesses that could otherwise lead to significant financial, operational, and reputational damage.
