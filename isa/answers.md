@@ -211,7 +211,7 @@ The audit covers the organization's Head Office, Data Center, Disaster Recovery 
 
 ---
 
-### Control 3: Physical Security Perimeters (A.7.1) — Physical Control
+### Control 3: Physical Security Perimeter (A.7.1) — Physical Control
 
 **Control:** Security perimeters should be defined and used to protect areas that contain information and other associated assets.
 
@@ -223,7 +223,7 @@ The audit covers the organization's Head Office, Data Center, Disaster Recovery 
 
 ---
 
-### Control 4: Access Control (A.8.2) — Technological Control
+### Control 4: Access Control (A.5.15) — Organizational Control
 
 **Control:** Access to information and other associated assets should be restricted in accordance with the established topic-specific policy on access control.
 
@@ -247,17 +247,17 @@ The audit covers the organization's Head Office, Data Center, Disaster Recovery 
 
 ---
 
-### Summary of Findings
+### Audit Findings
 
 | #   | Control                           | ISO Ref | Risk Rating |
 | --- | --------------------------------- | ------- | ----------- |
 | 1   | Policies for Information Security | A.5.1   | HIGH        |
 | 2   | Security Awareness and Training   | A.6.3   | HIGH        |
-| 3   | Physical Security Perimeters      | A.7.1   | HIGH        |
-| 4   | Access Control                    | A.8.2   | HIGH        |
+| 3   | Physical Security Perimeter       | A.7.1   | HIGH        |
+| 4   | Access Control                    | A.5.15  | HIGH        |
 | 5   | Information Backup                | A.8.13  | HIGH        |
 
-### Overall Recommendation
+### Audit Conclusions and Recommendations
 
 The organization's information security posture requires significant improvement. Immediate priority should be given to implementing MFA, formalizing access controls, establishing a security awareness program, and strengthening backup and recovery mechanisms. A formal Risk Treatment Plan with defined owners and timelines should be established to track remediation of all identified gaps.
 
