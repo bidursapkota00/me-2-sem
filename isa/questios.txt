@@ -17,6 +17,15 @@ NCIT
 
 6. Discuss the importance of conducting an Information System Audit within an organization, and illustrate its impact with a suitable example. [10]
 
+7. Proposal example of Information System Audit if exists.
+8. Proposal example of Information Security Self-Assessment if exists.
+9. Proposal example of Cybersecurity Maturity Assessment if exists.
+10. Proposal example of audit Building Terms of Reference of an IS Audit if exists.
+11. Proposal example of Cybersecurity Assessment if exists.
+12. Proposal example of audit Ransomware Readiness Assessment if exists.
+
+
+
 
 
 
@@ -50,9 +59,9 @@ Spring
 
 
 10. Write Short Notes (ANY TWO) [5 x 2 = 10]
-a. Governance of Enterprise I & T (Unit 1 - Overview of System Audit)
-b. Change Management (Unit 2 - Hardware and Software Security Issues)
-c. Audit Sampling (Unit 4 - Conducting an Information System Audit)
+a. Governance of Enterprise I & T 
+b. Change Management 
+c. Audit Sampling 
 
 
 Fall
@@ -89,5 +98,87 @@ Fall
 a. Governance of Enterprise I & T
 b. Problem Management
 c. Audit Questionnaire
+
+
+Tutorial
+
+Explain the essential responsibilities and knowledge areas required to become a professional Information System Auditor. Identify and elaborate on the critical tasks that an Information System Auditor must perform and the key knowledge domains they must acquire to effectively audit, assess, and ensure the integrity, confidentiality, and availability of information systems.
+
+Conduct a cybersecurity maturity assessment for a multinational company that operates its own data center and a cloud-based disaster recovery center, using the NIST Cybersecurity Framework as a guiding reference. Select at least five relevant subcategories, ensuring that all six core functions of the framework are covered.
+
+As the newly appointed Chief Information Security Officer (CISO) of Himalayan Bank, you have been tasked with designing an Information Security Policy framework that effectively mitigates security risks to an acceptable level while ensuring compliance with regulatory requirements, adherence to industry best practices, and alignment with the bank's strategic objectives. How would you approach this task?
+
+Consider the IS Audit Activity in Nepal Telecom. Explain the importance of  Problem and Change Management in an audit and describe the key activities an Information System (IS) Auditor should perform to assess the effectiveness of the Problem and Change Management process. 
+
+As the newly appointed Chief Risk Officer (CRO) of a leading wallet company, identify and list at least five critical information assets within the organization's information processing facility. Conduct a thorough risk assessment for each asset, incorporating Confidentiality, Integrity, and Availability (CIA) considerations, threat capability analysis, vulnerability assessment, evaluation of existing controls, and impact analysis.
+
+You have been appointed as an external Information System Auditor for a renowned company with 250 sites, its own Data Center, and a Disaster Recovery Center. Your task is to perform an IS audit focusing on Six controls from the ISO 27001:2022 standard. Prepare a comprehensive report that includes the control, your observations, risk ratings, and key findings with recommendations.
+
+Elaborate on the methodology you would employ to audit the effectiveness of the Incident Response Plan at the Pokhara University in Pokhara. Describe the steps you would take to evaluate the plan, ensuring it aligns with industry best practices and adequately addresses potential risks, incident handling, and recovery scenarios.
+
+As an expert, outline your approach to conducting a Ransomware Readiness Assessment for a well-known company that has issued an RFP for this purpose. Describe in detail how you would plan, execute, and report on this assessment, and prepare a comprehensive proposal for carrying out the engagement.
+
+A well-established company with a network spanning over 100 sites, supported by its own Data Center (DC) and a private Cloud-based Disaster Recovery Center (DRC), is planning to conduct a Vulnerability Assessment and Penetration Testing (VAPT) exercise. You have been assigned the task of developing a detailed Terms of Reference (ToR) for the VAPT activity. 
+
+Short notes on: IT Governance with COBIT 
+
+Short notes on: Licensing Issues in IS Audit 
+
+Short notes on: Audit Questionnaire 
+
+Discuss the importance of conducting IS audit within an organization and illustrates its impact with a suitable example
+
+As a chief compliance officer of a leading organization, describe how the 4P framework can be applied to identify and mitigate cybersecurity risk?
+
+A Cooperative Bank operates with one Head Office and 150 Branch Offices,
+providing Core Banking Services along with multiple delivery channels such
+as Mobile Banking and Internet Banking. Identify the Information Assets,
+Software Assets, Physical Assets, and Service Assets required to support
+the bank’s operations.
+
+
+Important
+
+Information Security Self-Assessment: Consider a scenario where your organization operates a network of over 100 sites, supported by
+an in-house Data Center (DC) and a private cloud-based Disaster Recovery Center (DRC). The
+organization is planning to undertake an Information Security Self-Assessment to evaluate its
+current security posture. As part of this initiative, you have been assigned the responsibility of
+carrying out the assessment in alignment with the internationally recognized ISO/IEC 27001:2022
+standard, focusing on the 93 Annex A controls. This exercise aims to systematically review
+existing security measures, identify potential risks or gaps, and support continuous improvement
+of the Information Security Management System (ISMS). [10 marks]
+
+<<Organization>> Cyber Security Assessment				
+NIST Cyber Security Framework Version 1.1				
+Cyber Security Maturity Assessment: A well-established multinational organization operating across more than 300 locations,
+supported by a centralized Data Center (DC) and a Disaster Recovery Center (DRC), plans to
+undertake a Cybersecurity Maturity Assessment aligned with the NIST Cybersecurity Framework
+(CSF). The objective of this assessment is to evaluate the organization’s current cybersecurity
+posture across the five core functions of the framework—Identify, Protect, Detect, Respond, and
+Recover—and to systematically analyze and document the maturity level, gaps, and improvement
+opportunities to strengthen the overall cybersecurity resilience of the organization. [10 marks]
+
+Building Terms of Reference of an IS Audit: A leading organization operating more than 100 sites, supported by an in-house Data Center (DC)
+and a private cloud–based Disaster Recovery Center (DRC), intends to carry out an Information
+Systems (IS) Audit. In alignment with internationally recognized standards and frameworks—such
+as NIST, ISO/IEC 27001:2022, and CIS—as well as applicable IT policies, bylaws, and regulatory
+guidelines issued by the relevant authority, you are required to develop a comprehensive Terms
+of Reference (ToR) for the IS Audit. [10 marks]
+
+Ransomware Readiness Assessment: An organization operating over 250 sites, supported by an in-house Data Center (DC) and a private
+cloud–based Disaster Recovery Center (DRC), plans to conduct a Ransomware Readiness
+Assessment using the CISA Cyber Security Evaluation Tool (CSET). How would you conduct this
+ransomware readiness assessment, and what major weaknesses might be identified within the
+organization’s information systems and processing facilities? [10 marks]
+
+Conducting an Information System Audit: A well-established <organization> with over 200 sites, operating its own Data Center (DC) and
+Disaster Recovery Center (DRC), is planning to conduct an Information System (IS) Audit. The audit
+should be carried out in alignment with recognized standards and frameworks, including ISO
+27001:2022 (consider 10 controls) and relevant regulatory requirements. Your task is to perform
+the IS Audit and prepare a comprehensive report covering the following key sections:
+1. Control – Overview of the control.
+2. Observation – Discuss your observation.
+3. Risk Rating – Assessment of risk level based on observations and supporting evidence.
+4. Recommendation – Discuss the Recommendations.
 
 

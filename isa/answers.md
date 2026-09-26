@@ -1,0 +1,454 @@
+# ISA Exam Answers
+
+---
+
+## 1. 4P Framework for Cybersecurity Risk Identification and Mitigation [10]
+
+As the Chief Compliance Officer, I would leverage the **4P Framework — People, Process, Policy, and Technology (Platform)** — to proactively identify and mitigate cybersecurity risks across the enterprise.
+
+### 1.1 People
+
+- Conduct cybersecurity awareness training for all employees at planned intervals (at least annually).
+- Define information security roles and responsibilities — appoint CISO, security focal points per department.
+- Implement background screening for employees handling sensitive information.
+- Establish a security culture through phishing simulations, incident reporting awareness, and disciplinary procedures for policy violations.
+- Ensure adequate staffing of skilled cybersecurity professionals (SOC analysts, incident responders).
+
+### 1.2 Process
+
+- Establish a formal Risk Assessment and Risk Treatment process aligned with ISO 27001:2022.
+- Implement Incident Response Process — detection, containment, eradication, recovery, lessons learned.
+- Define Change Management and Problem Management processes for IT systems.
+- Conduct periodic Vulnerability Assessment and Penetration Testing (VAPT).
+- Perform Business Impact Analysis (BIA) and maintain Business Continuity Plan (BCP) and Disaster Recovery Plan (DRP).
+- Establish user access lifecycle management — provisioning, periodic review, de-provisioning.
+
+### 1.3 Policy
+
+- Develop and maintain an Information Security Policy approved by top management, reviewed annually.
+- Create topic-specific policies: Acceptable Use Policy, Access Control Policy, Data Classification Policy, Backup Policy, Remote Access Policy, Password Policy, Incident Management Policy.
+- Ensure policies align with regulatory requirements (Electronic Transactions Act 2008, Individual Privacy Act 2018, NRB IT Guidelines as applicable).
+- Communicate policies to all personnel and obtain written acknowledgement.
+- Establish compliance monitoring and audit mechanisms to verify policy adherence.
+
+### 1.4 Platform (Technology)
+
+- Deploy centralized Endpoint Detection and Response (EDR) and antivirus across all endpoints.
+- Implement Multi-Factor Authentication (MFA) for all critical systems.
+- Deploy a SIEM solution for centralized log management, correlation, and alerting.
+- Implement network segmentation, firewall, IDS/IPS, and DLP solutions.
+- Enforce encryption for data at rest and in transit.
+- Implement Privileged Access Management (PAM) for administrative accounts.
+- Maintain patch management program with defined timelines for applying security patches.
+
+### Application of 4P Framework
+
+By mapping identified cybersecurity risks against People, Process, Policy, and Platform dimensions, each risk is assessed for its impact on Confidentiality, Integrity, and Availability (CIA). Remediation actions are prioritized based on risk rating (Critical, High, Medium, Low) and tracked through a risk register with defined owners and timelines.
+
+---
+
+## 2. Risk Assessment of Information Assets of an Information Processing Facility [10]
+
+As the Chief Risk Officer (CRO), I identify the following **5 Information Assets** of the Information Processing Facility and perform a Risk Assessment.
+
+### 2.1 Identification of Information Assets
+
+| #   | Asset                  | Category             | Description                                                          |
+| --- | ---------------------- | -------------------- | -------------------------------------------------------------------- |
+| 1   | Core Database Server   | Hardware/Information | Stores customer records, financial transactions, operational data    |
+| 2   | Email System           | Software/Information | Corporate email server handling internal and external communications |
+| 3   | Network Infrastructure | Hardware             | Routers, switches, firewalls, LAN/WAN connectivity                   |
+| 4   | Backup Storage System  | Hardware/Information | Backup tapes/NAS/SAN storing copies of critical data                 |
+| 5   | Web Application Server | Software/Information | Customer-facing portal/application server                            |
+
+### 2.2 Risk Assessment
+
+**Risk Assessment Methodology:** Each asset is evaluated based on CIA (Confidentiality, Integrity, Availability), Threat, Vulnerability, Existing Controls, Likelihood, Impact, and Risk Rating.
+
+#### Asset 1: Core Database Server
+
+| Parameter             | Assessment                                                                                                             |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Confidentiality**   | High — contains sensitive customer and financial data                                                                  |
+| **Integrity**         | High — any unauthorized modification impacts business decisions                                                        |
+| **Availability**      | High — downtime directly halts business operations                                                                     |
+| **Threats**           | SQL injection, unauthorized access, ransomware, hardware failure, insider threat                                       |
+| **Vulnerabilities**   | Unpatched database software, weak access controls, lack of encryption at rest                                          |
+| **Existing Controls** | Antivirus installed, basic firewall, daily backup                                                                      |
+| **Likelihood**        | High                                                                                                                   |
+| **Impact**            | High — financial loss, regulatory penalty, reputational damage                                                         |
+| **Risk Rating**       | **HIGH**                                                                                                               |
+| **Recommendation**    | Implement database encryption, enforce strong access controls with PAM, regular patching, database activity monitoring |
+
+#### Asset 2: Email System
+
+| Parameter             | Assessment                                                                                                              |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **Confidentiality**   | High — emails contain sensitive business communications                                                                 |
+| **Integrity**         | Medium — email spoofing and tampering possible                                                                          |
+| **Availability**      | High — email disruption affects daily operations                                                                        |
+| **Threats**           | Phishing attacks, email spoofing, malware via attachments, account compromise                                           |
+| **Vulnerabilities**   | No MFA enabled, no advanced threat protection, weak password policy                                                     |
+| **Existing Controls** | Basic spam filter, antivirus scanning                                                                                   |
+| **Likelihood**        | High                                                                                                                    |
+| **Impact**            | High — data breach, credential theft, business disruption                                                               |
+| **Risk Rating**       | **HIGH**                                                                                                                |
+| **Recommendation**    | Implement MFA, deploy advanced email security with sandboxing, enforce SPF/DKIM/DMARC, user phishing awareness training |
+
+#### Asset 3: Network Infrastructure
+
+| Parameter             | Assessment                                                                                                                                                      |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Confidentiality**   | Medium — network carries sensitive data in transit                                                                                                              |
+| **Integrity**         | High — compromised network enables MITM attacks                                                                                                                 |
+| **Availability**      | High — network outage halts all operations                                                                                                                      |
+| **Threats**           | DDoS attacks, unauthorized access, MITM, misconfiguration                                                                                                       |
+| **Vulnerabilities**   | Default credentials on devices, lack of network segmentation, outdated firmware                                                                                 |
+| **Existing Controls** | Firewall deployed, basic ACLs                                                                                                                                   |
+| **Likelihood**        | Medium                                                                                                                                                          |
+| **Impact**            | High — complete operational disruption                                                                                                                          |
+| **Risk Rating**       | **HIGH**                                                                                                                                                        |
+| **Recommendation**    | Implement network segmentation, update firmware regularly, deploy IDS/IPS, enforce secure configuration baselines, conduct periodic network vulnerability scans |
+
+#### Asset 4: Backup Storage System
+
+| Parameter             | Assessment                                                                                                                      |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| **Confidentiality**   | High — backup contains copies of all critical data                                                                              |
+| **Integrity**         | High — corrupted backup renders recovery impossible                                                                             |
+| **Availability**      | High — unavailable backup during disaster means data loss                                                                       |
+| **Threats**           | Ransomware encrypting backups, physical theft, media degradation, unauthorized access                                           |
+| **Vulnerabilities**   | Backups not encrypted, no off-site copy, restoration not tested regularly                                                       |
+| **Existing Controls** | Daily backup schedule, on-site storage                                                                                          |
+| **Likelihood**        | Medium                                                                                                                          |
+| **Impact**            | High — permanent data loss, inability to recover from disaster                                                                  |
+| **Risk Rating**       | **HIGH**                                                                                                                        |
+| **Recommendation**    | Encrypt backups at rest and in transit, maintain off-site/cloud copies, conduct quarterly restoration tests, define RTO and RPO |
+
+#### Asset 5: Web Application Server
+
+| Parameter             | Assessment                                                                                                                                        |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Confidentiality**   | High — processes customer data and credentials                                                                                                    |
+| **Integrity**         | High — defacement or data manipulation affects trust                                                                                              |
+| **Availability**      | High — downtime means revenue loss                                                                                                                |
+| **Threats**           | Web application attacks (OWASP Top 10), DDoS, data breach, code injection                                                                         |
+| **Vulnerabilities**   | No WAF deployed, no regular VAPT, outdated application framework                                                                                  |
+| **Existing Controls** | SSL/TLS enabled, basic firewall                                                                                                                   |
+| **Likelihood**        | High                                                                                                                                              |
+| **Impact**            | High — financial loss, regulatory penalty, customer data exposure                                                                                 |
+| **Risk Rating**       | **HIGH**                                                                                                                                          |
+| **Recommendation**    | Deploy WAF, conduct regular VAPT (at least quarterly), implement secure SDLC, apply patches promptly, implement rate limiting and DDoS protection |
+
+### 2.3 Risk Assessment Summary
+
+| #   | Asset                  | C      | I      | A    | Risk Rating |
+| --- | ---------------------- | ------ | ------ | ---- | ----------- |
+| 1   | Core Database Server   | High   | High   | High | HIGH        |
+| 2   | Email System           | High   | Medium | High | HIGH        |
+| 3   | Network Infrastructure | Medium | High   | High | HIGH        |
+| 4   | Backup Storage System  | High   | High   | High | HIGH        |
+| 5   | Web Application Server | High   | High   | High | HIGH        |
+
+All identified assets require immediate risk treatment through implementation of recommended controls, tracked via a Risk Register with assigned owners and remediation timelines.
+
+---
+
+## 3. IS Audit Report Based on ISO 27001:2022 (5 Controls) [10]
+
+### IS Audit Report
+
+**Organization:** A well-known organization with 100 sites, own Data Center (DC) and Disaster Recovery Center (DRC)
+**Audit Standard:** ISO 27001:2022
+**Audit Type:** External Information System Audit
+
+### Objective
+
+To evaluate the effectiveness of the Information Security Management System (ISMS) by auditing 5 selected controls from ISO 27001:2022 Annex A, identify risks, and provide recommendations.
+
+### Scope
+
+The audit covers the organization's Head Office, Data Center, Disaster Recovery Center, and a sample of branch sites. The audit evaluates organizational, people, physical, and technological controls.
+
+### Audit Metrics
+
+- Number of non-conformities identified (Major/Minor)
+- Percentage of controls compliant vs non-compliant
+- Risk ratings per control (High, Medium, Low)
+- Time since last policy review
+- Percentage of employees who completed security awareness training
+- Mean time to apply critical patches
+
+---
+
+### Control 1: Policies for Information Security (A.5.1) — Organizational Control
+
+**Control:** Information security policy and topic-specific policies should be defined, approved by management, published, communicated to and acknowledged by relevant personnel, and reviewed at planned intervals.
+
+**Observation:** The organization has an Information Security Policy (Version 1.0, 2022); however, it has not been reviewed or updated since initial release. No topic-specific policies (acceptable use, data classification, remote access) were formally documented. Staff awareness of the policy was limited at branch sites. No evidence of written acknowledgement by employees.
+
+**Risk Rating:** HIGH
+
+**Recommendation:** Review and update the Information Security Policy to align with ISO 27001:2022. Develop topic-specific policies. Communicate to all employees and obtain signed acknowledgement. Establish an annual review cycle with additional reviews triggered by significant organizational changes.
+
+---
+
+### Control 2: Information Security Awareness, Education and Training (A.6.3) — People Control
+
+**Control:** Personnel should receive appropriate information security awareness, education and training and regular updates of the organization's information security policy and procedures.
+
+**Observation:** No structured information security awareness and training program exists. Employees across branch sites were unaware of basic cybersecurity practices (phishing identification, password management). No training records were available. Shared login credentials were observed at multiple sites.
+
+**Risk Rating:** HIGH
+
+**Recommendation:** Establish a comprehensive security awareness training program conducted annually. Cover phishing, social engineering, password hygiene, data handling, and incident reporting. Maintain training records. Conduct periodic simulated phishing exercises to measure effectiveness.
+
+---
+
+### Control 3: Physical Security Perimeters (A.7.1) — Physical Control
+
+**Control:** Security perimeters should be defined and used to protect areas that contain information and other associated assets.
+
+**Observation:** The Data Center uses a basic key-lock mechanism without electronic access control (biometric/card-based). No visitor log is maintained. The DRC has shared access corridors without a dedicated security perimeter. CCTV retention is limited to 15 days. Branch offices have minimal physical security for IT equipment.
+
+**Risk Rating:** HIGH
+
+**Recommendation:** Implement electronic access control (biometric or smart card) for DC and DRC. Deploy a visitor management system with logging. Enhance CCTV with minimum 90-day retention. Establish a dedicated security perimeter for DRC. Define minimum physical security standards for all branch sites.
+
+---
+
+### Control 4: Access Control (A.8.2) — Technological Control
+
+**Control:** Access to information and other associated assets should be restricted in accordance with the established topic-specific policy on access control.
+
+**Observation:** No formal access control policy documented. User account provisioning and de-provisioning is unstructured — terminated employees' accounts remain active. Shared accounts observed in critical systems. Password policy is weak (6-character minimum, no complexity, no expiry). No MFA implemented. Privileged access uses shared admin credentials.
+
+**Risk Rating:** HIGH
+
+**Recommendation:** Develop and implement a formal access control policy. Establish user lifecycle management with HR integration. Eliminate shared accounts. Enforce 12-character passwords with complexity and rotation. Implement MFA for all critical systems. Deploy a PAM solution. Conduct quarterly user access reviews.
+
+---
+
+### Control 5: Information Backup (A.8.13) — Technological Control
+
+**Control:** Backup copies of information, software and systems should be maintained and regularly tested in accordance with the agreed topic-specific policy on backup.
+
+**Observation:** Daily backups of critical databases are performed; however, no formal backup policy exists defining scope, frequency, retention, and recovery procedures. Off-site replication to DRC is weekly, creating a 7-day data loss window. Backup restoration tests have not been conducted in over 12 months. RTO and RPO are not formally defined. Backup encryption is not implemented.
+
+**Risk Rating:** HIGH
+
+**Recommendation:** Develop a formal backup policy defining RTO, RPO, frequency, and retention. Increase DRC replication to daily. Conduct quarterly backup restoration tests. Encrypt all backup data at rest and in transit. Integrate backup strategy with the BCP.
+
+---
+
+### Summary of Findings
+
+| #   | Control                           | ISO Ref | Risk Rating |
+| --- | --------------------------------- | ------- | ----------- |
+| 1   | Policies for Information Security | A.5.1   | HIGH        |
+| 2   | Security Awareness and Training   | A.6.3   | HIGH        |
+| 3   | Physical Security Perimeters      | A.7.1   | HIGH        |
+| 4   | Access Control                    | A.8.2   | HIGH        |
+| 5   | Information Backup                | A.8.13  | HIGH        |
+
+### Overall Recommendation
+
+The organization's information security posture requires significant improvement. Immediate priority should be given to implementing MFA, formalizing access controls, establishing a security awareness program, and strengthening backup and recovery mechanisms. A formal Risk Treatment Plan with defined owners and timelines should be established to track remediation of all identified gaps.
+
+---
+
+## 4. Information Security Policy Framework [10]
+
+As the newly appointed CISO, I would design the following Information Security Policy framework to mitigate information security risks to an acceptable level.
+
+### 4.1 Policy Framework Structure
+
+The framework follows a hierarchical structure:
+
+**Level 1 — Overarching Information Security Policy**
+
+- Defines the organization's commitment to information security.
+- Approved by top management / Board of Directors.
+- Aligned with ISO 27001:2022, business objectives, and applicable regulations.
+- States the scope of the ISMS.
+- Reviewed annually or upon significant organizational changes.
+
+**Level 2 — Topic-Specific Policies**
+
+- **Access Control Policy** — defines access provisioning, authentication requirements (MFA), RBAC, privileged access management, periodic access review.
+- **Acceptable Use Policy** — governs acceptable use of IT assets, internet, email, removable media.
+- **Data Classification and Handling Policy** — defines classification levels (Public, Internal, Confidential, Restricted) and handling procedures for each.
+- **Backup and Recovery Policy** — defines RTO, RPO, backup frequency, retention, encryption, and restoration testing schedule.
+- **Incident Management Policy** — defines incident categories, escalation matrix, response procedures, evidence preservation, and reporting requirements.
+- **Password Policy** — minimum length (12 chars), complexity, rotation, prohibition of shared credentials.
+- **Remote Access and Teleworking Policy** — VPN requirements, MFA, endpoint security for remote workers.
+- **Change Management Policy** — formal approval, testing, documentation, and rollback procedures for system changes.
+- **Physical and Environmental Security Policy** — access controls for DC/DRC, visitor management, CCTV, environmental monitoring.
+- **Supplier and Third-Party Security Policy** — security requirements in supplier contracts, right to audit, data processing agreements.
+
+**Level 3 — Procedures and Guidelines**
+
+- Standard Operating Procedures (SOPs) for implementing each policy.
+- Technical guidelines (e.g., server hardening guide, secure coding guidelines, network configuration standards).
+- Checklists for audit, incident response, and business continuity.
+
+### 4.2 Policy Development Process
+
+- Conduct a Risk Assessment to identify information security risks and determine required controls.
+- Map controls to ISO 27001:2022 Annex A (93 controls across 4 themes: Organizational, People, Physical, Technological).
+- Draft policies with input from relevant stakeholders (IT, HR, Legal, Operations).
+- Obtain top management approval for all policies.
+- Communicate and distribute policies to all relevant personnel.
+- Obtain written acknowledgement from all employees.
+
+### 4.3 Policy Implementation and Enforcement
+
+- Conduct security awareness training to ensure understanding of policies.
+- Integrate policy compliance checks into regular IS Audits.
+- Define disciplinary procedures for policy violations.
+- Implement technical controls (DLP, MFA, endpoint protection) to enforce policy requirements.
+
+### 4.4 Policy Review and Maintenance
+
+- Review all policies at least annually.
+- Trigger additional reviews upon significant changes (regulatory updates, major incidents, organizational restructuring).
+- Maintain version control and document review history.
+- Communicate updates to all relevant personnel.
+
+### 4.5 Regulatory Alignment
+
+- Electronic Transactions Act, 2063 (2008)
+- Individual Privacy Act, 2075 (2018)
+- NRB IT Guidelines / Sector-specific regulations (as applicable)
+- ISO/IEC 27001:2022
+- NIST Cybersecurity Framework
+
+---
+
+## 5. Tasks and Knowledge Areas of a Professional Information System Auditor [10]
+
+### 5.1 Critical Tasks of an IS Auditor
+
+**Task 1: Planning the IS Audit**
+
+- Define audit objectives, scope, and criteria based on standards (ISO 27001, COBIT, NIST).
+- Develop the audit plan and audit program.
+- Identify key stakeholders and audit resources.
+- Conduct preliminary risk assessment to prioritize audit areas.
+
+**Task 2: Executing the Audit**
+
+- Gather audit evidence through documentation review, interviews, observation, and technical verification.
+- Evaluate IT governance, management, and operational controls.
+- Perform compliance testing (verify controls exist and are followed) and substantive testing (verify data accuracy and completeness).
+- Use audit tools and techniques — CAATs (Computer Assisted Audit Techniques), sampling techniques, audit questionnaires.
+
+**Task 3: Assessing IT Governance and Management**
+
+- Evaluate IT governance structures (COBIT framework).
+- Assess alignment of IT strategy with business objectives.
+- Review IT policies, procedures, and organizational structure.
+- Evaluate IT resource management and performance monitoring.
+
+**Task 4: Evaluating Information Systems and Controls**
+
+- Assess logical and physical access controls.
+- Evaluate network security, system configurations, and vulnerability management.
+- Review change management, problem management, and incident management processes.
+- Assess BCP/DRP effectiveness and test results.
+- Evaluate data backup and recovery procedures.
+
+**Task 5: Reporting and Follow-Up**
+
+- Document audit findings with evidence, risk ratings, and recommendations.
+- Classify findings (Major Non-Conformity, Minor Non-Conformity, Opportunity for Improvement).
+- Present findings to management and stakeholders.
+- Track corrective action plans and verify implementation in follow-up audits.
+
+### 5.2 Key Knowledge Statements
+
+**KS 1: IS Audit Standards and Frameworks**
+
+- Knowledge of ISACA IS Audit Standards, Guidelines, and Code of Ethics.
+- Understanding of ISO 27001, NIST CSF, COBIT, CIS Controls.
+- Knowledge of regulatory requirements (Electronic Transactions Act, Privacy Act, sector-specific regulations).
+
+**KS 2: IT Governance and Enterprise IT Management**
+
+- Understanding of IT governance frameworks (COBIT 2019).
+- Knowledge of IT strategy, policies, and organizational structures.
+- Understanding of IT risk management processes and risk assessment methodologies.
+
+**KS 3: Information Systems Acquisition, Development, and Implementation**
+
+- Knowledge of SDLC and Secure SDLC (SecSDLC).
+- Understanding of change management and configuration management.
+- Knowledge of project management practices for IT projects.
+
+**KS 4: Information Systems Operations and Business Resilience**
+
+- Knowledge of IT service management (incident, problem, change management).
+- Understanding of BCP, DRP, and Business Impact Analysis.
+- Knowledge of backup and recovery strategies, RTO, RPO.
+- Understanding of data center operations and environmental controls.
+
+**KS 5: Protection of Information Assets**
+
+- Knowledge of access control models, authentication mechanisms, encryption.
+- Understanding of network security (firewalls, IDS/IPS, VPN, segmentation).
+- Knowledge of vulnerability assessment and penetration testing (VAPT).
+- Understanding of security monitoring, logging, and SIEM.
+- Knowledge of data classification, data privacy, and data protection principles.
+
+---
+
+## 6. Importance of IS Audit with Example [10]
+
+### 6.1 Importance of Information System Audit
+
+**Identifying Security Risks and Vulnerabilities**
+IS Audit identifies gaps in the organization's information security controls — unpatched systems, weak access controls, inadequate backup procedures — enabling proactive risk mitigation before exploitation by threat actors.
+
+**Ensuring Regulatory Compliance**
+Organizations are subject to legal and regulatory requirements (Electronic Transactions Act 2008, Individual Privacy Act 2018, NRB IT Guidelines, sector-specific regulations). IS Audit verifies compliance and helps avoid legal penalties and sanctions.
+
+**Protecting CIA Triad**
+IS Audit evaluates whether controls adequately preserve the Confidentiality, Integrity, and Availability of information assets, which are fundamental to business operations and stakeholder trust.
+
+**Improving IT Governance**
+IS Audit assesses whether IT governance structures align IT strategy with business objectives, ensuring efficient use of IT resources and effective risk management through frameworks like COBIT and ISO 27001.
+
+**Evaluating Business Continuity Readiness**
+IS Audit reviews the adequacy of BCP, DRP, and incident response plans, ensuring the organization can recover from disruptions within acceptable timeframes (RTO/RPO).
+
+**Building Stakeholder Confidence**
+Audit findings and assurance reports provide confidence to the Board, management, customers, regulators, and other stakeholders that information security risks are adequately managed.
+
+**Driving Continuous Improvement**
+IS Audit provides recommendations and tracks corrective actions, fostering a culture of continuous improvement in information security practices.
+
+### 6.2 Example: IS Audit of Yeti Airlines Pvt. Ltd.
+
+Yeti Airlines Pvt. Ltd., a domestic airline operating across multiple sites in Nepal, underwent an IS Audit based on the ISO 27001:2022 framework. The audit evaluated 10 controls across Organizational, People, Physical, and Technological domains.
+
+**Findings:**
+
+- Information Security Policy existed but was outdated (not reviewed since 2021) and employees were unaware of it — **Risk: HIGH**.
+- No designated CISO; IT Manager handled security in an ad-hoc manner — **Risk: HIGH**.
+- No cybersecurity awareness training program; staff shared login credentials — **Risk: HIGH**.
+- Data Center used basic key-lock mechanism without electronic access control; CCTV retention was only 15 days — **Risk: HIGH**.
+- No MFA implemented; shared admin credentials used for privileged access; weak password policy (6-char, no complexity) — **Risk: HIGH**.
+- No formal vulnerability management or patch management program; customer-facing booking portal never assessed — **Risk: HIGH**.
+- Backup restoration not tested in 12+ months; RTO/RPO not defined; weekly DRC replication — **Risk: HIGH**.
+- No centralized logging or SIEM; logs reviewed only reactively — **Risk: HIGH**.
+
+**Impact of IS Audit:**
+The audit revealed that 8 out of 10 controls were rated HIGH risk, exposing the airline to potential data breaches, regulatory non-compliance, and operational disruption. Based on audit recommendations, Yeti Airlines initiated:
+
+- Appointment of a dedicated Information Security Manager.
+- Implementation of MFA and elimination of shared accounts.
+- Engagement of a third-party firm for VAPT.
+- Upgrade of physical security with electronic access controls.
+- Development of a formal backup policy with defined RTO/RPO.
+
+This demonstrates that IS Audit serves as a critical mechanism for identifying and addressing information security weaknesses that could otherwise lead to significant financial, operational, and reputational damage.

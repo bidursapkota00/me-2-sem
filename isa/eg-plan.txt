@@ -1,0 +1,294 @@
+INFORMATION SECURITY AUDIT PLAN
+
+Internal Information Security Management System (ISMS) Audit aligned with ISO/IEC 27001:2022
+Organization Enterprise Solutions Global Ltd. Audit Standards ISO/IEC 27001:2022
+Lead Auditor Jane Doe, CISA, ISO 27001 LA Audit Type Annual Internal ISMS Audit
+Audit Team John Smith (Tech), Alice Wong
+
+(Ops)
+
+Document Date July 4, 2026
+
+Audit Window Aug 10, 2026 – Aug 14, 2026 Version v1.0 (Final)
+
+1. Executive Summary & Objective
+The objective of this Information Security Audit is to evaluate the adequacy, design, and operating effectiveness of
+the organization’s Information Security Management System (ISMS) against the mandatory requirements of ISO/
+IEC 27001:2022 (Clauses 4 to 10) and the transitioned information security controls listed in Annex A (Themes A.5
+to A.8).
+The core goal is to identify gaps, vulnerabilities, and non-conformities prior to the external surveillance audit,
+verifying that information security is seamlessly embedded into operational structures.
+Key Shift: ISO/IEC 27001:2022 Focus
+This audit plan incorporates the restructured control format of the 2022 revision, shifting from 114 controls across 14
+domains to 93 controls grouped into 4 distinct themes. Special focus will be placed on newly introduced controls
+including threat intelligence, ICT readiness, and cloud data protection.
+
+2. Audit Scope & Boundaries
+The scope of this audit encompasses all operational processes, human resources, physical spaces, and technical
+frameworks that support the core client platforms:
+Infrastructure: Corporate Data Center (HQ), AWS Cloud Infrastructure (Production & Staging), and Remote
+Working Endpoints.
+Business Functions: Information Technology, Human Resources, Legal & Compliance, Procurement, Software
+Engineering, and DevOps.
+Physical Boundaries: Head Office (Floors 4, 5, and 6) and the Primary Data Center facility.
+3. Audit Methodology
+The audit team will gather sufficient, reliable, and relevant evidence through a multi-tiered approach:
+Documentation Review: Evaluation of policies, procedures, standards, Risk Assessment Reports, and the
+Statement of Applicability (SoA).
+•
+
+•
+
+•
+
+1.
+
+INTERNAL USE ONLY - CONFIDENTIAL Page 1 of 4
+
+Personnel Interviews: Discussions with process owners, system administrators, and general staff to gauge
+security awareness and adherence.
+Technical Verification: Observation of system configurations, access logs, sample audits of user access
+provisioning, vulnerability scans, and emergency response dry-runs.
+2.
+3.
+
+INTERNAL USE ONLY - CONFIDENTIAL Page 2 of 4
+
+4. Detailed Audit Schedule & Framework Breakdown
+The audit execution spans five business days. The schedule below details the focus domains, relevant standard
+clauses, audited departments, and targeted evidence.
+DATE /
+TIME
+
+ISO 27001 REFERENCE /
+DOMAIN
+
+AUDITED
+DEPARTMENT /
+EXAMINEES
+
+KEY AUDIT CHECKLIST & EXPECTED
+EVIDENCE
+
+Day 1
+09:00 -
+10:30
+
+Opening Meeting
+Alignment & Kick-off
+
+Executive Management,
+CISO, Dept Heads
+
+Introduce audit team, review scope, confirm
+scheduling adjustments, and finalize logistics.
+
+Day 1
+10:45 -
+13:00
+
+Clauses 4, 5 & 6
+Context, Leadership &
+Planning
+
+CISO, Risk &
+Compliance Team
+
+Review of Context Registry, ISMS Scope
+Document, Management Commitment,
+Information Security Objectives, and Risk
+Treatment Plan (RTP).
+
+Day 1
+14:00 -
+17:00
+
+Clauses 7, 9 & 10
+Support, Performance &
+Improvement
+
+ISMS Management
+Team, HR (Training)
+
+Verify competence records, awareness
+campaign metrics, internal audit reports,
+management review minutes, and corrective
+action logs.
+
+Day 2
+09:00 -
+12:30
+
+Annex A.5
+Organizational Controls
+(Part I)
+Organizational
+
+CISO, Asset
+Management, Legal
+
+Inspect Information Security Policies, Asset
+Register, Acceptable Use Guidelines, and
+Statement of Applicability (SoA v2022).
+Evaluate A.5.7 Threat Intelligence
+implementation.
+
+Day 2
+13:30 -
+17:00
+
+Annex A.5
+Organizational Controls
+(Part II)
+Organizational
+
+Procurement, Project
+Management, Legal
+
+Assess cloud service security management (A.
+5.23), supplier contracts, information security
+in project management, and identity
+management policies.
+
+Day 3
+09:00 -
+12:30
+
+Annex A.6
+People Controls
+People
+
+Human Resources,
+Security Training Dept
+
+Review background screening protocols (A.
+6.1), employment terms, onboarding/
+offboarding checklists, and disciplinary process
+documentation.
+
+Day 3
+13:30 -
+17:00
+
+Annex A.7
+Physical Controls
+Physical
+
+Facilities Management,
+Physical Security
+
+On-site physical walk-through of HQ and Data
+Center. Verify perimeter security (A.7.2),
+access controls, CCTV retention, clean desk
+compliance, and environmental controls.
+
+Day 4
+09:00 -
+12:30
+
+Annex A.8
+Technological Controls
+(Part I)
+Technological
+
+IT Operations, Network
+Admin, IAM Team
+
+Review Access Rights Provisioning (A.8.2),
+privileged access logs, endpoint management
+(A.8.9), network segregation, and configuration
+management blueprints.
+
+Annex A.8
+Technological Controls
+
+DevOps, Engineering,
+DBAs
+
+Verify secure coding practices (A.8.25),
+change management protocols, vulnerability
+
+INTERNAL USE ONLY - CONFIDENTIAL Page 3 of 4
+
+DATE /
+TIME
+
+ISO 27001 REFERENCE /
+DOMAIN
+
+AUDITED
+DEPARTMENT /
+EXAMINEES
+
+KEY AUDIT CHECKLIST & EXPECTED
+EVIDENCE
+
+Day 4
+13:30 -
+17:00
+
+(Part II)
+Technological
+
+remediation logs, backup health metrics, and
+A.8.12 Data Leakage Prevention (DLP) rules.
+
+Day 5
+09:00 -
+12:30
+
+Annex A.5 & A.8
+Business Continuity &
+Testing
+Tech / Org
+
+Disaster Recovery Team,
+BCP Committee
+
+Evaluate A.5.30 ICT Readiness for Business
+Continuity. Review recent DR tabletop or
+failover test results, RTO/RPO targets, and
+incident playbook updates.
+
+Day 5
+14:00 -
+15:30
+
+Audit Team Synthesis
+Internal Report Preparation
+
+Audit Team Only Collate evidence, categorize findings into
+Major NC, Minor NC, or OFIs, and draft the
+final audit closing briefing.
+
+Day 5
+16:00 -
+17:00
+
+Closing Meeting
+Findings Briefing
+
+Executive Management,
+CISO, Dept Heads
+
+Present summary of observations, present
+non-conformities, clarify timelines for
+Corrective Action Plans (CAP), and conclude
+the audit.
+
+5. Categorization of Audit Findings
+Discovered issues will be classified uniformly according to risk and conformance severity:
+Major Non-Conformity (NC): A systemic breakdown or complete absence of a mandatory clause requirement
+or critical Annex A control that directly impacts the integrity of the ISMS.
+Minor Non-Conformity (NC): An isolated slip or single programmatic failure to adhere to a documented
+procedure or minor control requirement, which does not jeopardize overall system security.
+Opportunity for Improvement (OFI): A valid observation of an operational area that is currently compliant, but
+could be enhanced to elevate resilience or align with industry best practices.
+6. Reporting & Deliverables Timeline
+Following conclusion of fieldwork on Day 5, the following reporting cadence will be strictly observed:
+Draft Audit Report: Submitted to the CISO within 5 business days post-audit for factual verification and initial
+comment.
+Corrective Action Plan (CAP): Auditees must submit remediation plans and target resolution dates within 10
+business days of receiving the draft report.
+Final Audit Report: Issued to Senior Management and the Board Risk Committee within 20 business days
+post-audit, containing verified findings and agreed CAP milestones.
