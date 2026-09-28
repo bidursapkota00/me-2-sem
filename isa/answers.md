@@ -574,6 +574,8 @@ The assessment covers all 100+ sites, the in-house Data Center (DC), and the pri
 
 #### Theme A.5 — Organizational Controls (37 controls)
 
+1-4, 12, 15, 23, 36, 37
+
 | #   | Control                                                                | Ref    | Status                | Gap Identified                                                                 | Risk   |
 | --- | ---------------------------------------------------------------------- | ------ | --------------------- | ------------------------------------------------------------------------------ | ------ |
 | 1   | Policies for Information Security                                      | A.5.1  | Partially Implemented | Policy exists but not reviewed since creation; no topic-specific policies      | HIGH   |
@@ -616,6 +618,8 @@ The assessment covers all 100+ sites, the in-house Data Center (DC), and the pri
 
 #### Theme A.6 — People Controls (8 controls)
 
+1-4, 7
+
 | #   | Control                                                    | Ref   | Status                | Gap Identified                                                                             | Risk   |
 | --- | ---------------------------------------------------------- | ----- | --------------------- | ------------------------------------------------------------------------------------------ | ------ |
 | 1   | Screening                                                  | A.6.1 | Partially Implemented | Background checks performed for senior roles only; not for all employees                   | MEDIUM |
@@ -628,6 +632,8 @@ The assessment covers all 100+ sites, the in-house Data Center (DC), and the pri
 | 8   | Information Security Event Reporting                       | A.6.8 | Not Implemented       | No mechanism for employees to report security events                                       | HIGH   |
 
 #### Theme A.7 — Physical Controls (14 controls)
+
+1,2,4,12,13
 
 | #   | Control                                               | Ref    | Status                | Gap Identified                                                                     | Risk   |
 | --- | ----------------------------------------------------- | ------ | --------------------- | ---------------------------------------------------------------------------------- | ------ |
@@ -647,6 +653,8 @@ The assessment covers all 100+ sites, the in-house Data Center (DC), and the pri
 | 14  | Secure Disposal or Re-Use of Equipment                | A.7.14 | Not Implemented       | No formal secure disposal or data wiping procedures                                | HIGH   |
 
 #### Theme A.8 — Technological Controls (34 controls)
+
+6, 7, 9, 12, 13, 15, 22, 24
 
 | #   | Control                                                     | Ref    | Status                | Gap Identified                                                            | Risk   |
 | --- | ----------------------------------------------------------- | ------ | --------------------- | ------------------------------------------------------------------------- | ------ |
@@ -716,16 +724,16 @@ The assessment covers all 100+ sites, the in-house Data Center (DC), and the pri
 **Short-Term (3–6 Months)**
 
 - Implement electronic access controls (biometric/card) at DC and DRC.
-- Develop BCP and define RTO/RPO; test DR failover quarterly.
+<!-- - Develop BCP and define RTO/RPO; test DR failover quarterly. -->
 - Establish security awareness training program for all personnel.
 - Implement DLP, EDR, and network segmentation.
-- Develop supplier security requirements and include in contracts.
+<!-- - Develop supplier security requirements and include in contracts. -->
 
 **Medium-Term (6–12 Months)**
 
 - Implement secure SDLC and application security testing.
 - Deploy encryption at rest for sensitive data stores.
-- Establish threat intelligence capability.
+<!-- - Establish threat intelligence capability. -->
 - Conduct annual independent review of the ISMS.
 - Achieve full compliance with all 93 Annex A controls as applicable per SoA.
 
@@ -1101,6 +1109,8 @@ This Ransomware Readiness Assessment (RRA) evaluates the organization's prepared
 **Weakness:** No vulnerability scanning; ad-hoc patching; servers running outdated OS with known exploitable vulnerabilities.
 
 ### 4. Overall RRA Maturity Summary
+
+rap-un-war-iv
 
 | Goal                         | Basic   | Intermediate | Advanced |
 | ---------------------------- | ------- | ------------ | -------- |
