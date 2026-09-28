@@ -2627,3 +2627,397 @@ By mapping cybersecurity risks against People, Process, Policy, and Platform dim
 | 6   | IT Support and Maintenance  | AMC with hardware/software vendors for support                |
 | 7   | Security Operations (SOC)   | Managed or in-house security monitoring service               |
 | 8   | Call Center Service         | Customer support for mobile banking and internet banking      |
+
+---
+
+## 16. Audit of Business Continuity Plan (BCP) — Pokhara University
+
+> **Q.** You are assigned to evaluate the effectiveness of the Business Continuity Plan at Pokhara University. How would you conduct this audit? [8]
+
+### BCP Audit Methodology — Pokhara University
+
+**Organization:** Pokhara University, Pokhara
+**Audit Reference:** ISO 22301 (BCMS), ISO 27001:2022 (A.5.29, A.5.30), NIST SP 800-34 (Contingency Planning Guide)
+
+### 1. Introduction
+
+This audit evaluates the effectiveness of Pokhara University's Business Continuity Plan (BCP) to determine whether it is practical, aligned with industry best practices, and capable of ensuring continued delivery of critical university functions — academic operations, examination systems, student information systems, research databases, and administrative services — during and after a disruption.
+
+### 2. Audit Objectives
+
+- Assess whether a formal BCP exists, is documented, and is approved by university management.
+- Evaluate alignment with ISO 22301, ISO 27001:2022 (A.5.29 — Information Security During Disruption, A.5.30 — ICT Readiness for Business Continuity), and NIST SP 800-34.
+- Verify that a Business Impact Analysis (BIA) has been conducted to identify critical processes and their recovery requirements.
+- Determine whether RTO (Recovery Time Objective) and RPO (Recovery Point Objective) are defined for critical systems.
+- Evaluate the adequacy of the Disaster Recovery Plan (DRP) and DR site readiness.
+- Verify that the BCP has been tested, maintained, and improved.
+
+### 3. Audit Steps
+
+#### Step 1: Review BCP Policy and Governance
+
+- Verify that a formal Business Continuity Policy exists, approved by the Vice Chancellor / university management.
+- Check that BCP governance structure is established — BCP coordinator, crisis management team, and department-level BCP representatives.
+- Review whether adequate budget and resources are allocated for BCP activities.
+- Verify that BCP roles and responsibilities are clearly defined and communicated.
+
+#### Step 2: Evaluate Business Impact Analysis (BIA)
+
+- Verify that a BIA has been conducted identifying critical university functions:
+  - Student Information System (SIS)
+  - Examination Management System
+  - Learning Management System (LMS)
+  - Email and Communication Systems
+  - Financial and Payroll Systems
+  - Research Data and Library Systems
+- Check that Maximum Tolerable Downtime (MTD) is defined for each critical function.
+- Verify that dependencies (IT systems, personnel, third-party services) are mapped for each function.
+- Review whether the BIA has been reviewed and updated within the last 12 months.
+
+#### Step 3: Review Recovery Objectives (RTO/RPO)
+
+- Verify that RTO and RPO are formally defined for each critical system:
+  - e.g., Examination System: RTO = 4 hours, RPO = 1 hour
+  - e.g., SIS: RTO = 8 hours, RPO = 4 hours
+- Assess whether the current IT infrastructure (backup, DRC) can meet the defined RTO and RPO.
+- Check alignment between BIA-identified recovery requirements and actual IT capabilities.
+
+#### Step 4: Evaluate Disaster Recovery Plan (DRP) and DRC Readiness
+
+- Verify that a DRP exists with documented recovery procedures for each critical system.
+- Review the DRC (Disaster Recovery Center) configuration — is it hot, warm, or cold standby?
+- Check that DRC infrastructure mirrors production sufficiently to support recovery.
+- Verify that data replication frequency to DRC meets the defined RPO.
+- Review network connectivity between primary DC and DRC.
+- Check whether failover and failback procedures are documented.
+
+#### Step 5: Assess BCP Testing and Exercises
+
+- Review records of BCP testing — when was the last test conducted?
+- Evaluate the types of tests performed:
+  - **Checklist/Walkthrough Test** — review of plan documentation.
+  - **Tabletop Exercise** — scenario-based discussion with key personnel.
+  - **Simulation Test** — simulated disaster scenario to test response.
+  - **Full Interruption Test** — actual failover to DRC (most rigorous).
+- Verify that test results are documented with identified gaps and corrective actions.
+- Check that testing is conducted at least annually as per ISO 22301.
+
+#### Step 6: Review Communication and Escalation Procedures
+
+- Verify that the BCP includes an emergency communication plan — notification tree, escalation matrix, contact lists.
+- Check that communication channels are defined for internal (staff, students, faculty) and external (regulatory bodies, media, parents) stakeholders.
+- Verify that contact lists are up to date.
+- Assess whether alternate communication methods are available if primary channels fail.
+
+#### Step 7: Evaluate BCP Maintenance and Continuous Improvement
+
+- Check that the BCP is reviewed and updated at least annually or after significant changes (new systems, organizational restructuring, post-incident).
+- Verify that lessons learned from tests and actual incidents are incorporated into the BCP.
+- Review change management procedures for BCP updates.
+- Confirm version control is maintained for BCP documentation.
+
+### 4. Expected Findings (Typical University Environment)
+
+| Area                     | Expected Finding                                                          | Risk   |
+| ------------------------ | ------------------------------------------------------------------------- | ------ |
+| BCP Policy               | No formal BCP policy; ad-hoc response to disruptions                     | HIGH   |
+| BIA                      | BIA not conducted; critical systems and MTD not defined                   | HIGH   |
+| RTO/RPO                  | RTO and RPO not formally defined for any system                          | HIGH   |
+| DRC Readiness            | DRC exists but failover never tested; data replication is weekly         | HIGH   |
+| BCP Testing              | No BCP testing or exercises conducted in last 12 months                  | HIGH   |
+| Communication Plan       | No formal emergency communication or escalation plan                     | MEDIUM |
+| BCP Maintenance          | BCP document (if exists) not updated since creation                      | MEDIUM |
+
+### 5. Recommendations
+
+- Develop a formal BCP approved by university management with clearly defined scope and governance.
+- Conduct a comprehensive BIA identifying all critical university functions and their dependencies.
+- Define RTO and RPO for each critical system and ensure IT infrastructure supports them.
+- Upgrade DRC data replication to at least daily; test failover quarterly.
+- Conduct annual tabletop exercises and at least one simulation test per year.
+- Establish an emergency communication plan with notification trees and updated contact lists.
+- Review and update BCP annually with version control.
+
+---
+
+## 17. Security by Design and SecSDLC Audit [7]
+
+> **Q.** Discuss the importance of Security by Design principles in software development. As an IT auditor, explain how you would audit the Secure Software Development Life Cycle (SecSDLC) process to ensure security is integrated throughout the development lifecycle. [7]
+
+### 17.1 Importance of Security by Design
+
+**Security by Design** is an approach where security is considered and integrated from the very beginning of the software development lifecycle, rather than being added as an afterthought after development is complete. This is critical because:
+
+**Reduces Cost of Security Fixes**
+Vulnerabilities identified and fixed during the design phase cost significantly less (up to 100x) than those discovered in production. Retrofitting security into completed applications is expensive and often incomplete.
+
+**Prevents Common Vulnerabilities**
+Proactively addressing security during development prevents common vulnerabilities such as the OWASP Top 10 — injection attacks, broken authentication, sensitive data exposure, security misconfiguration, cross-site scripting (XSS).
+
+**Ensures Compliance**
+Regulatory requirements (ISO 27001:2022 A.8.25 — Secure Development Life Cycle, A.8.26 — Application Security Requirements, A.8.28 — Secure Coding) mandate security integration throughout development.
+
+**Protects Sensitive Data**
+Applications processing sensitive data (PII, financial data) require built-in security controls — encryption, input validation, access controls, secure session management — from the design stage.
+
+**Reduces Attack Surface**
+Threat modeling and security architecture review during design identify and eliminate unnecessary interfaces, services, and privileges, reducing the application's attack surface.
+
+**Builds Customer Trust**
+Secure software builds trust with customers and stakeholders, particularly for applications handling sensitive operations like banking, healthcare, and government services.
+
+### 17.2 Auditing the Secure SDLC (SecSDLC)
+
+As an IT auditor, I would audit the SecSDLC process across all phases of the development lifecycle:
+
+#### Phase 1: Requirements — Security Requirements Audit
+
+**Audit Activities:**
+
+- Verify that security requirements are explicitly defined alongside functional requirements for each project.
+- Check that security requirements address CIA (Confidentiality, Integrity, Availability) for the application.
+- Review whether regulatory and compliance requirements (ISO 27001, data privacy laws) are mapped to application security requirements.
+- Verify that a risk assessment or threat classification is performed for new applications.
+- Check compliance with ISO 27001:2022 A.8.26 — Application Security Requirements.
+
+#### Phase 2: Design — Secure Architecture Audit
+
+**Audit Activities:**
+
+- Verify that **threat modeling** is conducted during the design phase (e.g., STRIDE methodology — Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege).
+- Review whether secure architecture principles are applied:
+  - Least privilege
+  - Defense in depth
+  - Fail-safe defaults
+  - Separation of duties
+  - Minimize attack surface
+- Check that a security architecture review is performed and documented.
+- Verify compliance with ISO 27001:2022 A.8.27 — Secure System Architecture and Engineering Principles.
+
+#### Phase 3: Implementation — Secure Coding Audit
+
+**Audit Activities:**
+
+- Verify that **secure coding standards** are defined and communicated to developers (e.g., OWASP Secure Coding Practices, CERT Secure Coding Standards).
+- Check that developers receive secure coding training.
+- Review whether **code reviews** (peer reviews) include security as a review criterion.
+- Verify that **Static Application Security Testing (SAST)** tools are integrated into the CI/CD pipeline to automatically detect vulnerabilities in source code.
+- Check compliance with ISO 27001:2022 A.8.28 — Secure Coding.
+
+#### Phase 4: Testing — Security Testing Audit
+
+**Audit Activities:**
+
+- Verify that **security testing** is performed before deployment to production:
+  - **Dynamic Application Security Testing (DAST)** — testing the running application for vulnerabilities.
+  - **SAST** — static code analysis for vulnerabilities.
+  - **Penetration Testing** — manual testing by security experts.
+  - **Fuzz Testing** — testing with unexpected/malformed inputs.
+- Review test results and verify that identified vulnerabilities are remediated before release.
+- Check that security testing is mandatory in the release approval process (no deployment without security sign-off).
+- Verify compliance with ISO 27001:2022 A.8.29 — Security Testing in Development and Acceptance.
+
+#### Phase 5: Deployment — Secure Deployment Audit
+
+**Audit Activities:**
+
+- Verify that a **change management process** governs all deployments to production (per ISO 27001:2022 A.8.32).
+- Check that deployment procedures include secure configuration of the production environment (hardened servers, minimal services, proper access controls).
+- Review that **separation of environments** (development, testing, staging, production) is maintained (per ISO 27001:2022 A.8.31).
+- Verify that production data is NOT used in development/testing environments without masking (per A.8.33 — Test Information).
+
+#### Phase 6: Maintenance — Ongoing Security Audit
+
+**Audit Activities:**
+
+- Verify that a **vulnerability management process** exists for deployed applications — regular VAPT, patch management.
+- Check that security incidents related to the application trigger review and update of security controls.
+- Review that application security is included in periodic IS Audit cycles.
+- Verify that end-of-life/decommissioning procedures include secure data disposal and access revocation.
+
+### 17.3 Audit Deliverables
+
+- SecSDLC Process Maturity Assessment with findings per phase.
+- Gap analysis against ISO 27001:2022 controls (A.8.25–A.8.34).
+- Risk ratings for each audit area.
+- Recommendations for integrating security throughout the SDLC with priorities and timelines.
+
+---
+
+## 18. Short Note: Audit Sampling [5]
+
+> **Q.** Short notes on: Audit Sampling
+
+**Audit Sampling** is the technique of selecting a representative subset of data, transactions, or records from a population for testing, rather than examining the entire population. It is a fundamental technique used by IS Auditors to draw conclusions about the effectiveness of controls when examining 100% of the population is not feasible due to time, cost, or volume constraints.
+
+### Types of Audit Sampling
+
+**1. Statistical Sampling**
+Uses probability theory to select samples and evaluate results. Provides a mathematically measured sampling risk and allows the auditor to quantify confidence levels.
+
+- **Random Sampling** — every item in the population has an equal chance of selection.
+- **Systematic Sampling** — selecting every nth item from the population (e.g., every 10th transaction).
+- **Stratified Sampling** — dividing the population into subgroups (strata) based on characteristics (e.g., transaction value) and sampling from each stratum.
+
+**2. Non-Statistical (Judgmental) Sampling**
+Based on the auditor's professional judgment and experience. Does not provide mathematically measurable confidence levels but is useful when auditor expertise guides sample selection.
+
+- **Haphazard Sampling** — auditor selects items without a structured method but attempts to avoid bias.
+- **Block/Cluster Sampling** — selecting a block of consecutive items (e.g., all transactions from a specific month).
+- **Directed Sampling** — targeting specific items based on risk (e.g., high-value transactions, exceptions).
+
+### Key Concepts
+
+- **Population** — the entire set of data from which the sample is drawn.
+- **Sample Size** — determined by confidence level, tolerable error rate, and expected error rate. Larger samples provide more reliable results.
+- **Sampling Risk** — the risk that the auditor's conclusion based on the sample differs from the conclusion that would result from examining the entire population.
+  - **Risk of Over-Reliance** — concluding controls are effective when they are not (auditor's risk).
+  - **Risk of Under-Reliance** — concluding controls are ineffective when they are effective (efficiency impact).
+- **Tolerable Error Rate** — the maximum error rate the auditor is willing to accept.
+
+### Application in IS Audit
+
+- Sampling user access records to verify access control compliance.
+- Sampling change management records to verify proper authorization.
+- Sampling backup restoration logs to verify backup testing.
+- Sampling firewall rule sets across branch sites to verify configuration compliance.
+- Sampling incident records to verify incident response effectiveness.
+
+### IS Auditor Considerations
+
+- Define the audit objective for the sample test.
+- Identify the population and ensure it is complete.
+- Determine the appropriate sampling method (statistical or judgmental) based on audit risk and objectives.
+- Calculate appropriate sample size based on confidence level and materiality.
+- Select and test the sample.
+- Evaluate results and project findings to the population.
+- Document the sampling methodology, sample size rationale, and results in audit working papers.
+
+---
+
+## 19. Short Note: Governance of Enterprise IT (GEIT) [5]
+
+> **Q.** Short notes on: Governance of Enterprise I & T
+
+**Governance of Enterprise IT (GEIT)** is the system by which the Board of Directors and executive management direct and control the current and future use of information and technology (I&T) to support the organization's objectives. It is a subset of enterprise governance and ensures that IT investments create value while managing IT-related risks.
+
+### Key Principles
+
+- **Strategic Alignment** — IT strategy must be aligned with business strategy and objectives.
+- **Value Delivery** — IT must deliver promised benefits, and costs must be optimized.
+- **Risk Management** — IT-related risks must be identified, assessed, and managed within the organization's risk appetite.
+- **Resource Management** — IT resources (people, technology, data, infrastructure) must be optimally managed.
+- **Performance Measurement** — IT performance must be monitored and measured using appropriate metrics and KPIs.
+
+### Framework — COBIT 2019
+
+COBIT (Control Objectives for Information and Related Technologies) by ISACA is the primary framework for GEIT. It provides:
+
+- **Governance Domain — EDM (Evaluate, Direct, Monitor):** The Board evaluates strategic options, directs management, and monitors performance.
+- **Management Domains:**
+  - **APO (Align, Plan, Organize)** — IT strategy, architecture, risk, budgeting.
+  - **BAI (Build, Acquire, Implement)** — solution development, change management, asset management.
+  - **DSS (Deliver, Service, Support)** — service delivery, incident/problem management, security operations.
+  - **MEA (Monitor, Evaluate, Assess)** — performance monitoring, internal controls, compliance.
+
+### IT Governance Structure
+
+- **Board of Directors** — sets strategic direction and risk appetite for IT.
+- **IT Steering Committee** — prioritizes IT investments, monitors performance, resolves cross-functional issues.
+- **CISO / IT Management Committee** — implements governance decisions, manages day-to-day IT operations and security.
+
+### Relevance to IS Audit
+
+IS Auditors evaluate GEIT by assessing whether:
+- IT governance structures exist and are effective.
+- IT strategy aligns with business objectives.
+- IT risk management is integrated into enterprise risk management.
+- IT resource management is optimized.
+- Performance metrics and reporting mechanisms are established and monitored.
+
+---
+
+## 20. Short Note: Change Management [5]
+
+> **Q.** Short notes on: Change Management
+
+**Change Management** is the process of controlling modifications to IT systems, applications, network configurations, and infrastructure to minimize disruption and ensure that changes are implemented in a structured, authorized, and documented manner. It is covered under ISO 27001:2022 (A.8.32 — Change Management) and ITIL framework.
+
+### Importance
+
+- **Prevents unauthorized changes** — uncontrolled changes can introduce vulnerabilities, cause outages, or compromise data integrity.
+- **Ensures service stability** — structured change process with testing and rollback plans minimizes the risk of failed changes impacting production services.
+- **Maintains audit trail** — documented change records provide evidence for regulatory audits and support accountability.
+- **Supports compliance** — ISO 27001:2022 (A.8.32) and regulatory requirements mandate formal change management.
+- **Reduces security risk** — each change is risk-assessed before implementation.
+
+### Change Categories
+
+- **Standard Change** — pre-approved, low-risk, routine changes (e.g., applying a pre-tested patch, adding a user account).
+- **Normal Change** — requires full change management process with CAB (Change Advisory Board) approval.
+- **Emergency Change** — critical change requiring expedited approval due to a major incident; follows a fast-track authorization with post-implementation review.
+
+### Change Management Process (ITIL)
+
+1. **Request for Change (RFC)** — submit a formal change request with description, reason, risk assessment, and rollback plan.
+2. **Change Assessment** — evaluate risk, impact, resource requirements, and dependencies.
+3. **Change Authorization** — CAB or designated authority reviews and approves/rejects the change.
+4. **Change Planning and Testing** — plan the implementation, test in a non-production environment, document test results.
+5. **Implementation** — execute the change within the approved maintenance window.
+6. **Post-Implementation Review (PIR)** — verify the change achieved its intended outcome; document any issues.
+7. **Closure** — formally close the change record with outcome documentation.
+
+### IS Auditor's Role
+
+- Verify that a formal Change Management policy and process exists.
+- Audit a sample of change records for proper authorization by CAB.
+- Check that changes are tested before production deployment.
+- Verify that rollback plans are documented for each change.
+- Review emergency change procedures and post-implementation reviews.
+- Assess change management KPIs — change success rate, number of unauthorized changes, failed change ratio.
+
+---
+
+## 21. Short Note: Problem Management [5]
+
+> **Q.** Short notes on: Problem Management
+
+**Problem Management** is the process of identifying the root cause of one or more incidents, determining a resolution, and preventing future recurrences. It is defined in the ITIL framework and supported by ISO 20000. While Incident Management focuses on restoring service as quickly as possible, Problem Management focuses on finding and fixing the underlying cause.
+
+### Key Concepts
+
+- **Problem** — the underlying cause of one or more incidents that is not yet known.
+- **Known Error** — a problem for which the root cause has been identified and a workaround or permanent fix is documented.
+- **Known Error Database (KEDB)** — a repository of known errors and their documented workarounds, accessible to the service desk for faster incident resolution.
+- **Root Cause Analysis (RCA)** — techniques to determine the underlying cause: 5-Why Analysis, Fishbone (Ishikawa) Diagram, Fault Tree Analysis.
+
+### Types of Problem Management
+
+- **Reactive Problem Management** — triggered by recurring incidents. When the same type of incident occurs multiple times, a problem record is created to investigate the root cause.
+- **Proactive Problem Management** — identifying problems before incidents occur through trend analysis, infrastructure review, and monitoring of system health indicators.
+
+### Problem Management Process (ITIL)
+
+1. **Problem Detection** — identify problems from recurring incidents, proactive monitoring, or infrastructure analysis.
+2. **Problem Logging** — create a formal problem record with unique ID, linking related incidents.
+3. **Problem Categorization and Prioritization** — classify by impact and urgency.
+4. **Root Cause Analysis (RCA)** — investigate using structured techniques (5-Why, Fishbone).
+5. **Workaround Development** — if a permanent fix cannot be immediately implemented, develop and document a temporary workaround; update the KEDB.
+6. **Permanent Fix and Resolution** — submit a Request for Change (RFC) through Change Management for the permanent fix.
+7. **Problem Closure** — close the problem record only after successful implementation of the permanent fix and verification.
+8. **Lessons Learned** — document findings to prevent similar problems.
+
+### Relationship with Other Processes
+
+- **Incident Management → Problem Management:** Major or recurring incidents trigger problem records.
+- **Problem Management → Change Management:** Permanent fixes are implemented through the Change Management process (RFC).
+- **Problem Management → Knowledge Management:** Known errors and workarounds populate the KEDB.
+
+### IS Auditor's Role
+
+- Verify that a formal Problem Management policy and process exists.
+- Review linkage between Incident Management and Problem Management — are major/recurring incidents triggering problem records?
+- Assess quality of Root Cause Analysis — review a sample of problem records for documented RCA.
+- Evaluate the KEDB — is it maintained, accessible, and useful for the service desk?
+- Review Problem Management KPIs — number of problems logged, time to root cause, reduction in recurring incidents, permanent fix success rate.
+- Verify that permanent fixes follow the Change Management process.
