@@ -1777,6 +1777,14 @@ This audit evaluates the effectiveness of Pokhara University's Incident Response
 
 #### Phase 1: Preparation
 
+#### Phase 2: Detection and Analysis
+
+#### Phase 3: Containment, Eradication, and Recovery
+
+#### Phase 4: Post-Incident Activity
+
+#### Phase 1: Preparation
+
 **Step 1: Review IRP Policy and Documentation**
 
 - Verify that a formal Incident Response Policy exists, is approved by university management, and defines the authority and scope of the IR program.
@@ -2110,83 +2118,6 @@ The VAPT shall follow industry-recognized frameworks and standards:
 - Draft report within 5 business days of testing completion.
 - Management response within 10 business days.
 - Final report within 15 business days of testing completion.
-
----
-
-## 10. Short Notes: IT Governance with COBIT
-
-> **Q.** Short notes on: IT Governance with COBIT
-
-**COBIT (Control Objectives for Information and Related Technologies)** is a framework developed by ISACA for the governance and management of enterprise information and technology (I&T). The latest version, COBIT 2019, provides a comprehensive structure for aligning IT with business objectives.
-
-### Core Principles of COBIT 2019
-
-- **Meeting Stakeholder Needs** — balancing competing interests to create value.
-- **Covering the Enterprise End-to-End** — integrating IT governance into enterprise governance.
-- **Applying a Single Integrated Framework** — a unified governance approach.
-- **Enabling a Holistic Approach** — addressing processes, structures, culture, and technology.
-- **Separating Governance from Management** — distinct functions with different purposes.
-
-### Five Domains (40 Governance and Management Objectives)
-
-**Governance Domain:**
-
-- **Evaluate, Direct, and Monitor (EDM)** — strategic direction, stakeholder value, performance monitoring.
-
-**Management Domains:**
-
-- **Align, Plan, and Organize (APO)** — IT strategy, architecture, risk management, resource planning.
-- **Build, Acquire, and Implement (BAI)** — solution development, change management, asset management.
-- **Deliver, Service, and Support (DSS)** — service delivery, incident management, problem management, security management.
-- **Monitor, Evaluate, and Assess (MEA)** — performance monitoring, internal controls, compliance assessment.
-
-### Performance Management
-
-COBIT 2019 uses **Capability Maturity Model** levels (0–5) to measure process maturity:
-
-- Level 0: Incomplete — Level 1: Performed — Level 2: Managed — Level 3: Established — Level 4: Predictable — Level 5: Optimizing.
-
-### Design Factors
-
-COBIT 2019 allows tailoring through design factors: enterprise strategy, IT goals, risk profile, IT-related issues, threat landscape, compliance requirements, role of IT, sourcing model, IT implementation methods, and technology adoption strategy.
-
-### Relevance to IS Audit
-
-IS Auditors use COBIT to evaluate whether IT governance structures effectively align IT strategy with business objectives, manage IT risks, and optimize IT resource utilization. COBIT provides the control objectives and maturity benchmarks against which auditors assess IT governance effectiveness.
-
----
-
-## 11. Short Notes: Licensing Issues in IS Audit
-
-> **Q.** Short notes on: Licensing Issues in IS Audit
-
-Licensing issues are a critical area in IS Audit, covered under Unit 2 of the syllabus (2.9 Licensing Issues, ICT Procurement Practices). An IS Auditor evaluates whether the organization complies with software licensing agreements and manages licenses effectively.
-
-### Types of Software Licenses
-
-- **Proprietary/Commercial License** — purchased per user, per device, or enterprise-wide (e.g., Microsoft, Oracle).
-- **Open Source License** — free to use with varying restrictions (GPL, MIT, Apache).
-- **Subscription/SaaS License** — recurring payment for cloud-based software.
-- **Volume License** — bulk licensing for large organizations at discounted rates.
-- **OEM License** — bundled with hardware; non-transferable.
-
-### Key Licensing Issues in IS Audit
-
-- **Software Piracy/Unlicensed Software** — using software without valid licenses violates copyright law (Electronic Transactions Act 2008) and exposes the organization to legal penalties.
-- **Under-Licensing** — fewer licenses than actual installations; compliance risk during vendor audits.
-- **Over-Licensing** — paying for more licenses than required; wasteful expenditure.
-- **License Tracking** — absence of a centralized Software Asset Management (SAM) system to track installations, entitlements, and renewals.
-- **Expired Licenses** — continued use of software after license expiry; security risk from lack of updates/patches.
-- **Open Source Compliance** — failure to comply with open source license terms (e.g., GPL requirement to release modified source code).
-
-### IS Auditor's Role
-
-- Verify the existence of a software asset inventory/register.
-- Compare installed software against license entitlements to identify gaps.
-- Review software procurement procedures for compliance.
-- Check for unauthorized or pirated software installations.
-- Assess controls preventing unauthorized software installation (e.g., application allowlisting, group policy).
-- Review license renewal tracking and expiry alerts.
 
 ---
 
