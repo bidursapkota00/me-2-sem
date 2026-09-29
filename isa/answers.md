@@ -1477,91 +1477,6 @@ This Cybersecurity Maturity Assessment evaluates the organization's cybersecurit
 
 **Function Maturity: Tier 1–2 (Partial to Risk Informed)**
 
-#### Function 2: IDENTIFY (ID)
-
-| Category                 | Subcategory | Description                                                        | Current Tier | Gap                                                                               | Target Tier |
-| ------------------------ | ----------- | ------------------------------------------------------------------ | ------------ | --------------------------------------------------------------------------------- | ----------- |
-| Asset Management (ID.AM) | ID.AM-01    | Inventories of hardware managed by the organization are maintained | Tier 2       | Asset inventory exists for DC but not comprehensive; cloud DRC assets not tracked | Tier 3      |
-| Risk Assessment (ID.RA)  | ID.RA-01    | Vulnerabilities in assets are identified, validated, and recorded  | Tier 1       | No formal vulnerability scanning or assessment program                            | Tier 3      |
-
-**Function Maturity: Tier 1–2 (Partial to Risk Informed)**
-
-#### Function 3: PROTECT (PR)
-
-| Category                                                        | Subcategory | Description                                                                         | Current Tier | Gap                                                                      | Target Tier |
-| --------------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------------- | ------------ | ------------------------------------------------------------------------ | ----------- |
-| Identity Management, Authentication, and Access Control (PR.AA) | PR.AA-01    | Identities and credentials for authorized users, services, and hardware are managed | Tier 2       | User lifecycle management inconsistent; no MFA; shared admin credentials | Tier 3      |
-| Awareness and Training (PR.AT)                                  | PR.AT-01    | Personnel are provided cybersecurity awareness and training                         | Tier 1       | No structured cybersecurity training; no training records                | Tier 3      |
-| Data Security (PR.DS)                                           | PR.DS-01    | The confidentiality, integrity, and availability of data-at-rest are protected      | Tier 1       | No encryption at rest; backups unencrypted; cloud DRC data not encrypted | Tier 3      |
-| Platform Security (PR.PS)                                       | PR.PS-01    | The hardware, software, and services of physical and virtual platforms are managed  | Tier 2       | Patch management ad-hoc; no configuration baselines                      | Tier 3      |
-
-**Function Maturity: Tier 1–2 (Partial to Risk Informed)**
-
-#### Function 4: DETECT (DE)
-
-| Category                       | Subcategory | Description                                                                        | Current Tier | Gap                                                                | Target Tier |
-| ------------------------------ | ----------- | ---------------------------------------------------------------------------------- | ------------ | ------------------------------------------------------------------ | ----------- |
-| Continuous Monitoring (DE.CM)  | DE.CM-01    | Networks and network services are monitored to find potentially adverse events     | Tier 1       | No IDS/IPS; no SIEM; no real-time network monitoring               | Tier 3      |
-| Adverse Event Analysis (DE.AE) | DE.AE-02    | Potentially adverse events are analyzed to better understand associated activities | Tier 1       | Logs only reviewed reactively; no correlation or anomaly detection | Tier 3      |
-
-**Function Maturity: Tier 1 (Partial)**
-
-#### Function 5: RESPOND (RS)
-
-| Category                    | Subcategory | Description                                                                        | Current Tier | Gap                                                                     | Target Tier |
-| --------------------------- | ----------- | ---------------------------------------------------------------------------------- | ------------ | ----------------------------------------------------------------------- | ----------- |
-| Incident Management (RS.MA) | RS.MA-01    | The incident response plan is executed in coordination with relevant third parties | Tier 1       | No formal incident response plan; ad-hoc response; no escalation matrix | Tier 3      |
-| Incident Analysis (RS.AN)   | RS.AN-03    | Analysis is performed to determine what has taken place during an incident         | Tier 1       | No forensic analysis capability; no evidence collection procedures      | Tier 3      |
-
-**Function Maturity: Tier 1 (Partial)**
-
-#### Function 6: RECOVER (RC)
-
-| Category                                 | Subcategory | Description                                                                  | Current Tier | Gap                                                           | Target Tier |
-| ---------------------------------------- | ----------- | ---------------------------------------------------------------------------- | ------------ | ------------------------------------------------------------- | ----------- |
-| Incident Recovery Plan Execution (RC.RP) | RC.RP-01    | The recovery portion of the incident response plan is executed               | Tier 2       | Cloud DRC exists but failover not tested; RTO/RPO not defined | Tier 3      |
-| Incident Recovery Communication (RC.CO)  | RC.CO-03    | Recovery activities and progress are communicated to designated stakeholders | Tier 1       | No crisis communication plan for cyber incidents              | Tier 3      |
-
-**Function Maturity: Tier 1–2 (Partial to Risk Informed)**
-
-### 4. Overall Maturity Summary
-
-| Function | Current Maturity                    | Target Maturity     |
-| -------- | ----------------------------------- | ------------------- |
-| Govern   | Tier 1–2 (Partial to Risk Informed) | Tier 3 (Repeatable) |
-| Identify | Tier 1–2 (Partial to Risk Informed) | Tier 3 (Repeatable) |
-| Protect  | Tier 1–2 (Partial to Risk Informed) | Tier 3 (Repeatable) |
-| Detect   | Tier 1 (Partial)                    | Tier 3 (Repeatable) |
-| Respond  | Tier 1 (Partial)                    | Tier 3 (Repeatable) |
-| Recover  | Tier 1–2 (Partial to Risk Informed) | Tier 3 (Repeatable) |
-
-**Overall Organization Maturity: Tier 1–2 (Partial to Risk Informed)**
-
-### 5. Improvement Roadmap
-
-**Phase 1 — Immediate (0–3 Months)**
-
-- Appoint a dedicated CISO and define cybersecurity roles and responsibilities (GV.RR).
-- Update cybersecurity policy and develop topic-specific policies (GV.PO).
-- Implement MFA and PAM for critical systems (PR.AA).
-- Deploy centralized SIEM and establish monitoring capability (DE.CM).
-- Develop a formal Incident Response Plan with escalation matrix (RS.MA).
-
-**Phase 2 — Short-Term (3–6 Months)**
-
-- Establish vulnerability management program with regular scanning (ID.RA).
-- Implement cybersecurity awareness training for all personnel (PR.AT).
-- Define RTO/RPO and test DR failover procedures at cloud DRC (RC.RP).
-- Implement encryption at rest for sensitive data and backups (PR.DS).
-- Develop supply chain risk management for cloud DRC provider (GV.SC).
-
-**Phase 3 — Medium-Term (6–12 Months)**
-
-- Deploy IDS/IPS and network anomaly detection (DE.CM).
-- Establish crisis communication plan for cyber incidents (RC.CO).
-- Conduct tabletop exercises for incident response and recovery.
-- Achieve Tier 3 (Repeatable) maturity across all six functions.
-
 ---
 
 ## 3. Information Security Policy Framework — Himalayan Bank
@@ -1834,159 +1749,6 @@ As the Chief Risk Officer (CRO) of a leading wallet company, I identify the foll
 | 5   | Network Infrastructure (DC/DRC)  | High | High | High | HIGH        |
 
 All identified assets require immediate risk treatment through implementation of recommended controls, tracked via a Risk Register with assigned owners and remediation timelines.
-
----
-
-## 6. IS Audit Report — ISO 27001:2022 (Six Controls)
-
-> **Q.** You have been appointed as an external Information System Auditor for a renowned company with 250 sites, its own Data Center, and a Disaster Recovery Center. Your task is to perform an IS audit focusing on Six controls from the ISO 27001:2022 standard. Prepare a comprehensive report that includes the control, your observations, risk ratings, and key findings with recommendations.
-
-### Information System Audit Report
-
-**Organization:** A renowned company with 250 sites, own Data Center (DC) and Disaster Recovery Center (DRC)
-**Audit Standard:** ISO 27001:2022
-**Audit Type:** External Information System Audit
-**Controls Evaluated:** 6 (across all 4 Annex A themes)
-
-### Introduction
-
-Information and Communication Technologies (ICT) play a vital role for the organization to enable its business processes across 250 sites, DC, and DRC. This IS Audit evaluates the organization's information security posture against 6 selected controls from ISO 27001:2022 Annex A. It aids in preserving the Confidentiality, Integrity and Availability (CIA) of information by applying a risk management process and gives confidence to stakeholders that risks are adequately managed.
-
-### Objective
-
-To assess the design and operating effectiveness of 6 ISO 27001:2022 Annex A controls, identify risks, and provide actionable recommendations.
-
-### Scope
-
-Head Office, Data Center (DC), Disaster Recovery Center (DRC), and a representative sample of branch sites across 250 locations. Controls evaluated span all four Annex A themes: Organizational, People, Physical, and Technological.
-
----
-
-### A.1. Organizational Controls
-
-#### Control 1: Policies for Information Security (A.5.1)
-
-**Control:** Information security policy and topic-specific policies should be defined, approved by management, published, communicated to and acknowledged by relevant personnel and relevant interested parties, and reviewed at planned intervals and if significant changes occur.
-
-**Purpose:** To ensure continuing suitability, adequacy, effectiveness of management direction and support for information security in accordance with business, legal, statutory, regulatory and contractual requirements.
-
-**Observation:** The organization has an Information Security Policy (Version 1.0); however, the policy has not been reviewed or updated since its initial release. No topic-specific policies (acceptable use, data classification, remote access, backup, incident management) are formally documented. Staff awareness of the existing policy was limited, particularly at remote branch sites. No evidence of written acknowledgement by employees was found.
-
-**Risk Rating:** HIGH
-
-**Recommendation:** Immediately review and update the Information Security Policy to align with ISO 27001:2022 and the current organizational context. Develop topic-specific policies covering acceptable use, access control, data classification, backup, incident management, and remote access. Communicate to all personnel across 250 sites and obtain signed acknowledgement. Establish an annual review cycle with additional reviews triggered by significant changes.
-
----
-
-### A.2. People Controls
-
-#### Control 2: Information Security Awareness, Education and Training (A.6.3)
-
-**Control:** Personnel of the organization and relevant interested parties should receive appropriate information security awareness, education and training and regular updates of the organization's information security policy, topic-specific policies and procedures, as relevant for their job function.
-
-**Purpose:** To ensure personnel and relevant interested parties are aware of and fulfill their information security responsibilities.
-
-**Observation:** No structured information security awareness and training program exists. Employees across branch sites are unaware of basic cybersecurity practices (phishing identification, password management, social engineering). No training records were available for review. Shared login credentials were observed at multiple sites for convenience.
-
-**Risk Rating:** HIGH
-
-**Recommendation:** Establish a comprehensive security awareness training program conducted at least annually for all employees across 250 sites. Cover phishing, social engineering, password hygiene, data handling, and incident reporting. Maintain training records. Conduct periodic simulated phishing exercises. Provide specialized training for IT staff on secure administration and incident response.
-
----
-
-### A.3. Physical Controls
-
-#### Control 3: Physical Security Perimeters (A.7.1)
-
-**Control:** Security perimeters should be defined and used to protect areas that contain information and other associated assets.
-
-**Purpose:** To prevent unauthorized physical access, damage and interference to the organization's information and other associated assets.
-
-**Observation:** The Data Center uses a basic key-lock mechanism without electronic access control (biometric/card-based). No visitor log is maintained for the DC area. The DRC has shared access corridors without a dedicated security perimeter. CCTV coverage at the DC entrance is limited, with footage retained for only 15 days. Multiple branch sites have minimal physical security for IT equipment and networking infrastructure.
-
-**Risk Rating:** HIGH
-
-**Recommendation:** Implement electronic access control systems (biometric or smart card) for DC and DRC. Deploy a visitor management system with proper logging. Enhance CCTV with minimum 90-day retention. Establish a dedicated security perimeter for DRC with independent access controls. Conduct physical security assessments at all branch sites and establish minimum security standards.
-
----
-
-### A.4. Technological Controls
-
-#### Control 4: Access Control (A.8.2)
-
-**Control:** Access to information and other associated assets should be restricted in accordance with the established topic-specific policy on access control.
-
-**Purpose:** To ensure authorized access and to prevent unauthorized access to information and other associated assets.
-
-**Observation:** No formal access control policy has been documented. User account management lacks a structured provisioning and de-provisioning process — terminated employees' accounts were found active. Shared accounts observed in critical systems at multiple sites. Password policy is weak (6-character minimum, no complexity, no expiry). No MFA implemented for any system. Privileged access uses shared admin/root credentials without PAM.
-
-**Risk Rating:** HIGH
-
-**Recommendation:** Develop and implement a formal access control policy. Establish user lifecycle management with HR integration for timely account deactivation upon separation. Eliminate shared accounts. Enforce 12-character passwords with complexity and rotation. Implement MFA for all critical systems. Deploy PAM solution. Conduct quarterly user access reviews.
-
----
-
-#### Control 5: Management of Technical Vulnerabilities (A.8.8)
-
-**Control:** Information about technical vulnerabilities of information systems in use should be obtained, the organization's exposure to such vulnerabilities should be evaluated and appropriate measures should be taken.
-
-**Purpose:** To prevent exploitation of technical vulnerabilities.
-
-**Observation:** No formal vulnerability management program exists. No periodic vulnerability assessments or penetration testing conducted on IT infrastructure or applications. Patch management is ad-hoc with no defined timelines — several servers running outdated OS with known vulnerabilities. Customer-facing application has not been security-assessed. No software inventory maintained to track versions and patch status.
-
-**Risk Rating:** HIGH
-
-**Recommendation:** Establish a formal vulnerability management program with quarterly vulnerability assessments and annual penetration testing. Define patch management timelines: critical patches within 72 hours, high within 2 weeks, routine within 30 days. Maintain comprehensive IT asset and software inventory. Subscribe to vulnerability advisory services (e.g., CERT, vendor advisories).
-
----
-
-#### Control 6: Information Backup (A.8.13)
-
-**Control:** Backup copies of information, software and systems should be maintained and regularly tested in accordance with the agreed topic-specific policy on backup.
-
-**Purpose:** To enable recovery of information and other associated assets following data loss or disruption.
-
-**Observation:** Daily backups of critical databases are performed. No formal backup policy exists defining scope, frequency, retention periods, and recovery procedures. Off-site replication to DRC is weekly, creating a 7-day potential data loss window. Backup restoration tests have not been performed in over 12 months. RTO and RPO have not been formally defined. Backup encryption is not implemented.
-
-**Risk Rating:** HIGH
-
-**Recommendation:** Develop a formal backup policy defining RTO, RPO, frequency, retention, and restoration procedures. Increase DRC replication to daily minimum. Conduct quarterly backup restoration tests and document results. Encrypt all backup data at rest and in transit. Integrate backup strategy with BCP.
-
----
-
-### Summary of Findings
-
-| #   | Control                                 | ISO Ref | Theme          | Risk Rating |
-| --- | --------------------------------------- | ------- | -------------- | ----------- |
-| 1   | Policies for Information Security       | A.5.1   | Organizational | HIGH        |
-| 2   | Security Awareness and Training         | A.6.3   | People         | HIGH        |
-| 3   | Physical Security Perimeters            | A.7.1   | Physical       | HIGH        |
-| 4   | Access Control                          | A.8.2   | Technological  | HIGH        |
-| 5   | Management of Technical Vulnerabilities | A.8.8   | Technological  | HIGH        |
-| 6   | Information Backup                      | A.8.13  | Technological  | HIGH        |
-
-**Overall Assessment:** All 6 controls rated HIGH risk. The organization's information security posture requires significant improvement across organizational, people, physical, and technological domains.
-
-### Prioritized Recommendations
-
-**Critical Priority (Immediate)**
-
-- Implement MFA for all critical systems and eliminate shared accounts.
-- Conduct immediate VAPT of customer-facing applications and IT infrastructure.
-- Define RTO/RPO and increase DRC backup replication to daily.
-
-**High Priority (Within 3 Months)**
-
-- Update Information Security Policy and develop topic-specific policies.
-- Implement electronic access controls at DC and DRC.
-- Establish formal vulnerability and patch management program.
-- Deploy PAM for administrative accounts.
-
-**Medium Priority (Within 6 Months)**
-
-- Conduct cybersecurity awareness training for all employees across 250 sites.
-- Establish quarterly backup restoration testing.
-- Implement comprehensive IT asset inventory.
 
 ---
 
@@ -2718,15 +2480,15 @@ This audit evaluates the effectiveness of Pokhara University's Business Continui
 
 ### 4. Expected Findings (Typical University Environment)
 
-| Area                     | Expected Finding                                                          | Risk   |
-| ------------------------ | ------------------------------------------------------------------------- | ------ |
-| BCP Policy               | No formal BCP policy; ad-hoc response to disruptions                     | HIGH   |
-| BIA                      | BIA not conducted; critical systems and MTD not defined                   | HIGH   |
-| RTO/RPO                  | RTO and RPO not formally defined for any system                          | HIGH   |
-| DRC Readiness            | DRC exists but failover never tested; data replication is weekly         | HIGH   |
-| BCP Testing              | No BCP testing or exercises conducted in last 12 months                  | HIGH   |
-| Communication Plan       | No formal emergency communication or escalation plan                     | MEDIUM |
-| BCP Maintenance          | BCP document (if exists) not updated since creation                      | MEDIUM |
+| Area               | Expected Finding                                                 | Risk   |
+| ------------------ | ---------------------------------------------------------------- | ------ |
+| BCP Policy         | No formal BCP policy; ad-hoc response to disruptions             | HIGH   |
+| BIA                | BIA not conducted; critical systems and MTD not defined          | HIGH   |
+| RTO/RPO            | RTO and RPO not formally defined for any system                  | HIGH   |
+| DRC Readiness      | DRC exists but failover never tested; data replication is weekly | HIGH   |
+| BCP Testing        | No BCP testing or exercises conducted in last 12 months          | HIGH   |
+| Communication Plan | No formal emergency communication or escalation plan             | MEDIUM |
+| BCP Maintenance    | BCP document (if exists) not updated since creation              | MEDIUM |
 
 ### 5. Recommendations
 
@@ -2929,6 +2691,7 @@ COBIT (Control Objectives for Information and Related Technologies) by ISACA is 
 ### Relevance to IS Audit
 
 IS Auditors evaluate GEIT by assessing whether:
+
 - IT governance structures exist and are effective.
 - IT strategy aligns with business objectives.
 - IT risk management is integrated into enterprise risk management.
