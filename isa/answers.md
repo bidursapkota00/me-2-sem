@@ -576,122 +576,58 @@ The assessment covers all 100+ sites, the in-house Data Center (DC), and the pri
 
 1-4, 12, 15, 23, 36, 37
 
-| #   | Control                                                                | Ref    | Status                | Gap Identified                                                                 | Risk   |
-| --- | ---------------------------------------------------------------------- | ------ | --------------------- | ------------------------------------------------------------------------------ | ------ |
-| 1   | Policies for Information Security                                      | A.5.1  | Partially Implemented | Policy exists but not reviewed since creation; no topic-specific policies      | HIGH   |
-| 2   | Information Security Roles and Responsibilities                        | A.5.2  | Partially Implemented | No dedicated CISO; roles not formally assigned at branch sites                 | HIGH   |
-| 3   | Segregation of Duties                                                  | A.5.3  | Not Implemented       | No formal segregation of conflicting duties in IT operations                   | MEDIUM |
-| 4   | Management Responsibilities                                            | A.5.4  | Partially Implemented | Management commitment exists but not formally documented                       | MEDIUM |
-| 5   | Contact with Authorities                                               | A.5.5  | Partially Implemented | No formal procedure for contacting regulatory authorities during incidents     | LOW    |
-| 6   | Contact with Special Interest Groups                                   | A.5.6  | Not Implemented       | No membership in security forums or threat intelligence sharing groups         | LOW    |
-| 7   | Threat Intelligence                                                    | A.5.7  | Not Implemented       | No threat intelligence feeds or analysis capability                            | HIGH   |
-| 8   | Information Security in Project Management                             | A.5.8  | Not Implemented       | Security requirements not integrated into project lifecycle                    | MEDIUM |
-| 9   | Inventory of Information and Other Associated Assets                   | A.5.9  | Partially Implemented | Asset register exists but incomplete; no classification applied                | HIGH   |
-| 10  | Acceptable Use of Information and Other Associated Assets              | A.5.10 | Not Implemented       | No acceptable use policy documented                                            | MEDIUM |
-| 11  | Return of Assets                                                       | A.5.11 | Partially Implemented | No formal process for asset return upon termination                            | MEDIUM |
-| 12  | Classification of Information                                          | A.5.12 | Not Implemented       | No data classification scheme defined                                          | HIGH   |
-| 13  | Labelling of Information                                               | A.5.13 | Not Implemented       | No labelling procedures for classified information                             | MEDIUM |
-| 14  | Information Transfer                                                   | A.5.14 | Partially Implemented | Encryption used for some transfers; no formal transfer policy                  | MEDIUM |
-| 15  | Access Control                                                         | A.5.15 | Partially Implemented | No formal access control policy; weak password policy; no MFA                  | HIGH   |
-| 16  | Identity Management                                                    | A.5.16 | Partially Implemented | User accounts managed but no centralized identity management                   | MEDIUM |
-| 17  | Authentication Information                                             | A.5.17 | Partially Implemented | Passwords used but weak policy; no MFA                                         | HIGH   |
-| 18  | Access Rights                                                          | A.5.18 | Partially Implemented | No periodic access review; terminated users not promptly disabled              | HIGH   |
-| 19  | Information Security in Supplier Relationships                         | A.5.19 | Not Implemented       | No security clauses in supplier contracts                                      | HIGH   |
-| 20  | Addressing Information Security Within Supplier Agreements             | A.5.20 | Not Implemented       | No formal supplier security requirements                                       | HIGH   |
-| 21  | Managing Information Security in the ICT Supply Chain                  | A.5.21 | Not Implemented       | No ICT supply chain risk management                                            | MEDIUM |
-| 22  | Monitoring, Review and Change Management of Supplier Services          | A.5.22 | Not Implemented       | No periodic review of supplier security compliance                             | MEDIUM |
-| 23  | Information Security for Use of Cloud Services                         | A.5.23 | Partially Implemented | DRC on private cloud but no formal cloud security policy                       | HIGH   |
-| 24  | Information Security Incident Management Planning and Preparation      | A.5.24 | Partially Implemented | Basic incident handling exists; no formal incident response plan               | HIGH   |
-| 25  | Assessment and Decision on Information Security Events                 | A.5.25 | Not Implemented       | No criteria defined for classifying security events                            | MEDIUM |
-| 26  | Response to Information Security Incidents                             | A.5.26 | Partially Implemented | Ad-hoc response; no documented response procedures                             | HIGH   |
-| 27  | Learning from Information Security Incidents                           | A.5.27 | Not Implemented       | No post-incident review process                                                | MEDIUM |
-| 28  | Collection of Evidence                                                 | A.5.28 | Not Implemented       | No evidence collection procedures for digital forensics                        | MEDIUM |
-| 29  | Information Security During Disruption                                 | A.5.29 | Partially Implemented | Basic DR exists via DRC; no formal BCP                                         | HIGH   |
-| 30  | ICT Readiness for Business Continuity                                  | A.5.30 | Partially Implemented | DRC operational but ICT readiness not tested; RTO/RPO not defined              | HIGH   |
-| 31  | Legal, Statutory, Regulatory and Contractual Requirements              | A.5.31 | Partially Implemented | Some awareness of ETA 2008 and Privacy Act 2018; no formal compliance register | MEDIUM |
-| 32  | Intellectual Property Rights                                           | A.5.32 | Partially Implemented | Software licensing tracked but not comprehensive                               | LOW    |
-| 33  | Protection of Records                                                  | A.5.33 | Partially Implemented | Records maintained but no formal retention and disposal policy                 | MEDIUM |
-| 34  | Privacy and Protection of PII                                          | A.5.34 | Partially Implemented | Basic PII handling but not aligned with Privacy Act 2018                       | HIGH   |
-| 35  | Independent Review of Information Security                             | A.5.35 | Not Implemented       | No independent review or audit conducted previously                            | HIGH   |
-| 36  | Compliance with Policies, Rules and Standards for Information Security | A.5.36 | Not Implemented       | No compliance monitoring mechanism                                             | MEDIUM |
-| 37  | Documented Operating Procedures                                        | A.5.37 | Partially Implemented | Some SOPs exist but not comprehensive                                          | MEDIUM |
+| #   | Control                                                                | Ref    | Status                | Gap Identified                                                            | Risk   |
+| --- | ---------------------------------------------------------------------- | ------ | --------------------- | ------------------------------------------------------------------------- | ------ |
+| 1   | Policies for Information Security                                      | A.5.1  | Partially Implemented | Policy exists but not reviewed since creation; no topic-specific policies | HIGH   |
+| 2   | Information Security Roles and Responsibilities                        | A.5.2  | Partially Implemented | No dedicated CISO; roles not formally assigned at branch sites            | HIGH   |
+| 3   | Segregation of Duties                                                  | A.5.3  | Not Implemented       | No formal segregation of conflicting duties in IT operations              | MEDIUM |
+| 4   | Management Responsibilities                                            | A.5.4  | Partially Implemented | Management commitment exists but not formally documented                  | MEDIUM |
+| 12  | Classification of Information                                          | A.5.12 | Not Implemented       | No data classification scheme defined                                     | HIGH   |
+| 15  | Access Control                                                         | A.5.15 | Partially Implemented | No formal access control policy; weak password policy; no MFA             | HIGH   |
+| 23  | Information Security for Use of Cloud Services                         | A.5.23 | Partially Implemented | DRC on private cloud but no formal cloud security policy                  | HIGH   |
+| 36  | Compliance with Policies, Rules and Standards for Information Security | A.5.36 | Not Implemented       | No compliance monitoring mechanism                                        | MEDIUM |
+| 37  | Documented Operating Procedures                                        | A.5.37 | Partially Implemented | Some SOPs exist but not comprehensive                                     | MEDIUM |
 
 #### Theme A.6 — People Controls (8 controls)
 
 1-4, 7
 
-| #   | Control                                                    | Ref   | Status                | Gap Identified                                                                             | Risk   |
-| --- | ---------------------------------------------------------- | ----- | --------------------- | ------------------------------------------------------------------------------------------ | ------ |
-| 1   | Screening                                                  | A.6.1 | Partially Implemented | Background checks performed for senior roles only; not for all employees                   | MEDIUM |
-| 2   | Terms and Conditions of Employment                         | A.6.2 | Partially Implemented | Employment contracts include basic confidentiality clause; no detailed IS responsibilities | MEDIUM |
-| 3   | Information Security Awareness, Education and Training     | A.6.3 | Not Implemented       | No structured awareness or training program; no records                                    | HIGH   |
-| 4   | Disciplinary Process                                       | A.6.4 | Partially Implemented | General disciplinary process exists; no IS-specific disciplinary procedure                 | MEDIUM |
-| 5   | Responsibilities After Termination or Change of Employment | A.6.5 | Partially Implemented | No formal process for revoking access and returning assets upon termination                | HIGH   |
-| 6   | Confidentiality or Non-Disclosure Agreements               | A.6.6 | Partially Implemented | NDAs signed for some roles; not standardized                                               | MEDIUM |
-| 7   | Remote Working                                             | A.6.7 | Partially Implemented | VPN used but no remote working security policy; no endpoint security enforcement           | HIGH   |
-| 8   | Information Security Event Reporting                       | A.6.8 | Not Implemented       | No mechanism for employees to report security events                                       | HIGH   |
+| #   | Control                                                | Ref   | Status                | Gap Identified                                                                             | Risk   |
+| --- | ------------------------------------------------------ | ----- | --------------------- | ------------------------------------------------------------------------------------------ | ------ |
+| 1   | Screening                                              | A.6.1 | Partially Implemented | Background checks performed for senior roles only; not for all employees                   | MEDIUM |
+| 2   | Terms and Conditions of Employment                     | A.6.2 | Partially Implemented | Employment contracts include basic confidentiality clause; no detailed IS responsibilities | MEDIUM |
+| 3   | Information Security Awareness, Education and Training | A.6.3 | Not Implemented       | No structured awareness or training program; no records                                    | HIGH   |
+| 4   | Disciplinary Process                                   | A.6.4 | Partially Implemented | General disciplinary process exists; no IS-specific disciplinary procedure                 | MEDIUM |
+| 7   | Remote Working                                         | A.6.7 | Partially Implemented | VPN used but no remote working security policy; no endpoint security enforcement           | HIGH   |
 
 #### Theme A.7 — Physical Controls (14 controls)
 
 1,2,4,12,13
 
-| #   | Control                                               | Ref    | Status                | Gap Identified                                                                     | Risk   |
-| --- | ----------------------------------------------------- | ------ | --------------------- | ---------------------------------------------------------------------------------- | ------ |
-| 1   | Physical Security Perimeters                          | A.7.1  | Partially Implemented | DC has basic lock; no biometric/card access; DRC lacks dedicated perimeter         | HIGH   |
-| 2   | Physical Entry                                        | A.7.2  | Partially Implemented | No visitor management system; no electronic entry logs                             | HIGH   |
-| 3   | Securing Offices, Rooms and Facilities                | A.7.3  | Partially Implemented | No environmental monitoring; no gas-based fire suppression in server room          | MEDIUM |
-| 4   | Physical Security Monitoring                          | A.7.4  | Partially Implemented | CCTV exists but retention only 15 days; no 24/7 monitoring                         | MEDIUM |
-| 5   | Protecting Against Physical and Environmental Threats | A.7.5  | Partially Implemented | Basic fire extinguishers; no flood/water leak detection; no seismic considerations | MEDIUM |
-| 6   | Working in Secure Areas                               | A.7.6  | Not Implemented       | No specific procedures for working in secure areas (DC/DRC)                        | MEDIUM |
-| 7   | Clear Desk and Clear Screen                           | A.7.7  | Not Implemented       | No clear desk/screen policy enforced                                               | LOW    |
-| 8   | Equipment Siting and Protection                       | A.7.8  | Partially Implemented | Equipment in DC properly sited; branch sites lack proper siting                    | MEDIUM |
-| 9   | Security of Assets Off-Premises                       | A.7.9  | Not Implemented       | No policy for off-premises asset security (laptops, mobile devices)                | HIGH   |
-| 10  | Storage Media                                         | A.7.10 | Partially Implemented | No formal media handling or disposal procedures                                    | MEDIUM |
-| 11  | Supporting Utilities                                  | A.7.11 | Partially Implemented | UPS at DC; DRC lacks generator backup                                              | HIGH   |
-| 12  | Cabling Security                                      | A.7.12 | Partially Implemented | Raised floor in DC but poor cable management                                       | LOW    |
-| 13  | Equipment Maintenance                                 | A.7.13 | Partially Implemented | Maintenance performed but records not systematically maintained                    | MEDIUM |
-| 14  | Secure Disposal or Re-Use of Equipment                | A.7.14 | Not Implemented       | No formal secure disposal or data wiping procedures                                | HIGH   |
+| #   | Control                      | Ref    | Status                | Gap Identified                                                             | Risk   |
+| --- | ---------------------------- | ------ | --------------------- | -------------------------------------------------------------------------- | ------ |
+| 1   | Physical Security Perimeters | A.7.1  | Partially Implemented | DC has basic lock; no biometric/card access; DRC lacks dedicated perimeter | HIGH   |
+| 2   | Physical Entry               | A.7.2  | Partially Implemented | No visitor management system; no electronic entry logs                     | HIGH   |
+| 4   | Physical Security Monitoring | A.7.4  | Partially Implemented | CCTV exists but retention only 15 days; no 24/7 monitoring                 | MEDIUM |
+| 12  | Cabling Security             | A.7.12 | Partially Implemented | Raised floor in DC but poor cable management                               | LOW    |
+| 13  | Equipment Maintenance        | A.7.13 | Partially Implemented | Maintenance performed but records not systematically maintained            | MEDIUM |
 
 #### Theme A.8 — Technological Controls (34 controls)
 
-6, 7, 9, 12, 13, 15, 22, 24
+6, 7, 9, 12, 13, 15, 22, 24, 25, 32
 
-| #   | Control                                                     | Ref    | Status                | Gap Identified                                                            | Risk   |
-| --- | ----------------------------------------------------------- | ------ | --------------------- | ------------------------------------------------------------------------- | ------ |
-| 1   | User Endpoint Devices                                       | A.8.1  | Partially Implemented | Antivirus on most; no centralized endpoint management; no MDM             | HIGH   |
-| 2   | Privileged Access Rights                                    | A.8.2  | Not Implemented       | Shared admin credentials; no PAM; no privilege monitoring                 | HIGH   |
-| 3   | Information Access Restriction                              | A.8.3  | Partially Implemented | Basic file permissions; no DLP; no granular access controls               | MEDIUM |
-| 4   | Access to Source Code                                       | A.8.4  | Partially Implemented | Source code in repository; no formal access restriction policy            | MEDIUM |
-| 5   | Secure Authentication                                       | A.8.5  | Partially Implemented | Password-based only; no MFA; weak password policy                         | HIGH   |
-| 6   | Capacity Management                                         | A.8.6  | Partially Implemented | Basic monitoring; no proactive capacity planning                          | MEDIUM |
-| 7   | Protection Against Malware                                  | A.8.7  | Partially Implemented | Antivirus not centrally managed; outdated definitions at branches; no EDR | MEDIUM |
-| 8   | Management of Technical Vulnerabilities                     | A.8.8  | Not Implemented       | No VAPT; ad-hoc patching; no vulnerability tracking                       | HIGH   |
-| 9   | Configuration Management                                    | A.8.9  | Not Implemented       | No standardized configuration baselines                                   | HIGH   |
-| 10  | Information Deletion                                        | A.8.10 | Not Implemented       | No formal data deletion or sanitization procedures                        | MEDIUM |
-| 11  | Data Masking                                                | A.8.11 | Not Implemented       | No data masking applied in non-production environments                    | MEDIUM |
-| 12  | Data Leakage Prevention                                     | A.8.12 | Not Implemented       | No DLP solution deployed                                                  | HIGH   |
-| 13  | Information Backup                                          | A.8.13 | Partially Implemented | Daily backup but no policy; weekly off-site; no restoration testing       | HIGH   |
-| 14  | Redundancy of Information Processing Facilities             | A.8.14 | Partially Implemented | DRC exists but failover not tested; no defined RTO/RPO                    | HIGH   |
-| 15  | Logging                                                     | A.8.15 | Partially Implemented | Logs generated but no SIEM; inconsistent retention; no alerting           | HIGH   |
-| 16  | Monitoring Activities                                       | A.8.16 | Not Implemented       | No real-time security monitoring or SOC capability                        | HIGH   |
-| 17  | Clock Synchronization                                       | A.8.17 | Partially Implemented | NTP configured on some servers; not standardized across all systems       | LOW    |
-| 18  | Use of Privileged Utility Programs                          | A.8.18 | Not Implemented       | No restrictions on use of privileged utilities                            | MEDIUM |
-| 19  | Installation of Software on Operational Systems             | A.8.19 | Not Implemented       | No software installation policy; users can install arbitrary software     | MEDIUM |
-| 20  | Networks Security                                           | A.8.20 | Partially Implemented | Firewall deployed; no IDS/IPS; limited network segmentation               | HIGH   |
-| 21  | Security of Network Services                                | A.8.21 | Partially Implemented | ISP SLAs exist; no security-specific service level requirements           | MEDIUM |
-| 22  | Segregation of Networks                                     | A.8.22 | Not Implemented       | Flat network; no segmentation between business units or DC zones          | HIGH   |
-| 23  | Web Filtering                                               | A.8.23 | Partially Implemented | Basic URL filtering; no advanced web security gateway                     | MEDIUM |
-| 24  | Use of Cryptography                                         | A.8.24 | Partially Implemented | SSL/TLS on web; no encryption at rest; no crypto key management           | HIGH   |
-| 25  | Secure Development Life Cycle                               | A.8.25 | Not Implemented       | No secure SDLC process; no code review or security testing                | HIGH   |
-| 26  | Application Security Requirements                           | A.8.26 | Not Implemented       | Security requirements not defined in application specifications           | HIGH   |
-| 27  | Secure System Architecture and Engineering Principles       | A.8.27 | Not Implemented       | No documented secure architecture principles                              | MEDIUM |
-| 28  | Secure Coding                                               | A.8.28 | Not Implemented       | No secure coding standards or guidelines                                  | HIGH   |
-| 29  | Security Testing in Development and Acceptance              | A.8.29 | Not Implemented       | No security testing before deployment                                     | HIGH   |
-| 30  | Outsourced Development                                      | A.8.30 | Not Implemented       | No security requirements for outsourced development                       | MEDIUM |
-| 31  | Separation of Development, Test and Production Environments | A.8.31 | Partially Implemented | Separate environments exist but access controls between them are weak     | MEDIUM |
-| 32  | Change Management                                           | A.8.32 | Partially Implemented | Ad-hoc change process; no formal CAB or approval workflow                 | HIGH   |
-| 33  | Test Information                                            | A.8.33 | Not Implemented       | Production data used in testing without masking                           | HIGH   |
-| 34  | Protection of Information Systems During Audit Testing      | A.8.34 | Not Implemented       | No safeguards for audit testing activities                                | LOW    |
+| #   | Control                       | Ref    | Status                | Gap Identified                                                            | Risk   |
+| --- | ----------------------------- | ------ | --------------------- | ------------------------------------------------------------------------- | ------ |
+| 6   | Capacity Management           | A.8.6  | Partially Implemented | Basic monitoring; no proactive capacity planning                          | MEDIUM |
+| 7   | Protection Against Malware    | A.8.7  | Partially Implemented | Antivirus not centrally managed; outdated definitions at branches; no EDR | MEDIUM |
+| 9   | Configuration Management      | A.8.9  | Not Implemented       | No standardized configuration baselines                                   | HIGH   |
+| 12  | Data Leakage Prevention       | A.8.12 | Not Implemented       | No DLP solution deployed                                                  | HIGH   |
+| 13  | Information Backup            | A.8.13 | Partially Implemented | Daily backup but no policy; weekly off-site; no restoration testing       | HIGH   |
+| 15  | Logging                       | A.8.15 | Partially Implemented | Logs generated but no SIEM; inconsistent retention; no alerting           | HIGH   |
+| 22  | Segregation of Networks       | A.8.22 | Not Implemented       | Flat network; no segmentation between business units or DC zones          | HIGH   |
+| 24  | Use of Cryptography           | A.8.24 | Partially Implemented | SSL/TLS on web; no encryption at rest; no crypto key management           | HIGH   |
+| 25  | Secure Development Life Cycle | A.8.25 | Not Implemented       | No secure SDLC process; no code review or security testing                | HIGH   |
+| 32  | Change Management             | A.8.32 | Partially Implemented | Ad-hoc change process; no formal CAB or approval workflow                 | HIGH   |
 
 ### 6. Self-Assessment Summary
 
