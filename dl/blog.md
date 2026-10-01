@@ -2,7 +2,7 @@
 
 # 1.1 Concept of AI, ML, DL and Neural Networks
 
-> **Compare supervised, unsupervised, and self-supervised learning paradigms with suitable examples for each. Discuss how the choice of learning paradigm affects model design. (Fall 2025)**
+> **Compare supervised, unsupervised, and self-supervised learning paradigms with suitable examples for each. Discuss how the choice of learning paradigm affects model design. (Tutorial)**
 
 **Artificial Intelligence (AI)** is the broadest field — it refers to any system designed to simulate human intelligence and perform tasks like reasoning, problem-solving, perception, and language understanding. AI approaches include rule-based systems, search algorithms, expert systems, and learning-based methods.
 
@@ -22,7 +22,7 @@ The relationship is hierarchical: AI ⊃ ML ⊃ DL, where DL is built upon neura
 
 # 1.2 Learning Paradigms
 
-> **Compare supervised, unsupervised, and self-supervised learning paradigms with suitable examples for each. Discuss how the choice of learning paradigm affects model design. (Fall 2025)**
+> **Compare supervised, unsupervised, and self-supervised learning paradigms with suitable examples for each. Discuss how the choice of learning paradigm affects model design. (Tutorial)**
 
 **1. Supervised Learning:** The model is trained on labeled data — each input is paired with the correct output (ground truth). The model learns a mapping function f: X → Y by minimizing the error between predicted and actual outputs. Tasks include **classification** (predicting discrete labels, e.g., cat vs. dog) and **regression** (predicting continuous values, e.g., house price). Model design requires a labeled dataset, a loss function comparing predictions to labels (e.g., cross-entropy for classification, MSE for regression), and an output layer matching the task. Example: image classification using CNNs trained on ImageNet.
 
@@ -44,7 +44,7 @@ The relationship is hierarchical: AI ⊃ ML ⊃ DL, where DL is built upon neura
 
 # 1.3 Ethical Concerns and Responsible AI
 
-> **Discuss the ethical concerns surrounding AI systems. How can principles of responsible AI be incorporated during the design and deployment of deep learning models? (Fall 2025)**
+> **Discuss the ethical concerns surrounding AI systems. How can principles of responsible AI be incorporated during the design and deployment of deep learning models? (Tutorial)**
 
 **1. Bias and Fairness:** AI models learn from historical data that often contains societal biases. If training data underrepresents certain demographics or reflects historical discrimination, the model inherits and amplifies these biases. Example: a hiring model trained on past recruitment data may systematically disadvantage women if historical hiring was biased. Mitigation: use diverse, representative training datasets; apply fairness-aware algorithms; conduct regular bias audits across protected groups (gender, race, age).
 
@@ -64,7 +64,7 @@ The relationship is hierarchical: AI ⊃ ML ⊃ DL, where DL is built upon neura
 
 # 1.4 Perceptron and Multi-Layer Perceptron
 
-> **Explain the role of activation functions in a neural network. Compare ReLU, Sigmoid, and Tanh in terms of their mathematical properties, advantages, and limitations. (Fall 2025)**
+> **Explain the role of activation functions in a neural network. Compare ReLU, Sigmoid, and Tanh in terms of their mathematical properties, advantages, and limitations. (Tutorial)**
 
 An Artificial Neural Network is a computational model inspired by the structure and functioning of biological neural networks in the brain. It consists of interconnected processing units (neurons) organized in layers that learn to map inputs to outputs by adjusting connection weights during training.
 
@@ -141,7 +141,7 @@ where $\sigma$ is a non-linear activation function (ReLU, Sigmoid, Tanh, etc.).
 
 ## 1.5.1 Activation Functions
 
-> **Explain the role of activation functions in a neural network. Compare ReLU, Sigmoid, and Tanh in terms of their mathematical properties, advantages, and limitations. (Fall 2025)**
+> **Explain the role of activation functions in a neural network. Compare ReLU, Sigmoid, and Tanh in terms of their mathematical properties, advantages, and limitations. (Tutorial)**
 
 Activation functions introduce **non-linearity** into the network. Without them, any number of layers would collapse into a single linear transformation.
 
@@ -196,7 +196,7 @@ where $\eta$ is the learning rate and $\frac{\partial L}{\partial w}$ is the gra
 
 ## 1.5.4 Backpropagation
 
-> **Describe the backpropagation algorithm in detail. Derive the weight update rule using chain rule and explain how vanishing gradient problems arise. (Fall 2025)**
+> **Describe the backpropagation algorithm in detail. Derive the weight update rule using chain rule and explain how vanishing gradient problems arise. (Tutorial)**
 
 **Backpropagation** is how the neural network actually learns. After making a prediction (forward propagation), the network checks how wrong it was (using the loss function) and then goes **backward** through the layers to adjust the weights so that next time, the prediction will be better.
 
@@ -303,7 +303,7 @@ where $K$ is the number of classes, $y_i$ is 1 for the correct class and 0 other
 
 # 2.1 Data Analysis — Importance and Methods
 
-> **Explain the bias-variance trade-off in deep learning. How do overfitting and underfitting manifest, and what techniques can be used to address each? (Fall 2025)**
+> **Explain the bias-variance trade-off in deep learning. How do overfitting and underfitting manifest, and what techniques can be used to address each? (Tutorial)**
 
 **Data analysis** is the process of inspecting, cleaning, transforming, and modeling data to discover useful information, draw conclusions, and support decision-making. In deep learning, data analysis is performed before model building to understand the structure, quality, and distribution of the dataset.
 
@@ -330,7 +330,7 @@ where $K$ is the number of classes, $y_i$ is 1 for the correct class and 0 other
 
 # 2.2 Data Augmentation and Normalization
 
-> **Design a complete data processing pipeline for an image classification task. Include steps for data collection, augmentation, normalization, and validation strategy. (Fall 2025)**
+> **Design a complete data processing pipeline for an image classification task. Include steps for data collection, augmentation, normalization, and validation strategy. (Tutorial)**
 
 ## 2.2.1 Data Augmentation
 
@@ -382,7 +382,7 @@ where $\mu$ is the mean and $\sigma$ is the standard deviation of the feature. T
 
 # 2.3 Data Processing Pipeline
 
-> **Design a complete data processing pipeline for an image classification task. Include steps for data collection, augmentation, normalization, and validation strategy. (Fall 2025)**
+> **Design a complete data processing pipeline for an image classification task. Include steps for data collection, augmentation, normalization, and validation strategy. (Tutorial)**
 
 A **data processing pipeline** is an organized sequence of steps that transforms raw data into a format suitable for training a deep learning model. A well-designed pipeline ensures reproducibility, efficiency, and data quality.
 
@@ -434,7 +434,7 @@ Deep learning models require large volumes of data, often containing sensitive p
 
 # 2.5 Model Evaluation and Cross-Validation
 
-> **Explain the bias-variance trade-off in deep learning. How do overfitting and underfitting manifest, and what techniques can be used to address each? (Fall 2025)**
+> **Explain the bias-variance trade-off in deep learning. How do overfitting and underfitting manifest, and what techniques can be used to address each? (Tutorial)**
 
 ## 2.5.1 Evaluation Metrics
 
@@ -505,7 +505,7 @@ $
 
 # 2.6 Hyperparameter Optimization
 
-> **Compare at least four hyperparameter optimization strategies (e.g., grid search, random search, Bayesian optimization). Discuss which is most suitable for large-scale deep learning models and why. (Fall 2025)**
+> **Compare at least four hyperparameter optimization strategies (e.g., grid search, random search, Bayesian optimization). Discuss which is most suitable for large-scale deep learning models and why. (Tutorial)**
 
 **Hyperparameters** are configuration settings that are fixed before training begins and are not learned from data. They control the learning process and model architecture. Examples: learning rate, batch size, number of layers, number of neurons per layer, dropout rate, weight decay coefficient, optimizer choice.
 
@@ -581,7 +581,7 @@ Trains a population of models in parallel. Periodically, poorly performing model
 
 # 2.7 Overfitting, Underfitting, and Bias-Variance Trade-Off
 
-> **Explain the bias-variance trade-off in deep learning. How do overfitting and underfitting manifest, and what techniques can be used to address each? (Fall 2025)**
+> **Explain the bias-variance trade-off in deep learning. How do overfitting and underfitting manifest, and what techniques can be used to address each? (Tutorial)**
 
 ## 2.7.1 Bias-Variance Trade-Off
 
@@ -683,7 +683,7 @@ The practical recipe for deep learning: use a large model (low bias), then contr
 
 # 3.1 Fundamentals of Sequence Modeling
 
-> **Describe the Transformer architecture in detail. Explain the role of self-attention and multi-head attention mechanisms, and contrast them with RNN-based sequence modeling. (Fall 2025)**
+> **Describe the Transformer architecture in detail. Explain the role of self-attention and multi-head attention mechanisms, and contrast them with RNN-based sequence modeling. (Tutorial)**
 
 **Sequential data** is data where the order of elements matters — changing the order changes the meaning. Examples: text (word order defines sentences), audio (temporal order of samples), time series (stock prices over days), video (frame order), DNA sequences (nucleotide order).
 
@@ -707,7 +707,7 @@ The practical recipe for deep learning: use a large model (low bias), then contr
 
 # 3.2 RNN Architecture and Backpropagation
 
-> **Explain the architecture of LSTM and how it solves the vanishing gradient problem present in vanilla RNNs. Use diagrams and equations to support your answer. (Fall 2025)**
+> **Explain the architecture of LSTM and how it solves the vanishing gradient problem present in vanilla RNNs. Use diagrams and equations to support your answer. (Tutorial)**
 
 ## 3.2.1 Vanilla RNN Architecture
 
@@ -767,7 +767,7 @@ $
 
 # 3.3 Types of RNNs
 
-> **Compare Vanilla RNN, GRU, LSTM, and Bi-directional RNN in terms of architecture, computational cost, and suitability for different sequential tasks. (Fall 2025)**
+> **Compare Vanilla RNN, GRU, LSTM, and Bi-directional RNN in terms of architecture, computational cost, and suitability for different sequential tasks. (Tutorial)**
 
 ## 3.3.1 Vanilla RNN
 
@@ -775,7 +775,7 @@ The basic RNN described in Section 3.2.1. Uses a single hidden state updated by 
 
 ## 3.3.2 Long Short-Term Memory (LSTM)
 
-> **Explain the architecture of LSTM and how it solves the vanishing gradient problem present in vanilla RNNs. Use diagrams and equations to support your answer. (Fall 2025)**
+> **Explain the architecture of LSTM and how it solves the vanishing gradient problem present in vanilla RNNs. Use diagrams and equations to support your answer. (Tutorial)**
 
 The **LSTM** (Hochreiter & Schmidhuber, 1997) introduces a **cell state** $C_t$ — a separate memory pathway that runs through the entire sequence with only linear interactions, allowing gradients to flow unchanged over long distances. Three **gates** (sigmoid layers outputting values between 0 and 1) control what information enters, exits, and is retained in the cell state.
 
@@ -902,7 +902,7 @@ The same $W$ is applied at every internal node. The root node's representation c
 
 # 3.4 Transformer and Attention Mechanism
 
-> **Describe the Transformer architecture in detail. Explain the role of self-attention and multi-head attention mechanisms, and contrast them with RNN-based sequence modeling. (Fall 2025)**
+> **Describe the Transformer architecture in detail. Explain the role of self-attention and multi-head attention mechanisms, and contrast them with RNN-based sequence modeling. (Tutorial)**
 
 ## 3.4.1 Attention Mechanism
 
@@ -1056,7 +1056,7 @@ For short sequences, RNNs are competitive. For long sequences and large datasets
 
 # 4.1 CNN Fundamentals — Properties of CNN, CNN vs MLP
 
-> **Explain the fundamental differences between CNNs and MLPs for image processing tasks. Why are CNNs preferred for visual data, and what properties make them effective? (Fall 2025)**
+> **Explain the fundamental differences between CNNs and MLPs for image processing tasks. Why are CNNs preferred for visual data, and what properties make them effective? (Tutorial)**
 
 A **Convolutional Neural Network (CNN)** is a specialized neural network designed to process data with grid-like topology — most notably images (2D grids of pixels) and video (3D grids). CNNs exploit the spatial structure of visual data through three key properties that MLPs lack.
 
@@ -1136,7 +1136,7 @@ After convolution and pooling extract spatial features, one or more **fully conn
 
 # 4.3 Convolution Variants
 
-> **Describe five convolution variants — standard, transpose, dilated, separable, and deformable — and provide a real-world use case where each variant would be most appropriate. (Fall 2025)**
+> **Describe five convolution variants — standard, transpose, dilated, separable, and deformable — and provide a real-world use case where each variant would be most appropriate. (Tutorial)**
 
 ## 4.3.1 Standard Convolution
 
@@ -1208,7 +1208,7 @@ The offsets are produced by a separate convolutional layer applied to the same i
 
 # 4.4 CNN Architectures
 
-> **Trace the evolution of CNN architectures from AlexNet to DenseNet. Highlight the key architectural innovation introduced in each (VGG, GoogLeNet, ResNet, DenseNet). (Fall 2025)**
+> **Trace the evolution of CNN architectures from AlexNet to DenseNet. Highlight the key architectural innovation introduced in each (VGG, GoogLeNet, ResNet, DenseNet). (Tutorial)**
 
 ## 4.4.1 AlexNet (Krizhevsky et al., 2012)
 
@@ -1366,7 +1366,7 @@ The gradient is passed through where the pre-activation was positive, and zeroed
 
 # 4.6 Transfer Learning and Fine-Tuning
 
-> **Explain transfer learning and fine-tuning in the context of CNNs. Describe a scenario where you would fine-tune only the last few layers versus retraining the entire network. (Fall 2025)**
+> **Explain transfer learning and fine-tuning in the context of CNNs. Describe a scenario where you would fine-tune only the last few layers versus retraining the entire network. (Tutorial)**
 
 **Transfer learning** is the practice of using a model pre-trained on a large dataset (e.g., ImageNet with 1.4M images, 1000 classes) as the starting point for a new task with limited data. The pre-trained model has already learned general visual features (edges, textures, shapes) that are useful across many vision tasks.
 
@@ -1482,7 +1482,7 @@ The ratio $\alpha/\beta$ controls the balance — higher $\beta/\alpha$ produces
 
 # 4.9 Image Captioning System
 
-> **Design an image captioning system by combining CNN and sequence modeling components. Explain the role of each component and how training is performed end-to-end. (Fall 2025)**
+> **Design an image captioning system by combining CNN and sequence modeling components. Explain the role of each component and how training is performed end-to-end. (Tutorial)**
 
 An **image captioning system** automatically generates a natural language description of an image. It combines a CNN (for visual understanding) with an RNN/LSTM (for language generation) in an **encoder-decoder** framework.
 
@@ -1580,7 +1580,7 @@ A **video** is a temporal sequence of image frames, typically captured at 24–3
 
 # 5.2 Motion Analysis and Optical Flow
 
-> **Explain how optical flow is used for motion analysis in video sequences. Discuss at least two deep learning approaches that estimate optical flow and their comparative strengths. (Fall 2025)**
+> **Explain how optical flow is used for motion analysis in video sequences. Discuss at least two deep learning approaches that estimate optical flow and their comparative strengths. (Tutorial)**
 
 ## 5.2.1 Optical Flow
 
@@ -1645,7 +1645,7 @@ RAFT is a state-of-the-art optical flow method that iteratively refines flow est
 
 # 5.3 3D Data and Convolution
 
-> **Describe how 3D convolution differs from standard 2D convolution and explain its role in video-based action recognition. What are the computational trade-offs involved? (Fall 2025)**
+> **Describe how 3D convolution differs from standard 2D convolution and explain its role in video-based action recognition. What are the computational trade-offs involved? (Tutorial)**
 
 ## 5.3.1 From 2D to 3D Convolution
 
@@ -1765,9 +1765,9 @@ where $*$ denotes convolution and $\mathbf{X}_t, \mathbf{H}_t$ are 3D tensors. C
 
 # 5.5 Action Recognition and Object Tracking
 
-> **Explain how optical flow is used for motion analysis in video sequences. Discuss at least two deep learning approaches that estimate optical flow and their comparative strengths. (Fall 2025)**
+> **Explain how optical flow is used for motion analysis in video sequences. Discuss at least two deep learning approaches that estimate optical flow and their comparative strengths. (Tutorial)**
 >
-> **Describe how 3D convolution differs from standard 2D convolution and explain its role in video-based action recognition. What are the computational trade-offs involved? (Fall 2025)**
+> **Describe how 3D convolution differs from standard 2D convolution and explain its role in video-based action recognition. What are the computational trade-offs involved? (Tutorial)**
 
 ## 5.5.1 Action Recognition
 
@@ -1862,7 +1862,7 @@ Siamese trackers run at real-time speeds and do not require online fine-tuning d
 
 # 6.1 Music and Audio Classification
 
-> **Explain the pipeline for a music classification system using deep learning. What audio features are typically extracted, and which neural network architectures are best suited for this task? (Fall 2025)**
+> **Explain the pipeline for a music classification system using deep learning. What audio features are typically extracted, and which neural network architectures are best suited for this task? (Tutorial)**
 
 ## 6.1.1 Audio Representation
 
@@ -1932,7 +1932,7 @@ Modern deep learning systems generally prefer **log-Mel spectrograms** because t
 
 # 6.2 Music Source Separation
 
-> **Describe the problem of music source separation. Compare at least two deep learning approaches used to solve it and evaluate their effectiveness. (Fall 2025)**
+> **Describe the problem of music source separation. Compare at least two deep learning approaches used to solve it and evaluate their effectiveness. (Tutorial)**
 
 ## 6.2.1 Problem Definition
 
@@ -2005,7 +2005,7 @@ The two branches are connected via cross-attention layers that allow them to sha
 
 # 6.3 Sound Event Detection
 
-> **Explain sound event detection as a deep learning task. How is it different from audio classification, and what network architectures and training strategies are commonly used? (Fall 2025)**
+> **Explain sound event detection as a deep learning task. How is it different from audio classification, and what network architectures and training strategies are commonly used? (Tutorial)**
 
 ## 6.3.1 Task Definition and Difference from Audio Classification
 
