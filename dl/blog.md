@@ -701,7 +701,11 @@ L1 drives some weights to exactly zero, producing sparse models and performing i
 
 ## 3.2.1 Vanilla RNN Architecture
 
+A **Recurrent Neural Network** is a neural network designed for processing **sequential data** (time series, text, speech) where the order of inputs matters. Unlike feedforward networks, RNNs have **recurrent connections** — the output at each time step is fed back as input to the next step, giving the network a form of memory.
+
 A **Recurrent Neural Network (RNN)** processes sequences by maintaining a **hidden state** $h_t$ that is updated at each time step, carrying information from all previous time steps.
+
+![alt text](../ai/image-11.png)
 
 **Computation at each time step t:**
 
@@ -715,13 +719,20 @@ $
 
 where $x_t$ is the input at time $t$, $h_{t-1}$ is the previous hidden state, $W_{xh}$ is the input-to-hidden weight matrix, $W_{hh}$ is the hidden-to-hidden (recurrent) weight matrix, $W_{hy}$ is the hidden-to-output weight matrix, and $b_h$, $b_y$ are biases.
 
+**How it works:**
+
+At each time step t:
+
+1. The RNN takes the current input ($x_t$) — for example, the current word in a sentence.
+2. It also takes the **hidden state** from the previous step ($h_{t−1}$) — this is the "memory" of what it has seen so far.
+3. It combines both using weights, adds a bias, and applies the tanh activation function to produce a new hidden state ($h_t$).
+4. This hidden state can be used to make a prediction (output) and is also passed to the next time step.
+
 **Key properties:**
 
 - **Weight sharing:** The same weight matrices ($W_{xh}$, $W_{hh}$, $W_{hy}$) are used at every time step. This allows the network to handle sequences of any length and generalize patterns across positions.
 - **Hidden state as memory:** $h_t$ acts as a compressed summary of all inputs seen so far ($x_1, x_2, ..., x_t$).
 - **Unrolling:** For training, the RNN is "unrolled" across time steps into a chain of identical modules, creating a computational graph that resembles a very deep feedforward network.
-
-![alt text](../ai/image-11.png)
 
 ## 3.2.2 Backpropagation Through Time (BPTT)
 
@@ -743,17 +754,12 @@ The term $\prod_{j=k+1}^{t} \frac{\partial h_j}{\partial h_{j-1}}$ is the produc
 
 ## 3.2.3 Vanishing and Exploding Gradients
 
-The product $\prod_{j=k+1}^{t} \frac{\partial h_j}{\partial h_{j-1}}$ involves repeated multiplication of the recurrent weight matrix and the derivative of the activation function.
+**Problems with RNNs:**
 
-**Vanishing gradient:** If the spectral radius (largest eigenvalue) of $W_{hh}$ is less than 1, the gradient product shrinks exponentially as $t - k$ grows. Gradients from distant time steps become negligibly small, and the network cannot learn long-range dependencies. The weights effectively stop receiving updates from early time steps.
-
-**Exploding gradient:** If the spectral radius of $W_{hh}$ is greater than 1, the gradient product grows exponentially, causing numerical overflow and unstable training. **Gradient clipping** mitigates this — if the gradient norm exceeds a threshold, it is scaled down:
-
-$
-\mathbf{g} \leftarrow \frac{\text{threshold}}{||\mathbf{g}||} \cdot \mathbf{g} \quad \text{if } ||\mathbf{g}|| > \text{threshold}
-$
-
-**Truncated BPTT:** Instead of backpropagating through the entire sequence, gradients are propagated for only a fixed number of time steps. This limits computational cost and avoids very long gradient chains, at the expense of not capturing very long-range dependencies.
+1. **Vanishing Gradient Problem:** During BPTT, gradients are multiplied by the weight matrix at each time step. If the weights are small (eigenvalues < 1), gradients shrink exponentially, making it impossible to learn long-range dependencies. The error signal becomes weaker and weaker as it travels backward through time. The network "forgets" information from early time steps.
+2. **Exploding Gradient Problem:** If weights are large (eigenvalues > 1), gradients grow exponentially, making training unstable. This is fixed by **gradient clipping** (putting a cap on how large the gradients can be).
+3. **Hard to remember long sequences:** Standard RNNs can only effectively remember about 10–20 steps back.
+4. **Sequential Processing:** RNNs process time steps one by one, preventing parallelization and making training slow on long sequences.
 
 ---
 
@@ -769,83 +775,40 @@ The basic RNN described in Section 3.2.1. Uses a single hidden state updated by 
 
 > **Explain the architecture of LSTM and how it solves the vanishing gradient problem present in vanilla RNNs. Use diagrams and equations to support your answer. (Tutorial)**
 
-The **LSTM** (Hochreiter & Schmidhuber, 1997) introduces a **cell state** $C_t$ — a separate memory pathway that runs through the entire sequence with only linear interactions, allowing gradients to flow unchanged over long distances. Three **gates** (sigmoid layers outputting values between 0 and 1) control what information enters, exits, and is retained in the cell state.
+**LSTM** (Hochreiter & Schmidhuber, 1997) solves the vanishing gradient problem by introducing a **cell state** (a highway for information flow) allowing gradients to flow unchanged over long distances; and three **gating mechanisms** that control what information is stored, forgotten, and output.
 
-**LSTM Equations:**
+![alt text](../ai/image-12.png)
 
-**1. Forget Gate** — decides what information to discard from the cell state:
+**Gates (all use sigmoid activation, outputting values in [0, 1]):**
 
-$
-f_t = \sigma(W_f \cdot [h_{t-1}, x_t] + b_f)
-$
+**The Three Gates:**
 
-**2. Input Gate** — decides what new information to store in the cell state:
+**1. Forget Gate — "What should I forget?"**
+It looks at the previous output and the current input, and decides what old information to throw away from the cell state. It outputs a number between 0 (forget everything) and 1 (keep everything) for each piece of information.
 
-$
-i_t = \sigma(W_i \cdot [h_{t-1}, x_t] + b_i)
-$
+**2. Input Gate — "What new information should I add?"**
+It decides what new information from the current input is worth storing in the cell state.
 
-**3. Candidate Cell State** — creates new candidate values:
+**3. Output Gate — "What should I output?"**
+It decides what part of the cell state to use as the output for this step.
 
-$
-\tilde{C}_t = \tanh(W_C \cdot [h_{t-1}, x_t] + b_C)
-$
-
-**4. Cell State Update** — combines old memory (scaled by forget gate) with new information (scaled by input gate):
-
-$
-C_t = f_t \odot C_{t-1} + i_t \odot \tilde{C}_t
-$
-
-**5. Output Gate** — decides what part of the cell state to output:
-
-$
-o_t = \sigma(W_o \cdot [h_{t-1}, x_t] + b_o)
-$
-
-**6. Hidden State** — filtered version of the cell state:
-
-$
-h_t = o_t \odot \tanh(C_t)
-$
-
-where $\sigma$ is the sigmoid function, $\odot$ is element-wise multiplication, and $[h_{t-1}, x_t]$ denotes concatenation of the previous hidden state and current input.
-
-**How LSTM solves the vanishing gradient problem:** The cell state update $C_t = f_t \odot C_{t-1} + i_t \odot \tilde{C}_t$ is a linear operation (element-wise multiplication and addition). When the forget gate $f_t \approx 1$ and the input gate $i_t \approx 0$, the cell state is copied forward unchanged: $C_t \approx C_{t-1}$. The gradient of $C_t$ with respect to $C_{t-1}$ is simply $f_t$, which can remain close to 1. This creates a "gradient highway" — gradients can flow backward through many time steps without vanishing, allowing the network to learn long-range dependencies.
+**Why is LSTM better?** The cell state acts like a highway — information can flow through it easily across many time steps. This means the network can remember important information from the beginning of a very long sequence.
 
 ## 3.3.3 Gated Recurrent Unit (GRU)
 
-The **GRU** (Cho et al., 2014) is a simplified variant of the LSTM that merges the cell state and hidden state into a single hidden state $h_t$ and uses two gates instead of three.
+**GRU** (Cho et al., 2014) is a simplified variant of LSTM with **two gates** instead of three, merging the cell state and hidden state into a single state.
 
-**GRU Equations:**
+![alt text](../ai/image-13.png)
 
-**1. Reset Gate** — controls how much of the previous hidden state to forget:
+**Gates:**
 
-$
-r_t = \sigma(W_r \cdot [h_{t-1}, x_t] + b_r)
-$
+**1. Update Gate — "How much old info to keep vs. how much new info to add?"**
+It combines the job of LSTM's forget gate and input gate into one gate.
 
-**2. Update Gate** — controls the balance between old state and new candidate (acts as both forget and input gate):
+**2. Reset Gate — "How much of the old info to ignore when computing new info?"**
+It controls how much of the previous memory (state) to use when calculating the new candidate state.
 
-$
-z_t = \sigma(W_z \cdot [h_{t-1}, x_t] + b_z)
-$
-
-**3. Candidate Hidden State:**
-
-$
-\tilde{h}_t = \tanh(W_h \cdot [r_t \odot h_{t-1}, x_t] + b_h)
-$
-
-**4. Hidden State Update:**
-
-$
-h_t = (1 - z_t) \odot h_{t-1} + z_t \odot \tilde{h}_t
-$
-
-When $z_t \approx 0$, $h_t \approx h_{t-1}$ (the state is carried forward unchanged — similar to LSTM's forget gate being ~1). When $z_t \approx 1$, $h_t \approx \tilde{h}_t$ (the state is replaced with new information).
-
-**GRU vs. LSTM:** GRU has fewer parameters (~25% fewer), trains faster, and performs comparably to LSTM on many tasks. LSTM may perform better on tasks requiring very fine-grained memory control due to the separate cell state and output gate.
+GRUs have fewer parameters than LSTMs and train faster, while achieving comparable performance on many tasks.
 
 ## 3.3.4 Bidirectional RNN
 
@@ -868,6 +831,8 @@ The bidirectional approach can use Vanilla RNN, LSTM, or GRU as the base unit. *
 ## 3.3.5 Recursive Neural Network
 
 A **Recursive Neural Network (RvNN)** is designed for hierarchically structured (tree-structured) data rather than linear sequences. It applies the same weight matrix recursively over a tree structure, combining child node representations to compute parent node representations.
+
+![alt text](image.png)
 
 **Architecture:** Given a binary tree, each leaf node is an input vector. For each internal node with children $c_1$ and $c_2$:
 
@@ -900,96 +865,85 @@ The same $W$ is applied at every internal node. The root node's representation c
 
 **Motivation:** In RNN-based encoder-decoder models for tasks like machine translation, the entire input sequence is compressed into a single fixed-length context vector (the encoder's final hidden state). This creates an information bottleneck — long sequences lose information, and the decoder struggles with distant input tokens.
 
-**Attention** allows the decoder to "look back" at all encoder hidden states and selectively focus on the most relevant ones for each output token.
+**Attention** (Bahdanau et al., 2015) solves this by allowing the decoder to **look at all encoder hidden states** and focus on the most relevant parts of the input for each output step.
 
-**Mechanism:** Given decoder hidden state $s_t$ and encoder hidden states $h_1, h_2, ..., h_n$:
+**How Attention Works (step by step):**
 
-**1. Compute alignment scores** — how relevant each encoder state is to the current decoder state:
+1. The encoder (input processor) creates a summary for each input word — these are called hidden states (h₁, h₂, ...).
+2. When generating each output word, the decoder asks: "Which input words are most important right now?"
+3. It calculates an **attention score** for each input word — higher score means more relevant.
+4. These scores are converted to **attention weights** (numbers between 0 and 1 that add up to 1) using softmax.
+5. A **context vector** is created by taking a weighted average of all input summaries (words with higher weights contribute more).
+6. This context vector is used along with the decoder's own state to generate the next output word.
 
-$
-e_{t,i} = \text{score}(s_t, h_i)
-$
-
-Common scoring functions: dot product ($s_t^T h_i$), additive ($v^T \tanh(W_1 s_t + W_2 h_i)$).
-
-**2. Compute attention weights** via softmax:
-
-$
-\alpha_{t,i} = \frac{\exp(e_{t,i})}{\sum_{j=1}^{n} \exp(e_{t,j})}
-$
-
-**3. Compute context vector** — weighted sum of encoder hidden states:
-
-$
-c_t = \sum_{i=1}^{n} \alpha_{t,i} \cdot h_i
-$
-
-The context vector $c_t$ is concatenated with the decoder state to produce the output.
+**Example:** When translating "The cat is black" to Nepali, while generating the word for "cat", the attention mechanism would focus most on the word "cat" in the input.
 
 ## 3.4.2 Self-Attention
 
-In **self-attention**, each element in a sequence attends to every other element in the same sequence to compute a context-aware representation. Unlike RNN-based attention (which is cross-attention between encoder and decoder), self-attention operates within a single sequence.
+#### Self-Attention (Scaled Dot-Product Attention)
 
-For each input token, three vectors are computed using learned weight matrices:
+**Self-attention** is when a sequence pays attention to **itself**. Each word in a sentence looks at every other word in the **same** sentence to understand context. This helps capture relationships between words regardless of how far apart they are.
 
-- **Query (Q):** "What am I looking for?"
-- **Key (K):** "What do I contain?"
-- **Value (V):** "What information do I provide?"
+![alt text](../ai/image-14.png)
 
-**Scaled Dot-Product Attention:**
+For each word/token, three vectors are created:
 
-$
-\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right) V
-$
+- **Query (Q):** What this word/token is looking for.
+- **Key (K):** What this word/token can offer to others.
+- **Value (V):** The actual information content of this word/token.
 
-where $d_k$ is the dimension of the key vectors. The scaling factor $\sqrt{d_k}$ prevents dot products from becoming too large, which would push softmax into regions with very small gradients.
-
-**Step-by-step:** For each token, compute dot products of its query with all keys → scale → apply softmax to get attention weights → multiply by corresponding values → sum to get the output representation.
+**Example:** In "The animal didn't cross the street because **it** was too tired" — self-attention helps the model understand that "it" refers to "animal" (not "street") by assigning a high attention weight between "it" and "animal".
 
 ## 3.4.3 Multi-Head Attention
 
-Instead of performing a single attention computation, **multi-head attention** runs $h$ attention operations in parallel, each with different learned projection matrices. This allows the model to attend to information from different representation subspaces at different positions simultaneously.
+Instead of doing attention just once, multi-head attention runs attention functions (heads) multiple times in parallel with different learned perspectives. Each "head" can focus on different types of relationships — one might focus on grammar, another on meaning, another on position.
 
-$
-\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, ..., \text{head}_h) \cdot W^O
-$
-
-$
-\text{head}_i = \text{Attention}(Q W_i^Q, K W_i^K, V W_i^V)
-$
-
-where $W_i^Q$, $W_i^K$, $W_i^V$ are learned projection matrices for head $i$, and $W^O$ is the output projection matrix.
-
-Example: with $d_{\text{model}} = 512$ and $h = 8$ heads, each head operates on $d_k = d_v = 512/8 = 64$ dimensions.
+The results from all heads are combined together, giving a much richer understanding than a single attention computation.
 
 ## 3.4.4 Transformer Architecture (Vaswani et al., 2017)
 
-The Transformer is built entirely on attention mechanisms — it uses no recurrence or convolution. This allows full parallelization during training.
+The Transformer was introduced in 2017 in the famous paper "Attention Is All You Need." It's a revolutionary architecture that relies entirely on attention — it uses no recurrence or convolution. It processes all positions/words in parallel, enabling much faster training and superior performance on sequence tasks.
 
-**Encoder (stack of N=6 identical layers):** Each layer has two sub-layers:
+![alt text](../ai/image-15.png)
 
-1. **Multi-head self-attention** — each position attends to all positions in the input.
-2. **Position-wise feedforward network** — two linear transformations with a ReLU in between: $\text{FFN}(x) = \max(0, xW_1 + b_1)W_2 + b_2$.
+**Architecture — Encoder-Decoder:**
 
-Each sub-layer is followed by a **residual connection** and **layer normalization**: $\text{output} = \text{LayerNorm}(x + \text{SubLayer}(x))$.
+#### Encoder
 
-**Decoder (stack of N=6 identical layers):** Each layer has three sub-layers:
+The encoder reads the entire input and creates a deep understanding of it. The encoder consists of a stack of N identical layers (N=6 in the original paper). Each layer has two sub-layers:
 
-1. **Masked multi-head self-attention** — positions can only attend to earlier positions (masking prevents the decoder from "seeing" future tokens during training).
-2. **Multi-head cross-attention** — queries come from the decoder, keys and values come from the encoder output.
-3. **Position-wise feedforward network** — same as encoder.
+1. **Multi-Head Self-Attention:** Each position attends to all positions in the input. Captures contextual relationships.
+2. **Position-wise Feed-Forward Network:** Two linear transformations with a ReLU activation. Applied independently to each position.
 
-**Positional Encoding:** Since the Transformer processes all tokens in parallel (no recurrence), it has no inherent notion of token order. Positional encodings are added to the input embeddings to inject position information:
+Each of these parts also has:
 
-$
-PE_{(pos, 2i)} = \sin\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)
-$
+- **Residual Connection:** A shortcut that adds the input of a layer directly to its output (like a skip road). This helps the network train better by letting information flow easily.
+- **Layer Normalization:** A technique that keeps the numbers in a stable range, preventing training problems.
 
-$
-PE_{(pos, 2i+1)} = \cos\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)
-$
+#### Decoder
 
-where $pos$ is the token position and $i$ is the dimension index. Sinusoidal functions allow the model to generalize to sequence lengths not seen during training.
+The decoder generates the output one word at a time. The decoder also consists of N identical layers, each with three sub-layers:
+
+1. **Masked Multi-Head Self-Attention:** Same as encoder self-attention but with masking — each position can only attend to previous positions (and itself), preventing information from future tokens from leaking during generation.
+2. **Encoder-Decoder Attention:** The decoder looks at the encoder's output to understand the input. Queries come from the decoder, but keys and values come from the encoder.
+3. **Position-wise Feed-Forward Network:** Same as in the encoder.
+
+#### Positional Encoding
+
+Since the Transformer processes all words at the same time (not one by one like RNNs), it doesn't naturally know the **order** of words. "The cat sat on the mat" and "mat the on sat cat the" would look the same! To fix this, **positional encodings** — special numbers representing each word's position — are added to the word representations before feeding them into the model.
+
+**Advantages of Transformers over RNNs:**
+
+- **Parallel Processing:** All positions are processed simultaneously, unlike RNNs which process sequentially.
+- **Better at long-range connections:** Any two words can directly attend to each other, no matter how far apart. In RNNs, distant words had to pass through many steps.
+- **Scalable:** Can handle bigger datasets and longer sequences.
+
+**Types of Transformer Models:**
+
+- **Encoder-only (e.g., BERT):** Good at understanding text (classification, question answering).
+- **Decoder-only (e.g., GPT):** Good at generating text (writing stories, chatbots).
+- **Encoder-Decoder (e.g., T5, original Transformer):** Good at converting one sequence to another (translation, summarization).
+
 
 ## 3.4.5 Transformer vs. RNN
 
