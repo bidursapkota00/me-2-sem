@@ -663,16 +663,6 @@ L1 drives some weights to exactly zero, producing sparse models and performing i
 - **Feature engineering:** Provide more informative features or use better data representations.
 - **Decrease learning rate:** A learning rate that is too high may cause the optimizer to overshoot minima, preventing convergence.
 
-## 2.7.4 Bias-Variance in Deep Learning
-
-Deep neural networks have a unique relationship with the bias-variance trade-off. Classical theory predicts that very complex models (like deep networks with millions of parameters) should overfit badly. However, in practice, deep networks often generalize well due to **implicit regularization** from:
-
-- **SGD with mini-batches:** The noise in stochastic gradient descent acts as a regularizer, preventing the model from settling into sharp minima.
-- **Overparameterization:** Modern deep networks operate in the "interpolation regime" where they can fit the training data perfectly yet still generalize — a phenomenon described by the **double descent curve**. Beyond the classical U-shaped bias-variance curve, increasing model size past the interpolation threshold causes test error to decrease again.
-- **Architecture choices:** Skip connections (ResNet), batch normalization, and weight sharing (CNNs) provide structural regularization.
-
-The practical recipe for deep learning: use a large model (low bias), then control variance through dropout, weight decay, data augmentation, and early stopping.
-
 ---
 
 ---
@@ -730,6 +720,8 @@ where $x_t$ is the input at time $t$, $h_{t-1}$ is the previous hidden state, $W
 - **Weight sharing:** The same weight matrices ($W_{xh}$, $W_{hh}$, $W_{hy}$) are used at every time step. This allows the network to handle sequences of any length and generalize patterns across positions.
 - **Hidden state as memory:** $h_t$ acts as a compressed summary of all inputs seen so far ($x_1, x_2, ..., x_t$).
 - **Unrolling:** For training, the RNN is "unrolled" across time steps into a chain of identical modules, creating a computational graph that resembles a very deep feedforward network.
+
+![alt text](../ai/image-11.png)
 
 ## 3.2.2 Backpropagation Through Time (BPTT)
 
