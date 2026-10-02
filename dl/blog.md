@@ -91,6 +91,7 @@ $
 $
 w_i \leftarrow w_i + \eta (t - y) x_i
 $
+
 $
 b \leftarrow b + \eta (t - y)
 $
@@ -944,7 +945,6 @@ Since the Transformer processes all words at the same time (not one by one like 
 - **Decoder-only (e.g., GPT):** Good at generating text (writing stories, chatbots).
 - **Encoder-Decoder (e.g., T5, original Transformer):** Good at converting one sequence to another (translation, summarization).
 
-
 ## 3.4.5 Transformer vs. RNN
 
 | Feature                  | RNN/LSTM/GRU                          | Transformer                    |
@@ -1031,52 +1031,41 @@ A **Convolutional Neural Network (CNN)** is a specialized neural network designe
 
 # 4.2 Convolution, Pooling, Padding, Flattening, Fully Connected Layer
 
-## 4.2.1 Convolution Operation
+**Key Architectural Components:**
 
-The **convolution** operation slides a small learnable filter (kernel) across the input, computing the element-wise product and sum at each position to produce a **feature map** (activation map).
+**1. Convolutional Layer:** The core building block. A set of learnable **filters (kernels)** — small matrices (e.g., 3×3, 5×5) — slide (convolve) over the input to produce **feature maps**. Each filter detects a specific feature (edges, textures, patterns). At each position, the filter multiplies its values with the image pixels underneath and adds them up to get one number. This creates a new, smaller image called a feature map. **The convolution operation slides a small learnable filter (kernel) across the input, computing the element-wise product and sum at each position to produce a feature map (activation map).**
 
-For a 2D input $I$ and kernel $K$ of size $k \times k$:
+Different filters detect different things — one might detect horizontal edges, another might detect vertical edges, another might detect curves, etc.
 
-$
-(I * K)[i, j] = \sum_{m=0}^{k-1} \sum_{n=0}^{k-1} I[i+m, j+n] \cdot K[m, n]
-$
+- **Stride:** The step size by which the filter moves. Stride=1 moves one pixel at a time; stride=2 skips every other pixel, reducing spatial dimensions.
+- **Padding:** Adding extra zeros around the edges of the image so the filter can process border pixels properly.
 
-**Output size formula:** For input size $n$, kernel size $k$, padding $p$, and stride $s$:
+**2. Activation (ReLU):** Applied after each convolution to introduce non-linearity: f(x) = max(0, x).
 
-$
-\text{output size} = \left\lfloor \frac{n - k + 2p}{s} \right\rfloor + 1
-$
+**3. Pooling Layer:** Reduces the spatial dimensions of feature maps (downsampling), decreasing computation and providing spatial invariance.
 
-**Stride:** The step size by which the filter moves. Stride = 1 moves one pixel at a time; stride = 2 skips every other position, reducing the output size by half.
+- **Max Pooling:** Takes the maximum value from each patch (e.g., 2×2 region). Most commonly used.
+- **Average Pooling:** Takes the average value from each patch.
 
-**Multi-channel convolution:** For an input with $C$ channels (e.g., RGB with $C=3$), each filter has dimensions $k \times k \times C$. The filter produces a single 2D feature map. Multiple filters (e.g., 64 filters) produce 64 feature maps, giving an output with 64 channels.
+**4. Flattening:** Flattening reshapes the 2D/3D feature map (height × width × channels) into a 1D vector. This is the bridge between convolutional layers and fully connected layers. A feature map of size 7×7×512 is flattened to a vector of 25,088 elements.
 
-## 4.2.2 Padding
+**5. Fully Connected (Dense) Layer:** After several convolutional and pooling layers, the feature maps are **flattened** into a 1D vector and fed into one or more fully connected layers for final classification or regression. Every neuron is connected to every element of the input vector. The output layer uses softmax (multi-class classification) or sigmoid (binary classification) activation.
 
-**Padding** adds extra pixels (usually zeros) around the border of the input before convolution.
+![alt text](../ai/image-10.png)
 
-- **Valid padding (no padding):** $p = 0$. The output shrinks with each convolution. Pixels at the edges contribute to fewer output values than center pixels.
-- **Same padding:** $p = \lfloor k/2 \rfloor$. The output has the same spatial dimensions as the input. Ensures all input pixels are treated equally.
+**Working Mechanism — Image Classification Example:**
 
-## 4.2.3 Pooling
+Input: 32×32×3 color image (e.g., classifying handwritten digits).
 
-**Pooling** reduces the spatial dimensions of feature maps, decreasing computational cost, reducing parameters, and providing a degree of translation invariance.
+1. **Conv Layer 1:** Apply 32 filters of size 5×5 → 32 feature maps of size 28×28. Apply ReLU.
+2. **Pooling Layer 1:** Max pooling with 2×2 → size reduced to 14×14.
+3. **Conv Layer 2:** Apply 64 filters of size 5×5 → 64 feature maps of size 10×10. Apply ReLU.
+4. **Pooling Layer 2:** Max pooling with 2×2 → size reduced to 5×5.
+5. **Flatten:** 64 × 5 × 5 = 1600-dimensional vector.
+6. **FC Layer:** 1600 → 128 neurons with ReLU.
+7. **Output Layer:** 128 → 10 neurons with softmax (for 10 digit classes).
 
-**Max Pooling:** Takes the maximum value in each pooling window. Retains the strongest activation (most prominent feature). Most commonly used — typical configuration: 2×2 window, stride 2 (halves spatial dimensions).
-
-**Average Pooling:** Takes the mean of values in each pooling window. Retains average feature presence. Smoother than max pooling.
-
-**Global Average Pooling (GAP):** Computes a single average value for each feature map across the entire spatial extent. Converts a feature map of size $H \times W$ to a single value. Eliminates the need for fully connected layers before the output — reduces parameters dramatically and prevents overfitting. Used in modern architectures like GoogLeNet and ResNet.
-
-## 4.2.4 Flattening
-
-**Flattening** reshapes the 3D feature map (height × width × channels) into a 1D vector. This is the bridge between convolutional layers and fully connected layers. A feature map of size 7×7×512 is flattened to a vector of 25,088 elements.
-
-## 4.2.5 Fully Connected (Dense) Layer
-
-After convolution and pooling extract spatial features, one or more **fully connected layers** combine these features for the final prediction. Every neuron is connected to every element of the input vector. The output layer uses softmax (multi-class classification) or sigmoid (binary classification) activation.
-
-**Typical CNN pipeline:** Input → [Conv → ReLU → Pool] × N → Flatten → FC → FC → Softmax → Output
+Training uses backpropagation with cross-entropy loss.
 
 ---
 
