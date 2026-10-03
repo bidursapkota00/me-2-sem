@@ -1311,7 +1311,7 @@ If a block has 5 layers, then:
 
 **Forward pass** computes the output layer by layer:
 
-1. **Convolution:** $Z^l = W^l * A^{l-1} + b^l$ (filter slides across input, produces feature map).
+1. **Convolution:** filter slides across input, produces feature map.
 2. **Activation:** $A^l = \text{ReLU}(Z^l)$ (applies non-linearity).
 3. **Pooling:** Reduces spatial dimensions by selecting max or average values.
 4. **Flatten:** Converts 3D tensor to 1D vector.
@@ -1321,29 +1321,21 @@ If a block has 5 layers, then:
 
 ## 4.5.3 Backward Propagation in CNN
 
-**Backward pass** computes gradients of the loss with respect to all learnable parameters (filter weights and biases) and updates them using gradient descent.
+**Backward propagation** is how the network **learns from its mistakes**. After the forward pass gives a prediction, we compute the **loss** (how wrong the prediction was). Then we work backwards through the network, calculating how much each filter weight contributed to the error. Finally, we adjust the weights to reduce the error.
 
-**Gradient through convolution:** The gradient with respect to the filter weights is computed by convolving the input with the upstream gradient:
+> **Gradient** = a number that tells us "if I increase this weight a little, how much does the loss change?" It points in the direction of steepest increase, so we move in the **opposite direction** to decrease the loss.
 
-$
-\frac{\partial L}{\partial W^l} = A^{l-1} * \frac{\partial L}{\partial Z^l}
-$
+Here's how gradients are computed through different layers:
 
-The gradient with respect to the input (for propagation to the previous layer) is computed using a **full convolution** (convolution with the flipped filter):
+**Through convolution:** To find out how much each filter weight affected the loss, we convolve the input with the upstream gradient (the error signal coming from the layer above):
 
-$
-\frac{\partial L}{\partial A^{l-1}} = \frac{\partial L}{\partial Z^l} *_{\text{full}} \text{rot180}(W^l)
-$
+$$\frac{\partial L}{\partial W^l} = A^{l-1} * \frac{\partial L}{\partial Z^l}$$
 
-**Gradient through max pooling:** The gradient passes only to the position that had the maximum value in the forward pass. All other positions receive zero gradient.
+**Through max pooling:** During the forward pass, max pooling picked the biggest value in each region. During backprop, the gradient goes **only to that winning position**. All other positions get zero gradient — because changing them wouldn't have changed the output.
 
-**Gradient through ReLU:**
+**Through ReLU:** ReLU says: if the input was positive, pass the gradient through unchanged. If the input was negative or zero, block the gradient (set it to zero).
 
-$
-\frac{\partial L}{\partial Z^l} = \frac{\partial L}{\partial A^l} \odot \mathbb{1}(Z^l > 0)
-$
-
-The gradient is passed through where the pre-activation was positive, and zeroed where it was negative or zero.
+After computing all the gradients, we update the weights using **gradient descent**: $W_{\text{new}} = W_{\text{old}} - \eta \cdot \frac{\partial L}{\partial W}$, where $\eta$ is the **learning rate** (a small number that controls how big each update step is).
 
 ---
 
@@ -1383,43 +1375,48 @@ Unfreeze some or all pre-trained layers and retrain with a **small learning rate
 
 Understanding what a CNN has learned and why it makes specific predictions is critical for debugging, trust, and interpretability.
 
+Here are some techniques to "look inside" a CNN:
+
 ## 4.7.1 Feature Map Visualization
 
-Visualize the output (activation) of each filter at each layer. Early layers show edge detectors (horizontal, vertical, diagonal), color detectors, and gradient detectors. Middle layers show texture patterns, corners, and basic shapes. Deep layers show high-level semantic features (dog faces, wheels, text).
+The simplest way: just look at the **feature maps** (outputs of each filter at each layer) as images.
+
+- **Early layers** (close to the input): Show simple patterns — edges (horizontal, vertical, diagonal lines), basic colors, and gradients (smooth changes in brightness).
+- **Middle layers**: Show more complex patterns — textures (repeating patterns), corners, and basic shapes.
+- **Deep layers** (close to the output): Show high-level **semantic features** — recognizable things like dog faces, car wheels, or text characters.
 
 ## 4.7.2 Activation Maximization
 
-Generate a synthetic input image that maximally activates a specific neuron or filter. Start with random noise, fix network weights, and perform **gradient ascent** on the input pixels to maximize the target neuron's activation:
+This answers the question: **"What does a specific neuron want to see?"**
 
-$
-x^* = \arg\max_x \, a_k(x) - \lambda \|x\|^2
-$
+**Method:** Start with a random noise image (just random colored pixels). Then **freeze** (lock) the network's weights and do **gradient ascent** on the pixel values of the image — that is, adjust the pixels to **increase** the activation of a chosen neuron as much as possible.
 
-where $a_k$ is the activation of neuron $k$ and $\lambda$ is a regularization term to keep the image realistic. The resulting image reveals what pattern the neuron is "looking for."
+> **Gradient ascent** = the opposite of gradient descent. Instead of going downhill to minimize something, we go uphill to maximize something.
+
+The resulting image shows the pattern the neuron is "looking for." For example, a neuron in a deep layer might produce an image that looks like a dog face — meaning that neuron fires strongly when it sees dog-like features.
 
 ## 4.7.3 Saliency Maps
 
-Compute the gradient of the output class score with respect to each input pixel:
+This answers: **"Which pixels in the input image matter most for the prediction?"**
 
-$
-S = \left| \frac{\partial y_c}{\partial x} \right|
-$
+Compute the **gradient** of the predicted class score with respect to each input pixel:
 
-Pixels with large gradient magnitude are the ones that most influence the prediction if changed — they highlight the most "salient" regions of the input for a given class.
+$$S = \left| \frac{\partial y_c}{\partial x} \right|$$
+
+> **Saliency** = importance, what stands out.
+
+Pixels where the gradient is large are the ones that would change the prediction the most if you modified them. The saliency map highlights these important regions — usually the object that the CNN is classifying.
 
 ## 4.7.4 Grad-CAM (Gradient-weighted Class Activation Mapping)
 
-Produces a coarse heatmap highlighting important regions for a specific class prediction.
-
-1. Compute the gradient of the class score $y^c$ with respect to the feature maps $A^k$ of the last convolutional layer.
-2. Global average pool the gradients to get importance weights: $\alpha_k^c = \frac{1}{Z} \sum_i \sum_j \frac{\partial y^c}{\partial A_{ij}^k}$
-3. Compute weighted combination: $L_{\text{Grad-CAM}}^c = \text{ReLU}\left(\sum_k \alpha_k^c A^k\right)$
-
-ReLU is applied because we are interested only in features that have a positive influence on the class of interest. The result is a heatmap that can be overlaid on the original image.
+Grad-CAM creates a **heatmap** (a color-coded map where warm colors = important, cool colors = unimportant) showing which parts of the image the CNN focused on when making its prediction.
 
 ## 4.7.5 Occlusion Sensitivity
 
-Systematically cover different regions of the input with a grey/black patch and observe the change in prediction probability. Regions where occlusion causes the largest drop in confidence are the most important for the prediction. This is model-agnostic — it works for any architecture.
+The simplest and most intuitive method. **Cover up** (occlude) different parts of the image with a grey or black patch, one region at a time, and see how the prediction changes.
+
+- If covering a region causes the confidence to **drop a lot**, that region is very important for the prediction.
+- If covering a region barely changes the confidence, that region doesn't matter much.
 
 ---
 
@@ -1427,39 +1424,39 @@ Systematically cover different regions of the input with a grey/black patch and 
 
 Neural style transfer generates a new image that preserves the **content** of one image while adopting the **artistic style** of another (e.g., rendering a photograph in the style of Van Gogh's Starry Night).
 
-**Method (Gatys et al., 2015):** Uses a pre-trained CNN (typically VGG-19) as a fixed feature extractor. The network weights are frozen — instead, the pixel values of the generated image are optimized.
+**How it works (Gatys et al., 2015):**
 
-**Content Representation:** The feature maps at a deep layer $l$ capture the content (spatial structure, objects) of an image. The **content loss** measures the difference between feature maps of the content image $C$ and the generated image $G$:
+Use a pre-trained CNN (usually **VGG-19**) as a **feature extractor**. The CNN's weights are **frozen** (not updated). Instead, we start with a blank (random noise) or copy of the content image and repeatedly adjust its **pixel values** using gradient descent until it looks right.
 
-$
-L_{\text{content}} = \frac{1}{2} \sum_{i,j} (F_{ij}^l - P_{ij}^l)^2
-$
+> **Feature extractor** = a network used only to extract (pull out) useful patterns from images, not to classify them.
 
-where $F^l$ and $P^l$ are the feature maps of the generated and content images at layer $l$.
+### Content Representation
 
-**Style Representation — Gram Matrix:** Style is captured by the correlations between filter responses. The **Gram matrix** $G^l$ at layer $l$ with $N_l$ filters and feature maps of size $M_l$:
+When an image passes through a CNN, the feature maps at **deep layers** capture the **content** — the shapes, objects, and spatial layout of the image (not colors or textures, but "what is where").
 
-$
-G_{ij}^l = \sum_k F_{ik}^l F_{jk}^l
-$
+The **content loss** measures how different the generated image's features are from the content image's features at a chosen layer $l$.
 
-The Gram matrix captures which features tend to co-occur — e.g., if "blue color" and "swirly texture" activations are correlated, the style includes blue swirls. Spatial information is discarded.
+### Style Representation — Gram Matrix
 
-**Style Loss:**
+Style is not about "what" is in the image, but about "how" it looks — the textures, colors, and brush strokes.
 
-$
-L_{\text{style}} = \sum_l w_l \frac{1}{4 N_l^2 M_l^2} \sum_{i,j} (G_{ij}^l - A_{ij}^l)^2
-$
+To capture style, we use the **Gram matrix**. It measures **correlations** (relationships) between different filter responses.
 
-where $G^l$ and $A^l$ are Gram matrices of the generated and style images, and $w_l$ is the weight for layer $l$. Multiple layers are used to capture style at different scales.
+> **Gram matrix** = a table where each entry tells you how much two filters "fire together." If filter A (which detects blue color) and filter B (which detects swirly shapes) both activate strongly at the same places, the Gram matrix captures this — meaning the style includes "blue swirls."
 
-**Total Loss:**
+The Gram matrix throws away spatial information (where things are) and keeps only the style information (what patterns co-occur).
 
-$
-L_{\text{total}} = \alpha \cdot L_{\text{content}} + \beta \cdot L_{\text{style}}
-$
+The **style loss** measures how different the generated image's Gram matrix is from the style image's Gram matrix, summed across multiple layers to capture style at different scales — fine textures (early layers) and large patterns (deep layers).
 
-The ratio $\alpha/\beta$ controls the balance — higher $\beta/\alpha$ produces more stylized images. The generated image is initialized (random noise or content image) and iteratively updated using gradient descent on the pixel values.
+### Total Loss
+
+$$L_{\text{total}} = \alpha \cdot L_{\text{content}} + \beta \cdot L_{\text{style}}$$
+
+- $\alpha$ controls how much to preserve the **content**.
+- $\beta$ controls how much to apply the **style**.
+- If $\beta$ is much larger than $\alpha$, the result will be very stylized (more like the painting). If $\alpha$ is larger, the result will look more like the original photo.
+
+The generated image starts as random noise (or a copy of the content image) and is updated step by step using **gradient descent on the pixels** — not on the network weights! — until the total loss is small enough.
 
 ---
 
@@ -1492,10 +1489,6 @@ Instead of compressing the entire image into a single vector (information bottle
 
 1. Compute attention weights $\alpha_{t,i}$ — how relevant each spatial region $i$ is for generating word $w_t$:
 
-$
-e_{t,i} = f_{\text{att}}(h_{t-1}, a_i) \quad;\quad \alpha_{t,i} = \frac{\exp(e_{t,i})}{\sum_j \exp(e_{t,j})}
-$
-
 2. Compute the context vector — weighted sum of spatial features:
 
 $
@@ -1524,7 +1517,11 @@ $
 
 **Inference:** At test time, the model generates words autoregressively — using its own predicted word as input to the next step. **Beam search** (maintaining top-$k$ candidate sequences at each step) is used instead of greedy decoding to find higher-quality captions.
 
-**Evaluation Metrics:** BLEU (n-gram precision), METEOR (considers synonyms and stemming), CIDEr (consensus-based, TF-IDF weighted), ROUGE (recall-oriented).
+**Evaluation Metrics:** BLEU (n-gram precision), METEOR (considers synonyms and stemming), etc.
+
+**BLEU:** How many n-grams (word chunks of length n) in the generated caption match the reference. Focuses on **precision** (are the generated words correct?).
+
+> **n-gram** = a sequence of n consecutive words. "the dog" is a 2-gram (bigram). "the brown dog" is a 3-gram (trigram).
 
 ---
 

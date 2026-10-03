@@ -227,3 +227,276 @@ If a block has 5 layers, then:
 | **DenseNet**   | 2016 | 121+ layers | 8M         | ~5.5%       | Dense connections, feature reuse |
 
 **The story in one line:** AlexNet proved deep learning works → VGG showed deeper is better → GoogLeNet showed wider is smarter → ResNet solved the depth limit with skip connections → DenseNet maximized feature reuse with dense connections.
+
+---
+
+# 4.5 CNN Design, Forward and Backward Propagation
+
+## 4.5.1 CNN Design Principles
+
+When building a CNN, you need to make some design choices — like choosing the right ingredients before cooking. Here are the main decisions:
+
+- **Filter size:** Use small 3×3 filters. They need fewer numbers (parameters) to store, let you build deeper networks, and since each layer adds a ReLU activation, the network can learn more complex patterns.
+
+- **Number of filters:** As the image shrinks (spatial dimensions reduce), increase the number of filters. A common pattern: 64 → 128 → 256 → 512. Early layers detect simple things (edges, colors) so they need fewer filters. Deeper layers detect complicated things (faces, objects) and need more filters.
+
+- **Downsampling** (making the image smaller): Use **stride-2 convolution** (the filter jumps 2 pixels instead of 1) or **pooling** (taking the max or average of a small region) to gradually shrink the image.
+
+> **Stride** = how many pixels the filter moves each step. Stride 1 = move 1 pixel at a time. Stride 2 = skip every other position, so the output is half the size.
+
+- **Depth** (number of layers): More layers = the network can learn more abstract (high-level) features. But very deep networks are hard to train, so use **skip connections** (shortcuts that let information jump over layers, like in ResNet).
+
+- **Final layers:** Use **Global Average Pooling (GAP)** instead of big fully connected layers — it takes the average of each feature map, giving one number per map. This reduces the number of parameters and prevents overfitting. Then use **Softmax** for classification (picking a category) or a **linear layer** for regression (predicting a number).
+
+> **Overfitting** = when the model memorizes the training data but can't handle new, unseen data.
+
+---
+
+## 4.5.2 Forward Propagation in CNN
+
+**Forward propagation** (also called the **forward pass**) is the process of feeding an input image through the network layer by layer to get a prediction. Think of it like passing a ball through a series of checkpoints — at each checkpoint, something happens to the ball.
+
+Here's what happens step by step:
+
+1. **Convolution:** The filter slides across the input image, does multiply-and-add at each position, and produces a **feature map**. Mathematically: $Z^l = W^l * A^{l-1} + b^l$ (where $W$ is the filter, $A$ is the input, $b$ is the bias, and $*$ means convolution).
+
+2. **Activation (ReLU):** Apply the ReLU function — keep positive values as they are, turn negative values to zero. This adds **non-linearity** (without it, the whole network would behave like a single simple layer). $A^l = \text{ReLU}(Z^l)$
+
+3. **Pooling:** Shrink the feature map by picking the maximum value (max pooling) or average value (average pooling) from small regions (e.g., 2×2 blocks).
+
+4. **Flatten:** The feature maps are 3D (height × width × channels). **Flatten** means stretching them into a single long 1D list of numbers, so they can be fed into a regular (fully connected) layer.
+
+> **Tensor** = a multi-dimensional array. A 1D tensor is a list, 2D is a table, 3D is a cube of numbers.
+
+5. **Fully connected layer:** Every neuron connects to every neuron in the next layer. $Z = WA + b$, then apply activation.
+
+6. **Output (Softmax):** Converts raw scores (**logits**) into **probabilities** that add up to 1. The class with the highest probability is the prediction.
+
+> **Logits** = the raw, unnormalized output scores before converting to probabilities.
+
+7. **Loss:** Compare the prediction with the correct answer (**ground truth**). For classification, we use **cross-entropy loss** — it gives a small loss when the prediction is confident and correct, and a large loss when the prediction is wrong.
+
+---
+
+## 4.5.3 Backward Propagation in CNN
+
+**Backward propagation** is how the network **learns from its mistakes**. After the forward pass gives a prediction, we compute the **loss** (how wrong the prediction was). Then we work backwards through the network, calculating how much each filter weight contributed to the error. Finally, we adjust the weights to reduce the error.
+
+> **Gradient** = a number that tells us "if I increase this weight a little, how much does the loss change?" It points in the direction of steepest increase, so we move in the **opposite direction** to decrease the loss.
+
+Here's how gradients are computed through different layers:
+
+**Through convolution:** To find out how much each filter weight affected the loss, we convolve the input with the upstream gradient (the error signal coming from the layer above):
+
+$$\frac{\partial L}{\partial W^l} = A^{l-1} * \frac{\partial L}{\partial Z^l}$$
+
+**Through max pooling:** During the forward pass, max pooling picked the biggest value in each region. During backprop, the gradient goes **only to that winning position**. All other positions get zero gradient — because changing them wouldn't have changed the output.
+
+**Through ReLU:** ReLU says: if the input was positive, pass the gradient through unchanged. If the input was negative or zero, block the gradient (set it to zero).
+
+After computing all the gradients, we update the weights using **gradient descent**: $W_{\text{new}} = W_{\text{old}} - \eta \cdot \frac{\partial L}{\partial W}$, where $\eta$ is the **learning rate** (a small number that controls how big each update step is).
+
+---
+
+---
+
+# 4.7 Looking Inside Deep Neural Networks
+
+A CNN is often called a **"black box"** — you put in an image, it gives a prediction, but you don't know **why**. Understanding what the network has learned is important for **debugging** (finding mistakes), **trust** (believing the model's answers), and **interpretability** (explaining decisions to humans).
+
+> **Interpretability** = the ability to explain, in human-understandable terms, why a model made a certain decision.
+
+Here are some techniques to "look inside" a CNN:
+
+## 4.7.1 Feature Map Visualization
+
+The simplest way: just look at the **feature maps** (outputs of each filter at each layer) as images.
+
+- **Early layers** (close to the input): Show simple patterns — edges (horizontal, vertical, diagonal lines), basic colors, and gradients (smooth changes in brightness).
+- **Middle layers**: Show more complex patterns — textures (repeating patterns), corners, and basic shapes.
+- **Deep layers** (close to the output): Show high-level **semantic features** — recognizable things like dog faces, car wheels, or text characters.
+
+> **Semantic** = related to meaning. "Semantic features" are features that carry meaning (e.g., "this looks like an eye").
+
+## 4.7.2 Activation Maximization
+
+This answers the question: **"What does a specific neuron want to see?"**
+
+**Method:** Start with a random noise image (just random colored pixels). Then **freeze** (lock) the network's weights and do **gradient ascent** on the pixel values of the image — that is, adjust the pixels to **increase** the activation of a chosen neuron as much as possible.
+
+> **Gradient ascent** = the opposite of gradient descent. Instead of going downhill to minimize something, we go uphill to maximize something.
+
+The resulting image shows the pattern the neuron is "looking for." For example, a neuron in a deep layer might produce an image that looks like a dog face — meaning that neuron fires strongly when it sees dog-like features.
+
+## 4.7.3 Saliency Maps
+
+This answers: **"Which pixels in the input image matter most for the prediction?"**
+
+Compute the **gradient** of the predicted class score with respect to each input pixel:
+
+$$S = \left| \frac{\partial y_c}{\partial x} \right|$$
+
+> **Saliency** = importance, what stands out.
+
+Pixels where the gradient is large are the ones that would change the prediction the most if you modified them. The saliency map highlights these important regions — usually the object that the CNN is classifying.
+
+## 4.7.4 Grad-CAM (Gradient-weighted Class Activation Mapping)
+
+Grad-CAM creates a **heatmap** (a color-coded map where warm colors = important, cool colors = unimportant) showing which parts of the image the CNN focused on when making its prediction.
+
+## 4.7.5 Occlusion Sensitivity
+
+The simplest and most intuitive method. **Cover up** (occlude) different parts of the image with a grey or black patch, one region at a time, and see how the prediction changes.
+
+- If covering a region causes the confidence to **drop a lot**, that region is very important for the prediction.
+- If covering a region barely changes the confidence, that region doesn't matter much.
+
+---
+
+---
+
+# 4.8 Neural Style Transfer
+
+**Neural style transfer** is a technique that takes two images — a **content image** (e.g., a photo of a city) and a **style image** (e.g., Van Gogh's "Starry Night" painting) — and creates a **new image** that has the content (objects, layout) of the first image but painted in the artistic style of the second image.
+
+> Think of it like asking an artist: "Paint my photograph, but make it look like a Van Gogh painting."
+
+**How it works (Gatys et al., 2015):**
+
+Use a pre-trained CNN (usually **VGG-19**) as a **feature extractor**. The CNN's weights are **frozen** (not updated). Instead, we start with a blank (random noise) or copy of the content image and repeatedly adjust its **pixel values** using gradient descent until it looks right.
+
+> **Feature extractor** = a network used only to extract (pull out) useful patterns from images, not to classify them.
+
+### Content Representation
+
+When an image passes through a CNN, the feature maps at **deep layers** capture the **content** — the shapes, objects, and spatial layout of the image (not colors or textures, but "what is where").
+
+The **content loss** measures how different the generated image's features are from the content image's features at a chosen layer $l$.
+
+### Style Representation — Gram Matrix
+
+Style is not about "what" is in the image, but about "how" it looks — the textures, colors, and brush strokes.
+
+To capture style, we use the **Gram matrix**. It measures **correlations** (relationships) between different filter responses.
+
+> **Gram matrix** = a table where each entry tells you how much two filters "fire together." If filter A (which detects blue color) and filter B (which detects swirly shapes) both activate strongly at the same places, the Gram matrix captures this — meaning the style includes "blue swirls."
+
+The Gram matrix throws away spatial information (where things are) and keeps only the style information (what patterns co-occur).
+
+The **style loss** measures how different the generated image's Gram matrix is from the style image's Gram matrix, summed across multiple layers to capture style at different scales — fine textures (early layers) and large patterns (deep layers).
+
+### Total Loss
+
+$$L_{\text{total}} = \alpha \cdot L_{\text{content}} + \beta \cdot L_{\text{style}}$$
+
+- $\alpha$ controls how much to preserve the **content**.
+- $\beta$ controls how much to apply the **style**.
+- If $\beta$ is much larger than $\alpha$, the result will be very stylized (more like the painting). If $\alpha$ is larger, the result will look more like the original photo.
+
+The generated image starts as random noise (or a copy of the content image) and is updated step by step using **gradient descent on the pixels** — not on the network weights! — until the total loss is small enough.
+
+---
+
+---
+
+# 4.9 Image Captioning System
+
+An **image captioning system** looks at a photo and writes a sentence describing it — like "A dog sitting on green grass near a red ball."
+
+It combines two types of neural networks:
+
+- A **CNN** (to understand the image) — the "eyes"
+- An **RNN/LSTM** (to generate the sentence) — the "mouth"
+
+This is called an **encoder-decoder framework**: the CNN **encodes** (compresses) the image into a compact representation, and the LSTM **decodes** (expands) that representation into a sentence.
+
+> **Encoder** = takes raw input and converts it into a meaningful summary.
+> **Decoder** = takes the summary and produces the desired output.
+>
+> **LSTM (Long Short-Term Memory)** = a type of RNN that is good at remembering information over long sequences (sentences, paragraphs).
+
+## 4.9.1 Architecture
+
+**Encoder — CNN:** Take a pre-trained CNN (like ResNet or VGG) and remove the last classification layer. What remains gives us a **feature vector** — a list of numbers that describes the image's visual content. This is like the CNN saying: "I see a dog, grass, a ball, outdoor scene..."
+
+**Decoder — LSTM:** The LSTM generates the caption **one word at a time**. At each step, it looks at:
+
+- The image features (what's in the picture)
+- The words it has already generated (what it has said so far)
+
+And predicts the **next word**.
+
+**Basic pipeline (Show and Tell model):**
+
+1. Pass the image through the CNN → get a feature vector $v$.
+2. Feed $v$ to the LSTM as the starting input.
+3. At each time step $t$, the LSTM receives the **embedding** (numerical representation) of the previous word $w_{t-1}$ and outputs a probability for every word in the vocabulary. The most likely word becomes $w_t$.
+4. This continues until the model outputs an **\<END\> token** — a special word that means "I'm done talking."
+
+> **Embedding** = converting a word into a list of numbers that captures its meaning. Similar words (like "dog" and "puppy") get similar numbers.
+>
+> **Vocabulary** = the set of all words the model knows.
+
+## 4.9.2 Attention Mechanism
+
+The basic model compresses the **entire image** into a single vector — but this is like trying to describe a complex scene after looking at it for one second with your eyes closed. A lot of detail is lost. This is called an **information bottleneck**.
+
+The **attention mechanism** fixes this. Instead of one vector, the CNN produces a **grid of feature vectors** (e.g., 14×14 = 196 vectors, each describing a different region of the image). When generating each word, the LSTM "looks at" (attends to) the most relevant region.
+
+**How it works at each time step $t$:**
+
+1. **Compute attention weights** $\alpha_{t,i}$: For each of the 196 regions, calculate a score saying "how relevant is this region for the word I'm about to generate?" Then normalize these scores using **softmax** so they add up to 1.
+
+$$e_{t,i} = f_{\text{att}}(h_{t-1}, a_i) \quad;\quad \alpha_{t,i} = \frac{\exp(e_{t,i})}{\sum_j \exp(e_{t,j})}$$
+
+> $h_{t-1}$ = the LSTM's previous hidden state (its memory of what it has generated so far).
+> $a_i$ = the feature vector for region $i$ of the image.
+
+2. **Compute context vector** $z_t$: Take a **weighted sum** of all region features — regions with higher attention weight contribute more.
+
+$$z_t = \sum_{i=1}^{L} \alpha_{t,i} \cdot a_i$$
+
+3. Feed $z_t$ and the previous word's embedding into the LSTM to generate the next word.
+
+**Example:** When the model generates the word "dog," it pays attention to the part of the image where the dog is. When it generates "grass," it shifts attention to the grass area.
+
+## 4.9.3 Training
+
+**Dataset:** We need thousands of image-caption pairs. A popular dataset is **MS COCO**, where each image comes with 5 different captions written by humans.
+
+**Training process:**
+
+1. The CNN encoder is **pre-trained on ImageNet** (transfer learning — reusing knowledge learned from millions of images). Its weights may be **frozen** (kept fixed) or **fine-tuned** (adjusted slightly with a small learning rate).
+
+2. During training, we use **teacher forcing** — at each time step, we give the LSTM the **correct previous word** (from the human-written caption), not the word it predicted. This is like a teacher correcting a student at every step so they don't go off track.
+
+3. The **loss function** is **cross-entropy loss** — it measures how well the model's predicted word probabilities match the actual correct words, summed over the whole sentence:
+
+$$L = -\sum_{t=1}^{T} \log p(w_t | w_1, ..., w_{t-1}, I)$$
+
+> This says: for each word in the caption, how surprised was the model by the correct answer? Less surprise = lower loss = better model.
+
+4. Gradients flow backward through the LSTM and (if the CNN is not frozen) through the CNN too, allowing **end-to-end training** — the entire system learns together.
+
+> **End-to-end training** = training the whole pipeline (CNN + LSTM) as one system, rather than training each part separately.
+
+**Inference (generating captions for new images):**
+
+At test time, the model generates words **autoregressively** — it uses its own predicted word as input to predict the next word (no teacher forcing, since we don't have the answer).
+
+Instead of just picking the single best word at each step (**greedy decoding**), we use **beam search** — keep the top-$k$ (e.g., top-3) candidate sentences at each step and continue expanding all of them. At the end, pick the best complete sentence. This usually produces better captions.
+
+> **Beam search** = exploring multiple possible sentences simultaneously and choosing the best one. Like considering multiple routes on a GPS before picking the fastest.
+
+**How do we measure caption quality?**
+
+| Metric     | What it measures                                                                                                                                                   |
+| :--------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **BLEU**   | How many n-grams (word chunks of length n) in the generated caption match the reference. Focuses on **precision** (are the generated words correct?).              |
+| **METEOR** | Like BLEU, but also considers **synonyms** (words with similar meaning) and **stemming** (treating "running" and "run" as the same).                               |
+| **CIDEr**  | Measures consensus — does the generated caption match what **most humans** would say? Uses **TF-IDF** weighting (words that are unique to this image matter more). |
+| **ROUGE**  | Focuses on **recall** — how many of the reference words appear in the generated caption?                                                                           |
+
+> **Precision** = of the words I generated, how many are correct?
+> **Recall** = of the correct words, how many did I generate?
+> **n-gram** = a sequence of n consecutive words. "the dog" is a 2-gram (bigram). "the brown dog" is a 3-gram (trigram).
