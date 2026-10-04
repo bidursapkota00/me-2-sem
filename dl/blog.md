@@ -1780,8 +1780,6 @@ the goal is to estimate each source $\hat{s}_k(t)$ from $x(t)$ alone. This is an
 **Evaluation metrics:**
 
 - **SDR (Signal-to-Distortion Ratio):** Overall quality of separation. Higher is better. Measures the ratio of the true source energy to the total error (interference + noise + artifacts).
-- **SIR (Signal-to-Interference Ratio):** Measures how well other sources are suppressed.
-- **SAR (Signal-to-Artifacts Ratio):** Measures the absence of algorithmic artifacts.
 
 ## 6.2.2 Approach 1 — Spectrogram Masking (Open-Unmix)
 
@@ -1819,20 +1817,10 @@ The phase of the mixture is reused, and the inverse STFT reconstructs the time-d
 
 **Limitations:** Requires learning the time-frequency decomposition from scratch, needing more training data. Early versions produced lower SDR than spectrogram-based methods on standard benchmarks.
 
-## 6.2.4 Approach 3 — Hybrid (Demucs)
-
-**Demucs** combines both approaches. The Hybrid Demucs architecture has two parallel branches:
-
-- A **temporal branch** (1D U-Net operating on the waveform).
-- A **spectral branch** (2D U-Net operating on the complex spectrogram).
-
-The two branches are connected via cross-attention layers that allow them to share information. Later versions incorporate **Transformer layers** within the U-Net to capture long-range dependencies. Demucs achieves state-of-the-art SDR on the MUSDB18 benchmark.
-
-| Method            | Domain           | Architecture             | Phase Handling         | SDR (vocals) |
-| :---------------- | :--------------- | :----------------------- | :--------------------- | :----------- |
-| **Open-Unmix**    | Frequency (STFT) | FC + Bi-LSTM             | Reuses mixture phase   | ~6.3 dB      |
-| **Wave-U-Net**    | Time (waveform)  | 1D U-Net                 | Learned implicitly     | ~5.7 dB      |
-| **Hybrid Demucs** | Both             | Dual U-Net + Transformer | Learned (both domains) | ~8.1 dB      |
+| Method         | Domain           | Architecture | Phase Handling       | SDR (vocals) |
+| :------------- | :--------------- | :----------- | :------------------- | :----------- |
+| **Open-Unmix** | Frequency (STFT) | FC + Bi-LSTM | Reuses mixture phase | ~6.3 dB      |
+| **Wave-U-Net** | Time (waveform)  | 1D U-Net     | Learned implicitly   | ~5.7 dB      |
 
 ---
 
@@ -1846,16 +1834,6 @@ The two branches are connected via cross-attention layers that allow them to sha
 
 **Sound event detection (SED)** identifies **what** sounds are present **and when** they occur — the output includes the onset (start time) and offset (end time) of each event. It answers: **what** sounds and **when**? Example: "dog bark from 2.1s to 3.4s, car horn from 5.0s to 5.8s."
 
-**Polyphonic SED** further requires detecting **multiple overlapping events** at the same time — e.g., a dog barking while a car horn is blowing simultaneously.
-
-| Property                  | Audio Classification         | Sound Event Detection                             |
-| :------------------------ | :--------------------------- | :------------------------------------------------ |
-| **Output granularity**    | Clip-level labels            | Frame-level labels with timestamps                |
-| **Temporal localization** | No                           | Yes (onset + offset)                              |
-| **Overlapping events**    | Multi-label (present/absent) | Multi-label per time frame                        |
-| **Annotation**            | Weak labels (clip-level)     | Strong labels (frame-level timestamps)            |
-| **Evaluation metric**     | Accuracy, mAP                | Event-based F1, segment-based F1, ER (error rate) |
-
 ## 6.3.2 SED as a Sequence Labeling Problem
 
 SED is formulated as a **frame-level multi-label classification** problem:
@@ -1863,8 +1841,6 @@ SED is formulated as a **frame-level multi-label classification** problem:
 1. The audio is converted into a sequence of feature frames (e.g., log-Mel spectrogram with shape $T \times F$, where $T$ is the number of time frames and $F$ is the number of Mel bins).
 2. For each time frame $t$, the model outputs a binary vector $\mathbf{y}_t \in \{0, 1\}^C$ indicating which of the $C$ event classes are active at that frame.
 3. The output is a matrix of shape $T \times C$ — a binary activity map across time and event classes.
-
-Post-processing: A **median filter** is applied to smooth the frame-level predictions, removing spurious activations and filling short gaps. Onset and offset timestamps are extracted from contiguous active regions.
 
 ## 6.3.3 Network Architectures for SED
 
@@ -1875,14 +1851,6 @@ The CRNN is the dominant architecture for SED. It combines the local feature ext
 - **CNN block:** Multiple convolutional layers (with batch normalization, ReLU, and pooling) process the log-Mel spectrogram to extract local spectro-temporal features. Pooling is applied primarily along the frequency axis to reduce the frequency dimension while preserving the temporal resolution.
 - **RNN block:** The CNN output (reduced in frequency, full in time) is reshaped and fed into bidirectional GRU or LSTM layers. The recurrent layers model temporal context — they learn that a "door slam" is a short event while "rain" is sustained.
 - **Output layer:** A time-distributed fully connected layer with **sigmoid activation** (not softmax, because multiple events can be active simultaneously) outputs the probability of each event class at each time frame.
-
-**2. CNN with Attention:**
-
-Replace the RNN with a **self-attention mechanism** applied along the time axis. Attention allows each frame to attend to all other frames, capturing long-range dependencies without the sequential processing bottleneck of RNNs. More parallelizable and often faster to train.
-
-**3. CNN-Transformer:**
-
-Use a CNN encoder to extract features, then apply a Transformer encoder over the temporal sequence. The Transformer's multi-head self-attention captures complex temporal patterns. This approach achieves strong results on the DCASE (Detection and Classification of Acoustic Scenes and Events) challenge benchmarks.
 
 ## 6.3.4 Training Strategies
 
@@ -1911,30 +1879,28 @@ A song might have the structure: Intro → Verse (A) → Chorus (B) → Verse (A
 
 ## 6.4.2 Feature Representations for MSA
 
-**Self-Similarity Matrix (SSM):** A fundamental tool for MSA. Given a sequence of feature vectors $\mathbf{v}_1, \mathbf{v}_2, ..., \mathbf{v}_T$ (e.g., chroma features or Mel spectrogram frames), the SSM is a $T \times T$ matrix where entry $(i, j)$ measures the similarity between frames $i$ and $j$:
-
-$
-S[i, j] = \text{sim}(\mathbf{v}_i, \mathbf{v}_j)
-$
-
-using cosine similarity or dot product. In the SSM, **repeating sections** appear as off-diagonal stripes (the chorus at time $t_1$ is similar to the chorus at time $t_2$), and **homogeneous sections** appear as bright blocks along the diagonal. The SSM converts the 1D temporal structure into a 2D image-like representation that CNNs can process.
-
-**Chroma features:** Represent the distribution of energy across the 12 pitch classes (C, C#, D, ..., B), invariant to octave. They capture harmonic content and are robust to timbral changes, making them ideal for detecting harmonic repetition (verse-chorus patterns).
-
-**MFCCs and Mel spectrograms:** Capture timbral characteristics. Useful for detecting transitions where instrumentation changes (e.g., verse with guitar vs. chorus with full band).
+**Self-Similarity Matrix (SSM):** A fundamental tool for MSA. SSM is a matrix where entry $(i, j)$ measures the similarity between frames $i$ and $j$.
 
 ## 6.4.3 Deep Learning Approaches for MSA
 
 **1. CNN on SSM:** Compute the SSM from chroma or Mel features and treat it as an image. A CNN is trained to detect boundary locations — it learns to recognize the characteristic patterns in the SSM that correspond to section transitions (changes in block structure). The CNN outputs a boundary activation function — peaks indicate boundary locations.
 
+```txt
+Audio
+  ↓
+Chroma / Mel features
+  ↓
+Self-Similarity Matrix (SSM)
+  ↓
+Treat SSM as an image
+  ↓
+CNN
+  ↓
+Boundary activation function
+  ↓
+Peaks = section boundaries
+```
+
 **2. CNN on Mel spectrogram (direct):** Instead of computing an explicit SSM, feed the Mel spectrogram directly into a CNN. The network learns to detect structural boundaries from spectral changes. Architectures like VGG or ResNet, pretrained on audio classification tasks, can be fine-tuned for boundary detection.
 
-**3. CNN + RNN / Transformer:** For section labeling, the boundary detection output is combined with temporal modeling. An RNN or Transformer processes the sequence of segment-level features and assigns functional labels. Self-attention is particularly useful because labeling requires comparing distant segments (e.g., recognizing that the segment at time 1:30 is the same "chorus" as the segment at 0:45).
 
-## 6.4.4 Evaluation
-
-Boundary detection is evaluated using **hit rate** with a tolerance window (typically ±0.5s or ±3s). A detected boundary is a "hit" if it falls within the tolerance of a ground-truth boundary. **Precision, recall, and F1-score** are computed over the set of detected and ground-truth boundaries.
-
-Section labeling is evaluated using **pairwise F-measure** — checking whether pairs of frames that belong to the same section in the ground truth are also labeled as the same section by the algorithm, and vice versa.
-
-Common benchmarks: **SALAMI** (Structural Analysis of Large Amounts of Music Information) dataset, **MIREX** (Music Information Retrieval Evaluation eXchange) structural segmentation task, and the **Beatles** annotated dataset.
