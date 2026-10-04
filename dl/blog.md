@@ -1622,13 +1622,13 @@ A **3D convolution** extends the kernel to include a temporal dimension. The ker
 
 **Why 3D convolution matters:** A 3D kernel of size $3 \times 3 \times 3$ spans 3 consecutive frames and a $3 \times 3$ spatial region. It can detect motion patterns — for example, an edge that moves rightward across frames produces a specific activation pattern that a 2D kernel cannot capture. This enables the network to learn **spatiotemporal features** end-to-end.
 
-| Property           | 2D Convolution                                | 3D Convolution                                           |
-| :----------------- | :-------------------------------------------- | :------------------------------------------------------- |
-| **Kernel shape**   | $k_h \times k_w$                              | $k_t \times k_h \times k_w$                              |
-| **Input**          | Single frame $H \times W \times C$            | Clip of $T$ frames $T \times H \times W \times C$        |
-| **Output**         | 2D feature map                                | 3D feature volume (preserves temporal dim)               |
-| **Motion capture** | None (spatial only)                           | Yes (temporal patterns across frames)                    |
-| **Computation**    | Lower                                         | $k_t$ times higher                                       |
+| Property           | 2D Convolution                     | 3D Convolution                                    |
+| :----------------- | :--------------------------------- | :------------------------------------------------ |
+| **Kernel shape**   | $k_h \times k_w$                   | $k_t \times k_h \times k_w$                       |
+| **Input**          | Single frame $H \times W \times C$ | Clip of $T$ frames $T \times H \times W \times C$ |
+| **Output**         | 2D feature map                     | 3D feature volume (preserves temporal dim)        |
+| **Motion capture** | None (spatial only)                | Yes (temporal patterns across frames)             |
+| **Computation**    | Lower                              | $k_t$ times higher                                |
 
 **Computational trade-offs of 3D CNNs:**
 
@@ -1651,61 +1651,13 @@ While 3D CNNs jointly learn spatiotemporal features from short clips, they are l
 2. **Sequence modeling:** Feed the sequence of feature vectors $\mathbf{v}_1, \mathbf{v}_2, ..., \mathbf{v}_T$ into an LSTM.
 3. **Classification:** The final hidden state $\mathbf{h}_T$ (or the pooled hidden states) is passed through a fully connected layer with softmax for classification.
 
-The LSTM maintains a cell state $\mathbf{c}_t$ and hidden state $\mathbf{h}_t$, updated at each time step:
-
-$
-\mathbf{f}_t = \sigma(\mathbf{W}_f [\mathbf{h}_{t-1}, \mathbf{v}_t] + \mathbf{b}_f) \quad \text{(forget gate)}
-$
-
-$
-\mathbf{i}_t = \sigma(\mathbf{W}_i [\mathbf{h}_{t-1}, \mathbf{v}_t] + \mathbf{b}_i) \quad \text{(input gate)}
-$
-
-$
-\tilde{\mathbf{c}}_t = \tanh(\mathbf{W}_c [\mathbf{h}_{t-1}, \mathbf{v}_t] + \mathbf{b}_c) \quad \text{(candidate)}
-$
-
-$
-\mathbf{c}_t = \mathbf{f}_t \odot \mathbf{c}_{t-1} + \mathbf{i}_t \odot \tilde{\mathbf{c}}_t \quad \text{(cell update)}
-$
-
-$
-\mathbf{o}_t = \sigma(\mathbf{W}_o [\mathbf{h}_{t-1}, \mathbf{v}_t] + \mathbf{b}_o) \quad \text{(output gate)}
-$
-
-$
-\mathbf{h}_t = \mathbf{o}_t \odot \tanh(\mathbf{c}_t) \quad \text{(hidden state)}
-$
-
-This allows the LSTM to selectively remember or forget information over long sequences, capturing the temporal evolution of visual features.
-
 ## 5.4.2 ConvLSTM
 
-Standard LSTMs use fully connected operations internally, discarding spatial structure. **ConvLSTM** replaces the matrix multiplications inside the LSTM gates with convolution operations, so both the inputs and hidden states are 3D tensors (channels × height × width) rather than 1D vectors.
-
-$
-\mathbf{f}_t = \sigma(\mathbf{W}_f * [\mathbf{H}_{t-1}, \mathbf{X}_t] + \mathbf{b}_f)
-$
-
-where $*$ denotes convolution and $\mathbf{X}_t, \mathbf{H}_t$ are 3D tensors. ConvLSTM preserves spatial information while modeling temporal dynamics, making it effective for spatiotemporal prediction tasks (e.g., video prediction, precipitation nowcasting).
-
-## 5.4.3 Comparison of Video Architectures
-
-| Architecture           | Temporal Range       | Spatial Awareness  | Pretraining         | Computation |
-| :--------------------- | :------------------- | :----------------- | :------------------ | :---------- |
-| **2D CNN (per-frame)** | None                 | Full               | ImageNet            | Low         |
-| **3D CNN (C3D/I3D)**   | Short (16–64 frames) | Full               | Kinetics / Inflated | High        |
-| **CNN + LSTM**         | Long (entire video)  | Via CNN features   | CNN: ImageNet       | Moderate    |
-| **ConvLSTM**           | Long                 | Preserved in gates | Limited             | Moderate    |
-| **Two-stream**         | Short–Medium         | Full (two paths)   | ImageNet + flow     | High        |
+Standard LSTMs use fully connected (matrix multiplication) operations, so spatial information is lost when the input is flattened into a vector. **ConvLSTM** replaces these matrix multiplications inside the LSTM gates with convolution operations. This allows both the input and hidden state to remain as 3D tensors (channels × height × width), preserving spatial as well as temporal information. making it effective for spatiotemporal prediction tasks (e.g., video prediction, precipitation nowcasting).
 
 ---
 
 # 5.5 Action Recognition and Object Tracking
-
-> **Explain how optical flow is used for motion analysis in video sequences. Discuss at least two deep learning approaches that estimate optical flow and their comparative strengths. (Tutorial)**
->
-> **Describe how 3D convolution differs from standard 2D convolution and explain its role in video-based action recognition. What are the computational trade-offs involved? (Tutorial)**
 
 ## 5.5.1 Action Recognition
 
@@ -1720,29 +1672,6 @@ The two-stream architecture processes appearance and motion information through 
 - **Fusion:** The softmax outputs of both streams are combined (by averaging or using a learned fusion layer) for final classification.
 
 The temporal stream operating on precomputed optical flow provides explicit motion features, which significantly improves performance over spatial-only models.
-
-**SlowFast Networks (Feichtenhofer et al., 2019):**
-
-SlowFast is a more modern architecture that replaces optical flow with a dual-pathway design:
-
-- **Slow pathway:** Operates at a low frame rate (e.g., 4 fps). Uses a large channel capacity (many filters). Captures fine spatial semantics and slow-changing appearance.
-- **Fast pathway:** Operates at a high frame rate (e.g., 32 fps). Uses a small channel capacity (fewer filters, ~1/8 of Slow). Captures rapidly changing motion and temporal dynamics.
-- **Lateral connections:** Information flows from the Fast pathway to the Slow pathway via lateral connections at multiple stages, allowing the Slow pathway to incorporate temporal information.
-
-SlowFast does not require precomputed optical flow, simplifying the pipeline while achieving state-of-the-art results on benchmarks like Kinetics and AVA.
-
-**Other notable architectures for action recognition:**
-
-- **TSN (Temporal Segment Networks):** Divides a video into segments, samples one frame per segment, processes each with a shared 2D CNN, and aggregates (average consensus) for classification. Efficient and effective for long videos.
-- **R(2+1)D:** Decomposes 3D convolutions into separate spatial ($1 \times k \times k$) and temporal ($k_t \times 1 \times 1$) convolutions. This factorization adds an extra nonlinearity (ReLU between the two), doubles the number of nonlinearities compared to 3D convolutions, and often improves accuracy while reducing computation.
-
-| Method         | Input           | Motion Modeling                | Requires Optical Flow | Strength                         |
-| :------------- | :-------------- | :----------------------------- | :-------------------- | :------------------------------- |
-| **Two-Stream** | RGB + Flow      | Explicit (optical flow stream) | Yes                   | Strong motion features           |
-| **C3D / I3D**  | RGB clips       | Implicit (3D convolutions)     | No (optional)         | End-to-end spatiotemporal        |
-| **CNN + LSTM** | Frame features  | Sequential (recurrence)        | No                    | Long-range dependencies          |
-| **SlowFast**   | RGB (dual rate) | Implicit (fast pathway)        | No                    | No flow needed; state-of-the-art |
-| **R(2+1)D**    | RGB clips       | Factorized 3D convolution      | No                    | Efficient; more nonlinearities   |
 
 ## 5.5.2 Object Tracking
 
@@ -1775,21 +1704,6 @@ DeepSORT extends SORT by adding a **CNN-based appearance model:**
 - A track is associated with a detection only if both distances are below their respective thresholds.
 - This allows DeepSORT to re-identify objects after occlusion by matching their appearance, significantly reducing **ID switches.**
 
-**3. Siamese Network Trackers (SiamFC, SiamRPN):**
-
-Siamese trackers are used for **single object tracking:**
-
-- **SiamFC (2016):** Two identical CNN branches (sharing weights) process: (a) a **template** — the target patch from the first frame, and (b) a **search region** — a larger region in the current frame. A cross-correlation operation between the two feature maps produces a response map. The peak of the response map indicates the target's location.
-- **SiamRPN:** Extends SiamFC by adding a Region Proposal Network (RPN) head, enabling bounding box regression in addition to localization, improving scale and aspect ratio handling.
-
-Siamese trackers run at real-time speeds and do not require online fine-tuning during tracking.
-
-| Method       | Type | Core Mechanism                   | Handles Occlusion | Speed     |
-| :----------- | :--- | :------------------------------- | :---------------- | :-------- |
-| **SORT**     | MOT  | Kalman filter + Hungarian (IoU)  | Poor              | Very fast |
-| **DeepSORT** | MOT  | SORT + CNN appearance embeddings | Good              | Fast      |
-| **SiamFC**   | SOT  | Siamese cross-correlation        | Moderate          | Real-time |
-
 ---
 
 ---
@@ -1810,28 +1724,11 @@ To make audio suitable for deep learning, the raw waveform is converted into a 2
 
 **Short-Time Fourier Transform (STFT):** The audio signal is divided into short overlapping segments (windows), and the Fourier Transform is applied to each segment. The result is a **spectrogram** — a 2D matrix where the x-axis is time, the y-axis is frequency, and the value (color/intensity) represents the magnitude (energy) at that frequency and time.
 
-For a signal $x[n]$ with window function $w[n]$ of length $N$ and hop size $H$:
-
-$
-X[m, k] = \sum_{n=0}^{N-1} x[n + mH] \cdot w[n] \cdot e^{-j2\pi kn/N}
-$
-
-where $m$ is the frame index and $k$ is the frequency bin.
-
 **Mel Spectrogram:** The human ear perceives frequency on a logarithmic scale — a 100 Hz difference is perceptible at low frequencies but not at high frequencies. The **Mel scale** compresses the frequency axis to match human perception. A Mel spectrogram is obtained by applying a bank of triangular filters (Mel filter bank) to the linear-frequency spectrogram, then taking the logarithm of the energies.
 
 $
 f_{mel} = 2595 \cdot \log_{10}\left(1 + \frac{f}{700}\right)
 $
-
-**MFCC (Mel-Frequency Cepstral Coefficients):** A further compression of the Mel spectrogram. After computing the log-Mel spectrogram, the **Discrete Cosine Transform (DCT)** is applied across the Mel filter bank outputs. Typically the first 13–20 coefficients are kept. MFCCs capture the **spectral envelope** (overall shape of the spectrum), which encodes information about timbre and phonemes. They are compact but discard fine spectral detail.
-
-| Feature             | Representation           | Information Retained           | Typical Use                         |
-| :------------------ | :----------------------- | :----------------------------- | :---------------------------------- |
-| **Raw waveform**    | 1D signal                | Everything                     | End-to-end models (WaveNet, 1D CNN) |
-| **Spectrogram**     | 2D (time × frequency)    | Full spectral detail           | General analysis                    |
-| **Mel spectrogram** | 2D (time × Mel bins)     | Perceptually weighted spectrum | CNN-based classification            |
-| **MFCC**            | 2D (time × coefficients) | Spectral envelope only         | Traditional ML, compact models      |
 
 Modern deep learning systems generally prefer **log-Mel spectrograms** because they retain rich spectral information while being compact enough for efficient CNN processing.
 
@@ -1863,8 +1760,6 @@ Modern deep learning systems generally prefer **log-Mel spectrograms** because t
 | **1D CNN**            | Raw waveform        | No hand-crafted features needed                | Needs more data; longer training   |
 | **CRNN**              | Mel spectrogram     | Captures long-range temporal structure         | More complex; slower training      |
 | **AST (Transformer)** | Spectrogram patches | Global attention; state-of-the-art accuracy    | High compute; needs large datasets |
-
-**Evaluation metrics:** Accuracy, precision, recall, F1-score (per-class and macro-averaged). Common benchmark datasets: GTZAN (10 genres, 1000 clips), FMA (Free Music Archive), AudioSet (large-scale, multi-label).
 
 ---
 
