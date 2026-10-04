@@ -1551,7 +1551,6 @@ A **video** is a temporal sequence of image frames, typically captured at 24–3
 | **Frame-level (2D CNN)**  | Apply a 2D CNN to each frame independently, then aggregate     | Simple; leverages pretrained image models       |
 | **Clip-level (3D CNN)**   | Apply 3D convolutions to short clips of stacked frames         | Learns spatiotemporal features jointly          |
 | **Recurrent (CNN + RNN)** | Extract per-frame features with CNN, feed sequence to RNN/LSTM | Captures long-range temporal dependencies       |
-| **Two-stream**            | Separate spatial (RGB) and temporal (optical flow) streams     | Explicitly models appearance and motion         |
 | **Transformer-based**     | Apply self-attention over spatial and temporal tokens          | Captures global dependencies without recurrence |
 
 **Frame sampling strategies:** Processing every frame is impractical. Common strategies include: **uniform sampling** (select $T$ evenly spaced frames), **random sampling** (random frames during training for augmentation), and **dense sampling** (multiple overlapping clips from a video, predictions averaged).
@@ -1566,43 +1565,33 @@ A **video** is a temporal sequence of image frames, typically captured at 24–3
 
 **Optical flow** is the pattern of apparent motion of objects, surfaces, and edges in a visual scene caused by relative motion between the camera and the scene. It assigns a 2D displacement vector $(u, v)$ to each pixel, describing how that pixel has moved from one frame to the next.
 
-For a pixel at position $(x, y)$ in frame $t$ with intensity $I(x, y, t)$, the **brightness constancy assumption** states that the pixel's intensity does not change as it moves:
-
-$
-I(x, y, t) = I(x + u, y + v, t + 1)
-$
-
-Applying a first-order Taylor expansion and dividing by $\delta t$:
-
-$
-I_x u + I_y v + I_t = 0
-$
-
-where $I_x, I_y$ are spatial gradients and $I_t$ is the temporal gradient. This is one equation with two unknowns $(u, v)$ — the **aperture problem** — requiring additional constraints to solve.
-
-**Classical methods:**
-
-- **Lucas-Kanade (1981):** Assumes flow is constant within a small local window. Solves a system of equations for all pixels in the window using least squares. Produces **sparse** flow (at feature points). Works well for small displacements.
-- **Horn-Schunck (1981):** Adds a global smoothness constraint — assumes neighboring pixels have similar flow. Solves a variational optimization to produce **dense** flow (for every pixel). More sensitive to noise.
-
 ## 5.2.2 Deep Learning Approaches for Optical Flow
 
-**1. FlowNet (2015) and FlowNet 2.0 (2017):**
+We can train a neural network to learn optical flow directly from data. Give the network two frames, and it outputs the flow field. Here are two major deep learning approaches:
 
-FlowNet was the first end-to-end CNN for optical flow estimation. It takes two consecutive frames as input and outputs a dense flow field. Two variants were proposed:
+### 1. FlowNet (2015) and FlowNet 2.0 (2017)
 
-- **FlowNetSimple (FlowNetS):** Stacks two input frames (6-channel input) and passes them through a standard encoder-decoder CNN. The encoder extracts features; the decoder upsamples to produce the flow field.
-- **FlowNetCorr (FlowNetC):** Processes each frame through separate encoder branches, then computes a **correlation layer** (cross-correlation of feature maps) to explicitly match features between frames before decoding.
+FlowNet was the **first CNN** (Convolutional Neural Network) trained to predict optical flow from raw image pairs. It has two versions:
 
-FlowNet 2.0 stacks multiple FlowNet architectures in a cascade — a large-displacement network followed by a small-displacement refinement network — significantly improving accuracy for both large and small motions.
+- **FlowNetS (Simple):** Takes two frames, stacks them together (so the input has 6 channels — 3 color channels from each frame), and passes them through an **encoder-decoder** network.
+  - The **encoder** (compression part) shrinks the images and extracts important features.
+  - The **decoder** (expansion part) takes those features and blows them back up to full size, outputting a flow vector at each pixel.
 
-**2. RAFT — Recurrent All-Pairs Field Transforms (2020):**
+- **FlowNetC (Correlation):** Instead of stacking the two frames, it processes each frame through its **own separate encoder**. Then it computes a **correlation layer** — this layer compares features from the two frames to find which parts match (like playing a "spot the difference" game). After finding matches, the decoder produces the flow field.
 
-RAFT is a state-of-the-art optical flow method that iteratively refines flow estimates using a recurrent architecture.
+**FlowNet 2.0** improved accuracy by **stacking** multiple FlowNets one after another like a chain. The first network handles **big movements**, and the following networks **refine** the result to fix small details.
 
-- **Feature extraction:** A shared CNN encoder extracts features from both frames.
-- **Correlation volume:** Computes the dot product between all pairs of feature vectors from the two frames, producing a 4D correlation volume that captures visual similarity at all displacements.
-- **Iterative update:** A GRU-based recurrent unit repeatedly looks up the correlation volume at the current flow estimate, and produces a flow update $\Delta f$. After $N$ iterations, the flow converges to an accurate estimate.
+### 2. RAFT — Recurrent All-Pairs Field Transforms (2020)
+
+RAFT is a newer and more accurate method. Instead of predicting the flow in one shot, it **gradually improves** its guess over many steps — like erasing and redrawing your answer again and again until it's perfect.
+
+**How RAFT works (3 stages):**
+
+1. **Feature extraction:** A CNN processes both frames and turns them into **feature maps** (compact representations that capture important patterns like edges, textures, and shapes).
+
+2. **Correlation volume:** RAFT compares **every** feature in Frame 1 with **every** feature in Frame 2 by computing their **dot product** (a simple math operation that measures similarity). The result is a big 4D table (called a **correlation volume**) that stores how similar any two locations are across the two frames.
+
+3. **Iterative update:** A small recurrent network (using a **GRU** — a type of memory unit) repeatedly looks at the correlation volume, checks "how good is my current flow guess?", and produces a small correction. After many iterations (typically 12–32 rounds), the flow converges to an accurate answer.
 
 | Property                | FlowNet / FlowNet 2.0             | RAFT                                  |
 | :---------------------- | :-------------------------------- | :------------------------------------ |
@@ -1611,8 +1600,6 @@ RAFT is a state-of-the-art optical flow method that iteratively refines flow est
 | **Accuracy**            | Good baseline                     | State-of-the-art on benchmarks        |
 | **Large displacements** | FlowNet 2.0 handles via stacking  | Handles via all-pairs correlation     |
 | **Generalization**      | Moderate                          | Strong cross-dataset generalization   |
-
-**3. PWC-Net (2018):** Uses a **pyramid, warping, and cost volume** approach. Features are extracted at multiple scales (pyramid). At each scale, the second frame is warped using the upsampled flow from the coarser scale, a cost volume is computed between the first frame and the warped second frame, and the flow is refined. This coarse-to-fine strategy efficiently handles large motions while keeping computational cost low.
 
 **Applications of optical flow:**
 
@@ -1631,19 +1618,7 @@ RAFT is a state-of-the-art optical flow method that iteratively refines flow est
 
 A **2D convolution** operates on a 2D spatial grid (height × width). The kernel has shape $k_h \times k_w$ and slides across the spatial dimensions, producing a 2D feature map. When applied to a video, a 2D CNN processes each frame independently — it captures spatial features (edges, textures, objects) but **cannot learn temporal patterns** across frames.
 
-A **3D convolution** extends the kernel to include a temporal dimension. The kernel has shape $k_t \times k_h \times k_w$ (time × height × width) and slides across both spatial and temporal dimensions simultaneously. For an input volume of $T$ frames stacked together:
-
-$
-(I * K)[t, i, j] = \sum_{\tau=0}^{k_t-1} \sum_{m=0}^{k_h-1} \sum_{n=0}^{k_w-1} I[t+\tau, i+m, j+n] \cdot K[\tau, m, n]
-$
-
-**Output temporal size:**
-
-$
-T_{out} = \left\lfloor \frac{T_{in} - k_t + 2p_t}{s_t} \right\rfloor + 1
-$
-
-where $p_t$ is temporal padding and $s_t$ is temporal stride.
+A **3D convolution** extends the kernel to include a temporal dimension. The kernel has shape $k_t \times k_h \times k_w$ (time × height × width) and slides across both spatial and temporal dimensions simultaneously.
 
 **Why 3D convolution matters:** A 3D kernel of size $3 \times 3 \times 3$ spans 3 consecutive frames and a $3 \times 3$ spatial region. It can detect motion patterns — for example, an edge that moves rightward across frames produces a specific activation pattern that a 2D kernel cannot capture. This enables the network to learn **spatiotemporal features** end-to-end.
 
@@ -1653,31 +1628,14 @@ where $p_t$ is temporal padding and $s_t$ is temporal stride.
 | **Input**          | Single frame $H \times W \times C$            | Clip of $T$ frames $T \times H \times W \times C$        |
 | **Output**         | 2D feature map                                | 3D feature volume (preserves temporal dim)               |
 | **Motion capture** | None (spatial only)                           | Yes (temporal patterns across frames)                    |
-| **Parameters**     | $C_{in} \times k_h \times k_w \times C_{out}$ | $C_{in} \times k_t \times k_h \times k_w \times C_{out}$ |
 | **Computation**    | Lower                                         | $k_t$ times higher                                       |
-
-## 5.3.2 C3D — Convolutional 3D Network
-
-**C3D (2015)** was one of the first deep 3D CNNs for video feature learning. It demonstrated that simple 3D convolutions can learn effective spatiotemporal features directly from raw video.
-
-**Architecture:** C3D uses a homogeneous design with all convolution kernels of size $3 \times 3 \times 3$ and all pooling kernels of size $2 \times 2 \times 2$ (except the first pooling layer which is $1 \times 2 \times 2$ to preserve temporal resolution early on). The network has 8 convolution layers, 5 pooling layers, and 2 fully connected layers. It takes a clip of **16 frames** resized to $112 \times 112$ as input.
-
-**Key finding:** The $3 \times 3 \times 3$ kernel was empirically found to be the best temporal kernel size — similar to how $3 \times 3$ spatial kernels dominated in 2D CNNs (VGGNet). Features from C3D's fc6 layer serve as powerful **generic video descriptors** that transfer well across tasks (action recognition, scene classification, event detection).
-
-## 5.3.3 I3D — Inflated 3D ConvNet
-
-**I3D (2017)** by Carreira and Zisserman introduced the concept of **inflating** a pretrained 2D CNN into a 3D CNN.
-
-**Inflation strategy:** Take a 2D filter of shape $k \times k$ from a pretrained ImageNet model (e.g., Inception-V1). Repeat it $k_t$ times along the temporal dimension to create a $k_t \times k \times k$ 3D filter. Divide each weight by $k_t$ to preserve the output scale. This **bootstrapping** from 2D pretrained weights gives I3D a massive advantage over training a 3D CNN from scratch — it inherits the rich visual representations learned on ImageNet.
-
-**Two-stream I3D:** I3D is often used as a two-stream architecture — one stream processes RGB frames and the other processes precomputed optical flow. The predictions from both streams are averaged for the final classification. This consistently outperforms single-stream models.
 
 **Computational trade-offs of 3D CNNs:**
 
 - **Parameters:** A $3 \times 3 \times 3$ filter has 27 weights vs. 9 for a $3 \times 3$ filter — 3× more parameters per filter.
 - **FLOPs:** The number of multiply-add operations scales with the temporal extent of both the input and the kernel, often making 3D CNNs 10–100× more expensive than their 2D counterparts.
 - **Memory:** Intermediate 3D feature maps are large — a feature volume of $T' \times H' \times W' \times C'$ requires $T'$ times more memory than a 2D feature map.
-- **Mitigation strategies:** (2+1)D convolutions (R(2+1)D) factorize a 3D kernel into a spatial $1 \times k \times k$ kernel followed by a temporal $k_t \times 1 \times 1$ kernel, reducing parameters and computation while often improving accuracy due to the added nonlinearity between the two decomposed operations.
+- **Mitigation strategies:** Factorize a 3D kernel into a spatial $1 \times k \times k$ kernel followed by a temporal $k_t \times 1 \times 1$ kernel, reducing parameters and computation while often improving accuracy due to the added nonlinearity between the two decomposed operations.
 
 ---
 

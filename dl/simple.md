@@ -399,104 +399,181 @@ The generated image starts as random noise (or a copy of the content image) and 
 
 ---
 
-# 4.9 Image Captioning System
+# 5.2 Motion Analysis and Optical Flow
 
-An **image captioning system** looks at a photo and writes a sentence describing it — like "A dog sitting on green grass near a red ball."
+> **Explain how optical flow is used for motion analysis in video sequences. Discuss at least two deep learning approaches that estimate optical flow and their comparative strengths. (Tutorial)**
 
-It combines two types of neural networks:
+## 5.2.1 Optical Flow
 
-- A **CNN** (to understand the image) — the "eyes"
-- An **RNN/LSTM** (to generate the sentence) — the "mouth"
+A video is just a sequence of images (called **frames**) shown quickly one after another. When something moves in a video — a car driving, a ball flying, a person walking — the pixels that make up that object shift position from one frame to the next.
 
-This is called an **encoder-decoder framework**: the CNN **encodes** (compresses) the image into a compact representation, and the LSTM **decodes** (expands) that representation into a sentence.
+**Optical flow** is a way to measure this movement. For every pixel in one frame, optical flow tells us: **"Where did this pixel go in the next frame?"** The answer is a small arrow (a **displacement vector**) with two numbers $(u, v)$:
 
-> **Encoder** = takes raw input and converts it into a meaningful summary.
-> **Decoder** = takes the summary and produces the desired output.
+- $u$ = how far the pixel moved **horizontally** (left/right)
+- $v$ = how far the pixel moved **vertically** (up/down)
+
+> **Displacement vector** = a pair of numbers that describe the direction and distance of movement.
+
+If you draw all these little arrows on the image, you get a "flow field" — a picture that shows the direction and speed of motion at every pixel.
+
+### The Brightness Constancy Assumption
+
+The basic idea behind optical flow is simple: **a pixel keeps the same brightness as it moves.** A white dot on a ball stays white whether the ball is on the left of the screen or the right.
+
+In math:
+
+$$I(x, y, t) = I(x + u, y + v, t + 1)$$
+
+This says: the brightness $I$ at position $(x, y)$ in frame $t$ equals the brightness at the **new position** $(x+u, y+v)$ in the **next frame** $t+1$.
+
+From this simple equation, we can derive:
+
+$$I_x u + I_y v + I_t = 0$$
+
+- $I_x$ = how fast brightness changes going **left to right** (spatial gradient in x)
+- $I_y$ = how fast brightness changes going **top to bottom** (spatial gradient in y)
+- $I_t$ = how fast brightness changes **over time** (temporal gradient)
+
+> **Gradient** = the rate of change. A spatial gradient tells how quickly pixel brightness changes across space. A temporal gradient tells how quickly it changes over time.
+
+**The problem:** We have **one equation** but **two unknowns** ($u$ and $v$). One equation is not enough to solve for two things. This is called the **aperture problem** — like trying to figure out which way a striped pole is moving when you can only see it through a tiny hole (aperture).
+
+> **Aperture problem** = the difficulty of determining the true direction of motion from local information alone.
+
+### Classical (Traditional) Methods
+
+To solve the aperture problem, we need extra assumptions:
+
+- **Lucas-Kanade (1981):** Assumes that all pixels in a small **neighborhood** (e.g., a 5×5 block of pixels) move the same way. This gives us many equations (one per pixel in the block), enough to solve for $u$ and $v$ using **least squares** (a method to find the best-fit answer when you have more equations than unknowns). It produces **sparse** flow — meaning it only computes flow at certain feature points, not every pixel. Works best for small, slow movements.
+
+- **Horn-Schunck (1981):** Assumes that nearby pixels have **similar** flow — the motion should change smoothly, not jump around. It computes flow for **every** pixel (**dense** flow), but is more sensitive to noise (random errors in pixel values).
+
+> **Sparse** = computed only at some selected points. **Dense** = computed at every single pixel.
+
+---
+
+## 5.2.2 Deep Learning Approaches for Optical Flow
+
+We can train a neural network to learn optical flow directly from data. Give the network two frames, and it outputs the flow field. Here are two major deep learning approaches:
+
+### 1. FlowNet (2015) and FlowNet 2.0 (2017)
+
+FlowNet was the **first CNN** (Convolutional Neural Network) trained to predict optical flow from raw image pairs. It has two versions:
+
+- **FlowNetS (Simple):** Takes two frames, stacks them together (so the input has 6 channels — 3 color channels from each frame), and passes them through an **encoder-decoder** network.
+  - The **encoder** (compression part) shrinks the images and extracts important features.
+  - The **decoder** (expansion part) takes those features and blows them back up to full size, outputting a flow vector at each pixel.
+
+- **FlowNetC (Correlation):** Instead of stacking the two frames, it processes each frame through its **own separate encoder**. Then it computes a **correlation layer** — this layer compares features from the two frames to find which parts match (like playing a "spot the difference" game). After finding matches, the decoder produces the flow field.
+
+**FlowNet 2.0** improved accuracy by **stacking** multiple FlowNets one after another like a chain. The first network handles **big movements**, and the following networks **refine** the result to fix small details.
+
+### 2. RAFT — Recurrent All-Pairs Field Transforms (2020)
+
+RAFT is a newer and more accurate method. Instead of predicting the flow in one shot, it **gradually improves** its guess over many steps — like erasing and redrawing your answer again and again until it's perfect.
+
+**How RAFT works (3 stages):**
+
+1. **Feature extraction:** A CNN processes both frames and turns them into **feature maps** (compact representations that capture important patterns like edges, textures, and shapes).
+
+2. **Correlation volume:** RAFT compares **every** feature in Frame 1 with **every** feature in Frame 2 by computing their **dot product** (a simple math operation that measures similarity). The result is a big 4D table (called a **correlation volume**) that stores how similar any two locations are across the two frames.
+
+3. **Iterative update:** A small recurrent network (using a **GRU** — a type of memory unit) repeatedly looks at the correlation volume, checks "how good is my current flow guess?", and produces a small correction. After many iterations (typically 12–32 rounds), the flow converges to an accurate answer.
+
+### FlowNet vs. RAFT — Comparison
+
+| Property            | FlowNet / FlowNet 2.0            | RAFT                                          |
+| :------------------ | :------------------------------- | :-------------------------------------------- |
+| **How it works**    | Encoder-decoder (stacked chain)  | Correlation volume + GRU iterative refinement |
+| **Flow estimation** | One forward pass (or a chain)    | Many iterations, gradually improving          |
+| **Accuracy**        | Good starting point              | Best-in-class (state-of-the-art)              |
+| **Large movements** | FlowNet 2.0 handles via stacking | Handles naturally via all-pairs correlation   |
+| **Generalization**  | Moderate                         | Works well even on new, unseen datasets       |
+
+> **State-of-the-art** = the best-performing method at the current time.
 >
-> **LSTM (Long Short-Term Memory)** = a type of RNN that is good at remembering information over long sequences (sentences, paragraphs).
+> **Generalization** = the ability to perform well on new data that the model was not trained on.
 
-## 4.9.1 Architecture
+### Applications of Optical Flow
 
-**Encoder — CNN:** Take a pre-trained CNN (like ResNet or VGG) and remove the last classification layer. What remains gives us a **feature vector** — a list of numbers that describes the image's visual content. This is like the CNN saying: "I see a dog, grass, a ball, outdoor scene..."
+- **Action recognition:** Optical flow gives the network explicit motion information. For example, a "waving" action creates a specific flow pattern. **Two-stream networks** use one stream for the raw image (appearance) and another stream for optical flow (motion).
+- **Video stabilization:** If the camera is shaking, the flow vectors show that shake. Software can use this to cancel out the unwanted movement and produce a smooth video.
+- **Object segmentation:** A moving car produces flow arrows that point in a different direction than the still background. This difference helps separate (segment) moving objects from the background.
+- **Frame interpolation:** If you have Frame 1 and Frame 3, optical flow can help generate Frame 2 (the in-between frame), creating slow-motion effects.
 
-**Decoder — LSTM:** The LSTM generates the caption **one word at a time**. At each step, it looks at:
-
-- The image features (what's in the picture)
-- The words it has already generated (what it has said so far)
-
-And predicts the **next word**.
-
-**Basic pipeline (Show and Tell model):**
-
-1. Pass the image through the CNN → get a feature vector $v$.
-2. Feed $v$ to the LSTM as the starting input.
-3. At each time step $t$, the LSTM receives the **embedding** (numerical representation) of the previous word $w_{t-1}$ and outputs a probability for every word in the vocabulary. The most likely word becomes $w_t$.
-4. This continues until the model outputs an **\<END\> token** — a special word that means "I'm done talking."
-
-> **Embedding** = converting a word into a list of numbers that captures its meaning. Similar words (like "dog" and "puppy") get similar numbers.
+> **Segmentation** = dividing an image into regions, each belonging to a different object.
 >
-> **Vocabulary** = the set of all words the model knows.
+> **Frame interpolation** = creating new frames between existing ones to make video smoother.
 
-## 4.9.2 Attention Mechanism
+---
 
-The basic model compresses the **entire image** into a single vector — but this is like trying to describe a complex scene after looking at it for one second with your eyes closed. A lot of detail is lost. This is called an **information bottleneck**.
+---
 
-The **attention mechanism** fixes this. Instead of one vector, the CNN produces a **grid of feature vectors** (e.g., 14×14 = 196 vectors, each describing a different region of the image). When generating each word, the LSTM "looks at" (attends to) the most relevant region.
+# 5.3 3D Data and Convolution
 
-**How it works at each time step $t$:**
+> **Describe how 3D convolution differs from standard 2D convolution and explain its role in video-based action recognition. What are the computational trade-offs involved? (Tutorial)**
 
-1. **Compute attention weights** $\alpha_{t,i}$: For each of the 196 regions, calculate a score saying "how relevant is this region for the word I'm about to generate?" Then normalize these scores using **softmax** so they add up to 1.
+## 5.3.1 From 2D to 3D Convolution
 
-$$e_{t,i} = f_{\text{att}}(h_{t-1}, a_i) \quad;\quad \alpha_{t,i} = \frac{\exp(e_{t,i})}{\sum_j \exp(e_{t,j})}$$
+### Quick Recap: 2D Convolution
 
-> $h_{t-1}$ = the LSTM's previous hidden state (its memory of what it has generated so far).
-> $a_i$ = the feature vector for region $i$ of the image.
+In a normal CNN, a small **2D filter** (e.g., 3×3) slides across a **single image** (height × width) and produces a **feature map** — a new image that highlights certain patterns like edges or textures.
 
-2. **Compute context vector** $z_t$: Take a **weighted sum** of all region features — regions with higher attention weight contribute more.
+When we apply a 2D CNN to a video, it processes **each frame separately**, one at a time. It can see what's happening **within** a frame (spatial features — shapes, objects, colors) but it has **no idea** how things change **across** frames. It cannot learn motion.
 
-$$z_t = \sum_{i=1}^{L} \alpha_{t,i} \cdot a_i$$
+> **Spatial** = related to space (height and width of an image).
+>
+> **Temporal** = related to time (the sequence of frames in a video).
 
-3. Feed $z_t$ and the previous word's embedding into the LSTM to generate the next word.
+### What is 3D Convolution?
 
-**Example:** When the model generates the word "dog," it pays attention to the part of the image where the dog is. When it generates "grass," it shifts attention to the grass area.
+A **3D convolution** adds a **time dimension** to the filter. Instead of a 3×3 filter that looks at one frame, a 3D filter might be **3×3×3** — it covers **3 frames** at once, looking at a 3×3 region **in each of those 3 frames** simultaneously.
 
-## 4.9.3 Training
+As this 3D filter slides across the video (moving in space AND in time), it can detect patterns that happen **over time** — like a hand moving from left to right across multiple frames. These are called **spatiotemporal features** (features that combine both space and time information).
 
-**Dataset:** We need thousands of image-caption pairs. A popular dataset is **MS COCO**, where each image comes with 5 different captions written by humans.
+> **Spatiotemporal** = involving both space (where things are) and time (when things happen).
 
-**Training process:**
+### Why Does 3D Convolution Matter?
 
-1. The CNN encoder is **pre-trained on ImageNet** (transfer learning — reusing knowledge learned from millions of images). Its weights may be **frozen** (kept fixed) or **fine-tuned** (adjusted slightly with a small learning rate).
+Imagine a person waving their hand. In any single frame, you just see a hand in one position. But across 3 frames, you see the hand in three different positions — that's the "waving" pattern. A 2D filter processing frames one by one **cannot** see this pattern. A 3D filter spanning 3 frames **can** detect it directly.
 
-2. During training, we use **teacher forcing** — at each time step, we give the LSTM the **correct previous word** (from the human-written caption), not the word it predicted. This is like a teacher correcting a student at every step so they don't go off track.
+This makes 3D convolution powerful for tasks like **action recognition** — telling the difference between "running" and "walking," or between "clapping" and "waving."
 
-3. The **loss function** is **cross-entropy loss** — it measures how well the model's predicted word probabilities match the actual correct words, summed over the whole sentence:
+### 2D vs. 3D Convolution — Comparison
 
-$$L = -\sum_{t=1}^{T} \log p(w_t | w_1, ..., w_{t-1}, I)$$
+| Property               | 2D Convolution             | 3D Convolution                               |
+| :--------------------- | :------------------------- | :------------------------------------------- |
+| **Filter shape**       | height × width (e.g., 3×3) | time × height × width (e.g., 3×3×3)          |
+| **Input**              | One frame at a time        | A clip (stack of multiple frames)            |
+| **Output**             | 2D feature map             | 3D feature volume (keeps the time dimension) |
+| **Can detect motion?** | No (spatial only)          | Yes (sees patterns across frames)            |
+| **Computation cost**   | Lower                      | Higher (roughly $k_t$ times more)            |
 
-> This says: for each word in the caption, how surprised was the model by the correct answer? Less surprise = lower loss = better model.
+> $k_t$ = the size of the filter in the time dimension (e.g., 3 for a filter that spans 3 frames).
 
-4. Gradients flow backward through the LSTM and (if the CNN is not frozen) through the CNN too, allowing **end-to-end training** — the entire system learns together.
+### Computational Trade-offs (The Cost of 3D)
 
-> **End-to-end training** = training the whole pipeline (CNN + LSTM) as one system, rather than training each part separately.
+3D convolution is more powerful but also more expensive:
 
-**Inference (generating captions for new images):**
+- **More parameters (weights):** A 3×3 2D filter has 9 weights. A 3×3×3 3D filter has 27 weights — **3 times more**. More weights means the network is larger and needs more data to train properly.
 
-At test time, the model generates words **autoregressively** — it uses its own predicted word as input to predict the next word (no teacher forcing, since we don't have the answer).
+  > **Parameters** = the learnable numbers (weights) inside a neural network. More parameters = bigger model = more memory needed.
 
-Instead of just picking the single best word at each step (**greedy decoding**), we use **beam search** — keep the top-$k$ (e.g., top-3) candidate sentences at each step and continue expanding all of them. At the end, pick the best complete sentence. This usually produces better captions.
+- **More computation (FLOPs):** Since the 3D filter slides across an extra dimension (time), the number of multiply-and-add operations is much higher. A 3D CNN can be **10 to 100 times slower** than a 2D CNN.
 
-> **Beam search** = exploring multiple possible sentences simultaneously and choosing the best one. Like considering multiple routes on a GPS before picking the fastest.
+  > **FLOPs (Floating Point Operations)** = a count of how many math operations (like multiplications and additions) the network needs to perform. More FLOPs = slower.
 
-**How do we measure caption quality?**
+- **More memory:** The intermediate feature maps are now 3D volumes (time × height × width × channels) instead of 2D maps. Storing these volumes takes much more memory (RAM/GPU memory).
 
-| Metric     | What it measures                                                                                                                                                   |
-| :--------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **BLEU**   | How many n-grams (word chunks of length n) in the generated caption match the reference. Focuses on **precision** (are the generated words correct?).              |
-| **METEOR** | Like BLEU, but also considers **synonyms** (words with similar meaning) and **stemming** (treating "running" and "run" as the same).                               |
-| **CIDEr**  | Measures consensus — does the generated caption match what **most humans** would say? Uses **TF-IDF** weighting (words that are unique to this image matter more). |
-| **ROUGE**  | Focuses on **recall** — how many of the reference words appear in the generated caption?                                                                           |
+### How to Reduce the Cost — (2+1)D Convolution
 
-> **Precision** = of the words I generated, how many are correct?
-> **Recall** = of the correct words, how many did I generate?
-> **n-gram** = a sequence of n consecutive words. "the dog" is a 2-gram (bigram). "the brown dog" is a 3-gram (trigram).
+A smart trick called **(2+1)D convolution** (used in a model called **R(2+1)D**) breaks the 3D filter into two simpler steps:
+
+1. First, apply a **spatial-only** filter ($1 × k × k$) — this looks at patterns within each frame (like a normal 2D filter).
+2. Then, apply a **temporal-only** filter ($k_t × 1 × 1$) — this looks at how those patterns change over time.
+
+This factorization uses fewer parameters, is computationally cheaper, and often actually **improves** accuracy because it adds an extra **non-linearity** (ReLU activation) between the two steps.
+
+> **Factorization** = breaking one complex operation into two simpler operations that together do the same job.
+>
+> **Non-linearity** = a mathematical function (like ReLU) that lets the network learn complex, non-straight-line patterns. More non-linearities = the network can learn richer patterns.
